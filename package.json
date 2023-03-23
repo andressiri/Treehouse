@@ -2,7 +2,10 @@
   "name": "treehouse",
   "version": "0.0.1",
   "description": "Treehouse school site developed to solve a challenge",
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/andressiri/Treehouse.git"
@@ -12,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/andressiri/Treehouse/issues"
   },
-  "homepage": "https://github.com/andressiri/Treehouse#readme"
+  "homepage": "https://github.com/andressiri/Treehouse#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-standard": "^17.0.0",
+    "prettier": "^2.8.6"
+  },
+  "dependencies": {
+    "eslint": "^8.36.0",
+    "eslint-config-next": "^13.2.4"
+  }
 }
