@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Treehouse school site developed to solve a challenge",
   "scripts": {
+    "server": "tsc --project ./server && node server/build/index.js",
+    "server:dev": "nodemon server/index.ts",
+    "server:build": "tsc --project ./server",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },
