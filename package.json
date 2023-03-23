@@ -1,0 +1,16 @@
+{
+  "name": "treehouse",
+  "version": "0.0.1",
+  "description": "Treehouse school site developed to solve a challenge",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andressiri/Treehouse.git"
+  },
+  "author": "Andrés Siri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andressiri/Treehouse/issues"
+  },
+  "homepage": "https://github.com/andressiri/Treehouse#readme"
+}
