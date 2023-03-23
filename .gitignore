@@ -1,0 +1,9 @@
+node_modules
+
+# misc
+.env
+.env.development
+.env.test
+.env.production
+
+package-lock.json
