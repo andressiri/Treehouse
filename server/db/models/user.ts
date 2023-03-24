@@ -1,4 +1,5 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
+import Role from "./role";
 
 interface IUser {
   id: string;
@@ -18,9 +19,8 @@ const UserModel = (sequelize: Sequelize) => {
     password!: string;
     verified!: boolean;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    static associate(models: any) {
-      User.belongsTo(models.Role);
+    static associate() {
+      User.belongsTo(Role(sequelize));
     }
   }
 

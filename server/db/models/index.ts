@@ -28,7 +28,6 @@ if ((config as IproductionConfig).uri) {
 
 modelsArray.forEach((model) => {
   db[model.name] = model.model(sequelize);
-  if (db[model.name].associate) db[model.name].associate(db);
 });
 
 db.sequelize = sequelize;
