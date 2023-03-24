@@ -1,14 +1,6 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 import Role from "./role";
-
-interface IUser {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  verified?: boolean;
-}
+import { IUser } from "../../typings/models";
 
 const UserModel = (sequelize: Sequelize) => {
   class User extends Model<IUser> implements IUser {

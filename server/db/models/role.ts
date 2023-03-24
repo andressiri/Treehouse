@@ -1,10 +1,5 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
-
-interface IRole {
-  id: string;
-  name: string;
-  description: string;
-}
+import { IRole } from "../../typings/models";
 
 const RoleModel = (sequelize: Sequelize) => {
   class Role extends Model<IRole> implements IRole {
