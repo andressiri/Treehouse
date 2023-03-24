@@ -3,6 +3,7 @@ import path from "path";
 import dotenv from "dotenv";
 import db from "./db/models";
 import router from "./routes";
+import { errorHandler } from "./middlewares";
 
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
@@ -24,6 +25,8 @@ db.sequelize
 
 // @/api/v1 router
 app.use("/api/v1", router);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
