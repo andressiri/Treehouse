@@ -1,5 +1,3 @@
-import path from "path";
-import fs from "fs";
 import { DataTypes, Sequelize } from "sequelize";
 import {
   ItestConfig,
@@ -7,8 +5,7 @@ import {
   IproductionConfig,
 } from "../../typings/database";
 import { dbConfigs } from "../../config/db/configDB";
-
-const basename = path.basename(__filename);
+import modelsArray from "./modelsArray";
 
 const env = process.env.NODE_ENV || "development";
 const config = dbConfigs[env as keyof typeof dbConfigs];
@@ -29,24 +26,9 @@ if ((config as IproductionConfig).uri) {
   );
 }
 
-fs.readdirSync(__dirname)
-  .filter((file) => {
-    return (
-      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".ts"
-    );
-  })
-  .forEach((file) => {
-    const filePath = path.join(__dirname, file);
-    import(path.join(filePath)).then((mod) => {
-      const model = mod.default(sequelize, DataTypes);
-      db[model.name] = model;
-    });
-  });
-
-Object.keys(db).forEach((modelName) => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
+modelsArray.forEach((model) => {
+  db[model.name] = model.model(sequelize, DataTypes);
+  if (db[model.name].associate) db[model.name].associate(db);
 });
 
 db.sequelize = sequelize;

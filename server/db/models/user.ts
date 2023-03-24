@@ -46,6 +46,7 @@ const model = (sequelize: Sequelize, dataTypes: typeof DataTypes) => {
       modelName: "User",
     }
   );
+
   return User;
 };
 
