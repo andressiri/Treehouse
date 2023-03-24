@@ -14,7 +14,7 @@ const env = process.env.NODE_ENV || "development";
 const config = dbConfigs[env as keyof typeof dbConfigs];
 const db: any = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-let sequelize: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+let sequelize: Sequelize;
 if ((config as IproductionConfig).uri) {
   sequelize = new Sequelize(
     (config as IproductionConfig).uri,
@@ -36,11 +36,11 @@ fs.readdirSync(__dirname)
     );
   })
   .forEach((file) => {
-    const model = sequelize.import(path.join(__dirname, file))(
-      sequelize,
-      DataTypes
-    );
-    db[model.name] = model;
+    const filePath = path.join(__dirname, file);
+    import(path.join(filePath)).then((mod) => {
+      const model = mod.default(sequelize, DataTypes);
+      db[model.name] = model;
+    });
   });
 
 Object.keys(db).forEach((modelName) => {
