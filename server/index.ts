@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import dotenv from "dotenv";
 import db from "./db/models";
+import router from "./routes";
 
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
@@ -21,9 +22,8 @@ db.sequelize
     }
   });
 
-app.get("/", (req, res) => {
-  res.send("If you see this, server is running...");
-});
+// @/api/v1 router
+app.use("/api/v1", router);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
