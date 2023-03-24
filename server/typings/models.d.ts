@@ -5,6 +5,7 @@ export interface IUser {
   email: string;
   password: string;
   verified?: boolean;
+  RoleId?: number;
 }
 
 interface IRole {
