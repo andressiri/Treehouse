@@ -2,7 +2,7 @@ import { QueryInterface, DataTypes } from "sequelize";
 
 /** @type {import('sequelize-cli').Migration} */
 
-export const migration = {
+const rolesMigration = {
   async up(queryInterface: QueryInterface) {
     queryInterface.sequelize.transaction(async (transaction) => {
       await queryInterface.createTable(
@@ -46,3 +46,5 @@ export const migration = {
     });
   },
 };
+
+export default rolesMigration;

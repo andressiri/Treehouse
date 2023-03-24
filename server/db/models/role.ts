@@ -6,19 +6,11 @@ interface IRole {
   description: string;
 }
 
-const model = (sequelize: Sequelize) => {
+const RoleModel = (sequelize: Sequelize) => {
   class Role extends Model<IRole> implements IRole {
     id!: string;
     name!: string;
     description!: string;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    static associate(models: any) {
-      Role.hasMany(models.User, {
-        as: "users",
-        foreignKey: "roleId",
-      });
-    }
   }
 
   Role.init(
@@ -35,10 +27,11 @@ const model = (sequelize: Sequelize) => {
     {
       sequelize,
       modelName: "Role",
+      tableName: "Roles",
     }
   );
 
   return Role;
 };
 
-export default model;
+export default RoleModel;

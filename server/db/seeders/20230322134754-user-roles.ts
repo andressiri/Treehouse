@@ -1,6 +1,6 @@
 import { QueryInterface } from "sequelize";
 
-export const seed = {
+const rolesSeed = {
   async up(queryInterface: QueryInterface) {
     await queryInterface.bulkInsert(
       "Roles",
@@ -28,3 +28,5 @@ export const seed = {
     await queryInterface.bulkDelete("Roles", {});
   },
 };
+
+export default rolesSeed;

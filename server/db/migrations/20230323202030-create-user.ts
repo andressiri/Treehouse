@@ -2,7 +2,7 @@ import { QueryInterface, DataTypes } from "sequelize";
 
 /** @type {import('sequelize-cli').Migration} */
 
-export const migration = {
+const usersMigration = {
   async up(queryInterface: QueryInterface) {
     queryInterface.sequelize.transaction(async (transaction) => {
       await queryInterface.createTable(
@@ -34,10 +34,6 @@ export const migration = {
           verified: {
             type: DataTypes.BOOLEAN,
           },
-          roleID: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-          },
           createdAt: {
             allowNull: false,
             type: DataTypes.DATE,
@@ -62,3 +58,5 @@ export const migration = {
     });
   },
 };
+
+export default usersMigration;

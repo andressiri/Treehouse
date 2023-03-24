@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 const salt = bcrypt.genSaltSync();
 const hashedPassword = bcrypt.hashSync("123456", salt);
 
-export const seed = {
+const usersSeed = {
   async up(queryInterface: QueryInterface) {
     await queryInterface.bulkInsert(
       "Users",
@@ -17,9 +17,9 @@ export const seed = {
           email: "admin@test.com",
           password: hashedPassword,
           verified: true,
-          roleId: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
+          RoleId: 2,
         },
         {
           id: uuid(),
@@ -28,9 +28,9 @@ export const seed = {
           email: "admin@mail.com",
           password: hashedPassword,
           verified: true,
-          roleId: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
+          RoleId: 2,
         },
         {
           id: uuid(),
@@ -39,9 +39,9 @@ export const seed = {
           email: "fakeuser@mail.com",
           password: hashedPassword,
           verified: true,
-          roleId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
+          RoleId: 1,
         },
         {
           id: uuid(),
@@ -50,9 +50,9 @@ export const seed = {
           email: "user@test.com",
           password: hashedPassword,
           verified: true,
-          roleId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
+          RoleId: 1,
         },
         {
           id: uuid(),
@@ -61,9 +61,9 @@ export const seed = {
           email: "notverified@mail.com",
           password: hashedPassword,
           verified: true,
-          roleId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
+          RoleId: 1,
         },
         {
           id: uuid(),
@@ -72,9 +72,9 @@ export const seed = {
           email: "notverified@test.com",
           password: hashedPassword,
           verified: null,
-          roleId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
+          RoleId: 1,
         },
       ],
       {}
@@ -85,3 +85,5 @@ export const seed = {
     await queryInterface.bulkDelete("Users", {});
   },
 };
+
+export default usersSeed;

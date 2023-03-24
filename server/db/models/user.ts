@@ -7,10 +7,9 @@ interface IUser {
   email: string;
   password: string;
   verified?: boolean;
-  roleID: number;
 }
 
-const model = (sequelize: Sequelize) => {
+const UserModel = (sequelize: Sequelize) => {
   class User extends Model<IUser> implements IUser {
     id!: string;
     firstName!: string;
@@ -18,14 +17,10 @@ const model = (sequelize: Sequelize) => {
     email!: string;
     password!: string;
     verified!: boolean;
-    roleID!: number;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static associate(models: any) {
-      User.belongsTo(models.Role, {
-        as: "role",
-        foreignKey: "roleId",
-      });
+      User.belongsTo(models.Role);
     }
   }
 
@@ -42,15 +37,15 @@ const model = (sequelize: Sequelize) => {
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       verified: DataTypes.BOOLEAN,
-      roleID: DataTypes.INTEGER,
     },
     {
       sequelize,
       modelName: "User",
+      tableName: "Users",
     }
   );
 
   return User;
 };
 
-export default model;
+export default UserModel;
