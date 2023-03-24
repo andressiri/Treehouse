@@ -6,36 +6,20 @@ export const migration = {
   async up(queryInterface: QueryInterface) {
     queryInterface.sequelize.transaction(async (transaction) => {
       await queryInterface.createTable(
-        "Users",
+        "Roles",
         {
           id: {
-            type: DataTypes.UUID,
             allowNull: false,
+            autoIncrement: true,
             primaryKey: true,
-            defaultValue: DataTypes.UUID,
-          },
-          firstName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-          },
-          lastName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-          },
-          email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-          },
-          password: {
-            type: DataTypes.STRING,
-            allowNull: false,
-          },
-          verified: {
-            type: DataTypes.BOOLEAN,
-          },
-          roleID: {
             type: DataTypes.INTEGER,
+          },
+          name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+          },
+          description: {
+            type: DataTypes.STRING,
             allowNull: false,
           },
           createdAt: {
@@ -58,7 +42,7 @@ export const migration = {
 
   async down(queryInterface: QueryInterface) {
     queryInterface.sequelize.transaction(async (transaction) => {
-      await queryInterface.dropTable("Users", { transaction });
+      await queryInterface.dropTable("Roles", { transaction });
     });
   },
 };
