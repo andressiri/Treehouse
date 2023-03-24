@@ -7,7 +7,8 @@
     "server:dev": "nodemon server/index.ts",
     "server:build": "tsc --project ./server",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "lint:fix": "eslint --fix .",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -30,5 +31,15 @@
   "dependencies": {
     "eslint": "^8.36.0",
     "eslint-config-next": "^13.2.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged --debug"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "tsc -p tsconfig.json --noEmit"
+    ]
   }
 }
