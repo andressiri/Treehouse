@@ -1,4 +1,4 @@
-import { DataTypes, Sequelize } from "sequelize";
+import { Sequelize } from "sequelize";
 import {
   ItestConfig,
   IdevelopmentConfig,
@@ -27,8 +27,7 @@ if ((config as IproductionConfig).uri) {
 }
 
 modelsArray.forEach((model) => {
-  db[model.name] = model.model(sequelize, DataTypes);
-  if (db[model.name].associate) db[model.name].associate(db);
+  db[model.name] = model.model(sequelize);
 });
 
 db.sequelize = sequelize;

@@ -1,4 +1,4 @@
-// This file is required to create/delete db with Sequelize CLI
+// This file is required for Sequelize CLI to function properly
 const path = require("path"); // eslint-disable-line @typescript-eslint/no-var-requires
 const dotenv = require("dotenv"); // eslint-disable-line @typescript-eslint/no-var-requires
 
