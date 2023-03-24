@@ -7,10 +7,10 @@ interface IUser {
   email: string;
   password: string;
   verified?: boolean;
-  // roleID: number;
+  roleID: number;
 }
 
-const model = (sequelize: Sequelize, dataTypes: typeof DataTypes) => {
+const model = (sequelize: Sequelize) => {
   class User extends Model<IUser> implements IUser {
     id!: string;
     firstName!: string;
@@ -18,28 +18,31 @@ const model = (sequelize: Sequelize, dataTypes: typeof DataTypes) => {
     email!: string;
     password!: string;
     verified!: boolean;
-    // roleID!: number;
+    roleID!: number;
 
-    // eslint-disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static associate(models: any) {
-      //
+      User.belongsTo(models.Role, {
+        as: "role",
+        foreignKey: "roleId",
+      });
     }
   }
 
   User.init(
     {
       id: {
-        type: dataTypes.UUIDV4,
+        type: DataTypes.UUIDV4,
         allowNull: false,
         primaryKey: true,
-        defaultValue: dataTypes.UUIDV4,
+        defaultValue: DataTypes.UUIDV4,
       },
-      firstName: dataTypes.STRING,
-      lastName: dataTypes.STRING,
-      email: dataTypes.STRING,
-      password: dataTypes.STRING,
-      verified: dataTypes.BOOLEAN,
-      // roleID: dataTypes.INTEGER,
+      firstName: DataTypes.STRING,
+      lastName: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      verified: DataTypes.BOOLEAN,
+      roleID: DataTypes.INTEGER,
     },
     {
       sequelize,
