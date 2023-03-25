@@ -8,6 +8,7 @@ import {
   register,
   userInfo,
   verificationCode,
+  userVerification,
 } from "../controllers/users";
 import {
   authenticateAdmin,
@@ -65,6 +66,8 @@ usersRouter.post(
   validateRequestFields,
   verificationCode
 );
+
+usersRouter.put("/verification/:code", userVerification);
 
 usersRouter.put(
   "/password",

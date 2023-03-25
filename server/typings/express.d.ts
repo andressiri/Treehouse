@@ -10,6 +10,7 @@ declare module "express-session" {
     user: IUser;
     code: string;
     emailToVerify: string;
+    verified: boolean;
   }
 }
 
