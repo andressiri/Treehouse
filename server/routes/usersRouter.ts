@@ -1,6 +1,6 @@
 // @route api/v1/users
 import express from "express";
-import { getUsers, register } from "../controllers/users";
+import { getUsers, login, register } from "../controllers/users";
 import {
   authenticateAdmin,
   authenticateUser,
@@ -23,6 +23,14 @@ usersRouter.post(
   checkPassword,
   validateRequestFields,
   register
+);
+
+usersRouter.post(
+  "/login",
+  checkEmail,
+  checkPassword,
+  validateRequestFields,
+  login
 );
 
 usersRouter.get("/", authenticateUser, authenticateAdmin, getUsers);
