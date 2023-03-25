@@ -1,6 +1,7 @@
 // @route api/v1/users
 import express from "express";
 import {
+  changePassword,
   getUsers,
   login,
   register,
@@ -60,6 +61,14 @@ usersRouter.post(
   checkEmail,
   validateRequestFields,
   verificationCode
+);
+
+usersRouter.put(
+  "/password",
+  authenticateUser,
+  checkPassword,
+  validateRequestFields,
+  changePassword
 );
 
 export default usersRouter;
