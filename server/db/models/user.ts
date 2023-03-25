@@ -4,12 +4,13 @@ import { IUser } from "../../typings/models";
 
 const UserModel = (sequelize: Sequelize) => {
   class User extends Model<IUser> implements IUser {
-    id!: string;
-    firstName!: string;
-    lastName!: string;
-    email!: string;
-    password!: string;
-    verified!: boolean;
+    declare id: string;
+    declare firstName: string;
+    declare lastName: string;
+    declare email: string;
+    declare password: string;
+    declare verified: boolean;
+    declare RoleId: number;
 
     static associate() {
       User.belongsTo(Role(sequelize));
@@ -29,6 +30,7 @@ const UserModel = (sequelize: Sequelize) => {
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       verified: DataTypes.BOOLEAN,
+      RoleId: DataTypes.INTEGER,
     },
     {
       sequelize,

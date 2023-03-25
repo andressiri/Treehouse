@@ -1,6 +1,6 @@
 // @description Get users data
-// @route /api/v1/users
-// @access Private - admin only (TODO)
+// @route GET /api/v1/users
+// @access Private - admin only
 import asyncHandler from "express-async-handler";
 import db from "../../db/models";
 

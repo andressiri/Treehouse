@@ -3,9 +3,9 @@ import { IRole } from "../../typings/models";
 
 const RoleModel = (sequelize: Sequelize) => {
   class Role extends Model<IRole> implements IRole {
-    id!: string;
-    name!: string;
-    description!: string;
+    declare id: string;
+    declare name: string;
+    declare description: string;
   }
 
   Role.init(

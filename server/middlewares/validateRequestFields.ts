@@ -10,7 +10,7 @@ const validateRequestFields = (
 
   if (!result.isEmpty()) {
     res.status(400);
-    throw new Error(result.array({ onlyFirstError: true })[0]);
+    throw new Error(result.array({ onlyFirstError: true })[0].msg);
   }
 
   next();

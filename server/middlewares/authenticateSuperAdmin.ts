@@ -2,11 +2,9 @@ import { RequestWithUser } from "../typings/express";
 import { Request, Response, NextFunction } from "express";
 
 const authenticateAdmin = (req: Request, res: Response, next: NextFunction) => {
-  const { RoleId } = (req as RequestWithUser).user;
-
-  if (!RoleId || ![2, 3].includes(RoleId)) {
+  if ((req as RequestWithUser).user.RoleId !== 3) {
     res.status(401);
-    throw new Error("Access denied, admin credentials required");
+    throw new Error("Access denied, super admin credentials required");
   }
 
   next();

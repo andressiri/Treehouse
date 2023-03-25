@@ -1,6 +1,6 @@
 import jwt, { Secret } from "jsonwebtoken";
 
-export const token = (id: string, temporary: boolean) => {
+const createToken = (id: string, temporary?: boolean): string => {
   let expiration = "30d";
   if (temporary) expiration = "300s";
 
@@ -8,3 +8,5 @@ export const token = (id: string, temporary: boolean) => {
     expiresIn: expiration,
   });
 };
+
+export default createToken;

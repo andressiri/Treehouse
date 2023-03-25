@@ -1,5 +1,5 @@
-import { Jwt } from "jsonwebtoken";
+import { JwtPayload } from "jsonwebtoken";
 
-export interface JWToken extends Jwt {
+export interface JWToken extends JwtPayload {
   id: string;
 }

@@ -19,6 +19,20 @@ const rolesSeed = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          id: 3,
+          name: "SuperAdmin",
+          description: "Application owner",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 4,
+          name: "Banned user",
+          description: "User banned from the application",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );

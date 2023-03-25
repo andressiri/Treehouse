@@ -1,4 +1,10 @@
-import { check } from "express-validator";
+import { check, param } from "express-validator";
+
+export const checkUUID = param("id")
+  .not()
+  .isEmpty()
+  .isUUID(4)
+  .withMessage("Please send a valid id");
 
 export const checkName = check("name")
   .not()
