@@ -1,4 +1,5 @@
 export { default as changePassword } from "./changePassword";
+export { default as deleteUser } from "./deleteUser";
 export { default as editUser } from "./editUser";
 export { default as getUsers } from "./getUsers";
 export { default as login } from "./login";

@@ -2,6 +2,7 @@
 import express from "express";
 import {
   changePassword,
+  deleteUser,
   editUser,
   getUsers,
   login,
@@ -88,5 +89,13 @@ usersRouter.put(
 );
 
 usersRouter.put("/edit", authenticateUser, checkUserAttributes, editUser);
+
+usersRouter.delete(
+  "/delete/:id",
+  authenticateUser,
+  checkUUID,
+  validateRequestFields,
+  deleteUser
+);
 
 export default usersRouter;
