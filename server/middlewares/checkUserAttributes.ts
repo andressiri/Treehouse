@@ -39,7 +39,7 @@ const checkUserAttributes = (
     )
       return;
 
-    if (typeToCheck === "role" && ["1", "2"].includes(req.body[attribute]))
+    if (typeToCheck === "role" && ["1", "2", "4"].includes(req.body[attribute]))
       return;
 
     res.status(400);

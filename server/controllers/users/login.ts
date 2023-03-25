@@ -18,6 +18,11 @@ const login = asyncHandler(async (req, res) => {
     throw new Error("No user registered with that email");
   }
 
+  if (user.dataValues.RoleId === 4) {
+    res.status(403);
+    throw new Error("Banned user, login disabled");
+  }
+
   const userData = {
     ...user.dataValues,
     token: createToken(user.dataValues.id),
