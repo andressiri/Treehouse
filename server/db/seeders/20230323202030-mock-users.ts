@@ -13,13 +13,13 @@ const usersSeed = {
         {
           id: uuid(),
           firstName: "Page",
-          lastName: "Administrator",
-          email: "admin@test.com",
+          lastName: "Owner",
+          email: "super@admin.com",
           password: hashedPassword,
           verified: true,
           createdAt: new Date(),
           updatedAt: new Date(),
-          RoleId: 2,
+          RoleId: 3,
         },
         {
           id: uuid(),
