@@ -6,6 +6,7 @@ import {
   editUser,
   getUsers,
   login,
+  logout,
   register,
   userInfo,
   verificationCode,
@@ -97,5 +98,7 @@ usersRouter.delete(
   validateRequestFields,
   deleteUser
 );
+
+usersRouter.delete("/logout", logout);
 
 export default usersRouter;
