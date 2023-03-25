@@ -1,12 +1,13 @@
 // @route api/v1/users
 import express from "express";
-import { getUsers, login, register } from "../controllers/users";
+import { getUsers, login, register, userInfo } from "../controllers/users";
 import {
   authenticateAdmin,
   authenticateUser,
   validateRequestFields,
 } from "../middlewares";
 import {
+  checkUUID,
   checkFirstName,
   checkLastName,
   checkEmail,
@@ -34,5 +35,16 @@ usersRouter.post(
 );
 
 usersRouter.get("/", authenticateUser, authenticateAdmin, getUsers);
+
+usersRouter.get(
+  "/user/:id",
+  authenticateUser,
+  authenticateAdmin,
+  checkUUID,
+  validateRequestFields,
+  userInfo
+);
+
+usersRouter.get("/me", authenticateUser, userInfo);
 
 export default usersRouter;
