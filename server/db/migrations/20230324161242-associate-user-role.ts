@@ -7,6 +7,7 @@ const associateUserRoleMigration = {
     queryInterface.sequelize.transaction(async () => {
       await queryInterface.addColumn("Users", "RoleId", {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
           model: "Roles",
           key: "id",
