@@ -55,4 +55,11 @@ usersRouter.get("/me", authenticateUser, userInfo);
 
 usersRouter.post("/verification", authenticateUser, verificationCode);
 
+usersRouter.post(
+  "/forgot-password",
+  checkEmail,
+  validateRequestFields,
+  verificationCode
+);
+
 export default usersRouter;
