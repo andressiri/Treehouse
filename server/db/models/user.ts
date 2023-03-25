@@ -10,6 +10,7 @@ const UserModel = (sequelize: Sequelize) => {
     declare email: string;
     declare password: string;
     declare verified: boolean;
+    declare RoleId: number;
 
     static associate() {
       User.belongsTo(Role(sequelize));
@@ -29,6 +30,7 @@ const UserModel = (sequelize: Sequelize) => {
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       verified: DataTypes.BOOLEAN,
+      RoleId: DataTypes.INTEGER,
     },
     {
       sequelize,
