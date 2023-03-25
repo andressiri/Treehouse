@@ -11,6 +11,10 @@ const devEnvironment = process.env.NODE_ENV === "development";
 
 const app = express();
 
+// body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 // Test database connection
 db.sequelize
   .authenticate()
