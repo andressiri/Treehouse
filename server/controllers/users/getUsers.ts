@@ -1,10 +1,10 @@
 // @description Get users data
-// @route /api/v1/users
-// @access Private - admin only (TODO)
+// @route GET /api/v1/users
+// @access Private - admin only
 import asyncHandler from "express-async-handler";
 import db from "../../db/models";
 
-const User = db.User;
+const { User } = db;
 
 const getUsers = asyncHandler(async (_req, res) => {
   const usersData = await User.findAll({

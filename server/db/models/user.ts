@@ -1,53 +1,45 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
+import Role from "./role";
+import { IUser } from "../../typings/models";
 
-interface IUser {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  verified?: boolean;
-  // roleID: number;
-}
-
-const model = (sequelize: Sequelize, dataTypes: typeof DataTypes) => {
+const UserModel = (sequelize: Sequelize) => {
   class User extends Model<IUser> implements IUser {
-    id!: string;
-    firstName!: string;
-    lastName!: string;
-    email!: string;
-    password!: string;
-    verified!: boolean;
-    // roleID!: number;
+    declare id: string;
+    declare firstName: string;
+    declare lastName: string;
+    declare email: string;
+    declare password: string;
+    declare verified: boolean;
+    declare RoleId: number;
 
-    // eslint-disable-next-line
-    static associate(models: any) {
-      //
+    static associate() {
+      User.belongsTo(Role(sequelize));
     }
   }
 
   User.init(
     {
       id: {
-        type: dataTypes.UUIDV4,
+        type: DataTypes.UUIDV4,
         allowNull: false,
         primaryKey: true,
-        defaultValue: dataTypes.UUIDV4,
+        defaultValue: DataTypes.UUIDV4,
       },
-      firstName: dataTypes.STRING,
-      lastName: dataTypes.STRING,
-      email: dataTypes.STRING,
-      password: dataTypes.STRING,
-      verified: dataTypes.BOOLEAN,
-      // roleID: dataTypes.INTEGER,
+      firstName: DataTypes.STRING,
+      lastName: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      verified: DataTypes.BOOLEAN,
+      RoleId: DataTypes.INTEGER,
     },
     {
       sequelize,
       modelName: "User",
+      tableName: "Users",
     }
   );
 
   return User;
 };
 
-export default model;
+export default UserModel;

@@ -1,7 +1,7 @@
 const path = require("path");
 
 module.exports = {
-  config: path.resolve("./config/db", "CLIdbConfig.js"),
+  config: path.resolve("./config/db", "configDBCLI.js"),
   "models-path": path.resolve("./db/sequelizeCLI/models"),
   "seeders-path": path.resolve("./db/sequelizeCLI/seeders"),
   "migrations-path": path.resolve("./db/sequelizeCLI/migrations"),
