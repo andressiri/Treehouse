@@ -2,6 +2,7 @@
 import express from "express";
 import {
   changePassword,
+  editUser,
   getUsers,
   login,
   register,
@@ -10,7 +11,9 @@ import {
 } from "../controllers/users";
 import {
   authenticateAdmin,
+  authenticateSuperAdmin,
   authenticateUser,
+  checkUserAttributes,
   validateRequestFields,
 } from "../middlewares";
 import {
@@ -70,5 +73,17 @@ usersRouter.put(
   validateRequestFields,
   changePassword
 );
+
+usersRouter.put(
+  "/edit/:id",
+  authenticateUser,
+  authenticateSuperAdmin,
+  checkUUID,
+  validateRequestFields,
+  checkUserAttributes,
+  editUser
+);
+
+usersRouter.put("/edit", authenticateUser, checkUserAttributes, editUser);
 
 export default usersRouter;
