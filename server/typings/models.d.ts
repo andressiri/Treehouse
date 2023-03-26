@@ -18,6 +18,6 @@ interface IRoom {
   id: string;
   name: string;
   capacity: number;
-  description?: string;
+  description: string[];
   TeacherId?: string;
 }

@@ -7,7 +7,7 @@ const RoomModel = (sequelize: Sequelize) => {
     declare id: string;
     declare name: string;
     declare capacity: number;
-    declare description: string;
+    declare description: string[];
     declare TeacherId: string;
 
     // static associate() {
@@ -25,7 +25,7 @@ const RoomModel = (sequelize: Sequelize) => {
       },
       name: DataTypes.STRING,
       capacity: DataTypes.INTEGER,
-      description: DataTypes.STRING,
+      description: DataTypes.ARRAY(DataTypes.STRING),
       TeacherId: DataTypes.UUIDV4,
     },
     {
