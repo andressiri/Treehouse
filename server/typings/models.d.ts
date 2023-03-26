@@ -22,7 +22,7 @@ interface IRoom {
   teacherId?: number;
 }
 
-interface ITeacher {
+interface IPerson {
   id: number;
   name: string;
   age: number;
@@ -38,20 +38,7 @@ interface ITeacher {
   description: string;
 }
 
-interface IStudent {
-  id: number;
-  name: string;
-  age: number;
-  gender:
-    | "female"
-    | "male"
-    | "intersex"
-    | "trans"
-    | "non-conforming"
-    | "personal"
-    | "eunuch";
-  picture?: string;
-  description: string;
+interface IStudent extends IPerson {
   roomId?: number;
   teacherId?: number;
 }

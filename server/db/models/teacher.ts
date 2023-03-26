@@ -1,8 +1,8 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
-import { ITeacher } from "../../typings/models";
+import { IPerson } from "../../typings/models";
 
 const TeacherModel = (sequelize: Sequelize) => {
-  class Teacher extends Model<ITeacher> implements ITeacher {
+  class Teacher extends Model<IPerson> implements IPerson {
     declare id: number;
     declare name: string;
     declare age: number;
