@@ -1,27 +1,28 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
-import { IRoom } from "../../typings/models";
+import { ITeacher } from "../../typings/models";
 
-const RoomModel = (sequelize: Sequelize) => {
-  class Room extends Model<IRoom> implements IRoom {
+const TeacherModel = (sequelize: Sequelize) => {
+  class Teacher extends Model<ITeacher> implements ITeacher {
     declare id: string;
     declare name: string;
-    declare capacity: number;
+    declare age: number;
+    declare gender: string;
+    declare picture: string;
     declare description: string[];
-    declare teacherId: string;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static associate(models: any) {
-      Room.belongsTo(models.Teacher, {
+      Teacher.hasOne(models.Room, {
         foreignKey: "teacherId",
       });
 
-      // Room.hasMany(models.Student, {
-      //   sourceKey: "roomId",
+      // Teacher.hasMany(models.Student, {
+      //   foreignKey: "teacherId",
       // });
     }
   }
 
-  Room.init(
+  Teacher.init(
     {
       id: {
         type: DataTypes.UUIDV4,
@@ -30,18 +31,19 @@ const RoomModel = (sequelize: Sequelize) => {
         defaultValue: DataTypes.UUIDV4,
       },
       name: DataTypes.STRING,
-      capacity: DataTypes.INTEGER,
+      age: DataTypes.INTEGER,
+      gender: DataTypes.STRING,
+      picture: DataTypes.STRING,
       description: DataTypes.ARRAY(DataTypes.STRING),
-      teacherId: DataTypes.UUIDV4,
     },
     {
       sequelize,
-      modelName: "Room",
-      tableName: "Rooms",
+      modelName: "Teacher",
+      tableName: "Teachers",
     }
   );
 
-  return Room;
+  return Teacher;
 };
 
-export default RoomModel;
+export default TeacherModel;

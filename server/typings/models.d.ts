@@ -19,11 +19,14 @@ interface IRoom {
   name: string;
   capacity: number;
   description: string[];
-  TeacherId?: string;
+  teacherId?: string;
 }
 
 interface ITeacher {
   id: string;
   name: string;
+  age: number;
+  gender: string;
+  picture: string;
   description: string[];
 }
