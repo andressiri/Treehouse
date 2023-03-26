@@ -3,11 +3,11 @@ import { IRoom } from "../../typings/models";
 
 const RoomModel = (sequelize: Sequelize) => {
   class Room extends Model<IRoom> implements IRoom {
-    declare id: string;
+    declare id: number;
     declare name: string;
     declare capacity: number;
     declare description: string[];
-    declare teacherId: string;
+    declare teacherId: number;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static associate(models: any) {
@@ -15,9 +15,9 @@ const RoomModel = (sequelize: Sequelize) => {
         foreignKey: "teacherId",
       });
 
-      // Room.hasMany(models.Student, {
-      //   sourceKey: "roomId",
-      // });
+      Room.hasMany(models.Student, {
+        foreignKey: "roomId",
+      });
     }
   }
 
@@ -32,7 +32,7 @@ const RoomModel = (sequelize: Sequelize) => {
       name: DataTypes.STRING,
       capacity: DataTypes.INTEGER,
       description: DataTypes.ARRAY(DataTypes.STRING),
-      teacherId: DataTypes.UUIDV4,
+      teacherId: DataTypes.INTEGER,
     },
     {
       sequelize,

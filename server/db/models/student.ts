@@ -1,8 +1,8 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
-import { ITeacher } from "../../typings/models";
+import { IStudent } from "../../typings/models";
 
-const TeacherModel = (sequelize: Sequelize) => {
-  class Teacher extends Model<ITeacher> implements ITeacher {
+const StudentModel = (sequelize: Sequelize) => {
+  class Student extends Model<IStudent> implements IStudent {
     declare id: number;
     declare name: string;
     declare age: number;
@@ -17,20 +17,22 @@ const TeacherModel = (sequelize: Sequelize) => {
 
     declare picture: string;
     declare description: string;
+    declare roomId: number;
+    declare teacherId: number;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static associate(models: any) {
-      Teacher.hasOne(models.Room, {
-        foreignKey: "teacherId",
+      Student.belongsTo(models.Room, {
+        foreignKey: "roomId",
       });
 
-      Teacher.hasMany(models.Student, {
+      Student.belongsTo(models.Teacher, {
         foreignKey: "teacherId",
       });
     }
   }
 
-  Teacher.init(
+  Student.init(
     {
       id: {
         allowNull: false,
@@ -43,15 +45,17 @@ const TeacherModel = (sequelize: Sequelize) => {
       gender: DataTypes.STRING,
       picture: DataTypes.STRING,
       description: DataTypes.STRING,
+      roomId: DataTypes.INTEGER,
+      teacherId: DataTypes.INTEGER,
     },
     {
       sequelize,
-      modelName: "Teacher",
-      tableName: "Teachers",
+      modelName: "Student",
+      tableName: "Students",
     }
   );
 
-  return Teacher;
+  return Student;
 };
 
-export default TeacherModel;
+export default StudentModel;

@@ -3,7 +3,7 @@ import { IRole } from "../../typings/models";
 
 const RoleModel = (sequelize: Sequelize) => {
   class Role extends Model<IRole> implements IRole {
-    declare id: string;
+    declare id: number;
     declare name: string;
     declare description: string;
 

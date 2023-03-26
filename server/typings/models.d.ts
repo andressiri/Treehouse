@@ -9,24 +9,49 @@ export interface IUser {
 }
 
 interface IRole {
-  id: string;
+  id: number;
   name: string;
   description: string;
 }
 
 interface IRoom {
-  id: string;
+  id: number;
   name: string;
   capacity: number;
   description: string[];
-  teacherId?: string;
+  teacherId?: number;
 }
 
 interface ITeacher {
-  id: string;
+  id: number;
   name: string;
   age: number;
-  gender: string;
+  gender:
+    | "female"
+    | "male"
+    | "intersex"
+    | "trans"
+    | "non-conforming"
+    | "personal"
+    | "eunuch";
   picture?: string;
   description: string;
+}
+
+interface IStudent {
+  id: number;
+  name: string;
+  age: number;
+  gender:
+    | "female"
+    | "male"
+    | "intersex"
+    | "trans"
+    | "non-conforming"
+    | "personal"
+    | "eunuch";
+  picture?: string;
+  description: string;
+  roomId?: number;
+  teacherId?: number;
 }
