@@ -26,10 +26,26 @@ const teachersMigration = {
           gender: {
             type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+              isIn: [
+                [
+                  "female",
+                  "male",
+                  "intersex",
+                  "trans",
+                  "non-conforming",
+                  "personal",
+                  "eunuch",
+                ],
+              ],
+            },
           },
           picture: {
             type: DataTypes.STRING,
             allowNull: true,
+            validate: {
+              isUrl: true,
+            },
           },
           description: {
             type: DataTypes.STRING,

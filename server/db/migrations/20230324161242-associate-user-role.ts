@@ -8,6 +8,7 @@ const associateUserRoleMigration = {
       await queryInterface.addColumn("Users", "roleId", {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: { min: 1, max: 4 },
         references: {
           model: "Roles",
           key: "id",
