@@ -9,10 +9,10 @@ const roomsMigration = {
         "Rooms",
         {
           id: {
-            type: DataTypes.UUID,
             allowNull: false,
+            autoIncrement: true,
             primaryKey: true,
-            defaultValue: DataTypes.UUID,
+            type: DataTypes.INTEGER,
           },
           name: {
             type: DataTypes.STRING,

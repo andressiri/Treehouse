@@ -1,6 +1,7 @@
 import User from "./user";
 import Role from "./role";
 import Room from "./room";
+import Teacher from "./teacher";
 
 const modelsArray = [
   {
@@ -14,6 +15,10 @@ const modelsArray = [
   {
     name: "Room",
     model: Room,
+  },
+  {
+    name: "Teacher",
+    model: Teacher,
   },
 ];
 

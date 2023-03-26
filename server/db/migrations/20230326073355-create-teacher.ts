@@ -32,7 +32,7 @@ const teachersMigration = {
             allowNull: true,
           },
           description: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
+            type: DataTypes.STRING,
             allowNull: false,
           },
           createdAt: {

@@ -8,7 +8,7 @@ const TeacherModel = (sequelize: Sequelize) => {
     declare age: number;
     declare gender: string;
     declare picture: string;
-    declare description: string[];
+    declare description: string;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static associate(models: any) {
@@ -25,16 +25,16 @@ const TeacherModel = (sequelize: Sequelize) => {
   Teacher.init(
     {
       id: {
-        type: DataTypes.UUIDV4,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
       },
       name: DataTypes.STRING,
       age: DataTypes.INTEGER,
       gender: DataTypes.STRING,
       picture: DataTypes.STRING,
-      description: DataTypes.ARRAY(DataTypes.STRING),
+      description: DataTypes.STRING,
     },
     {
       sequelize,

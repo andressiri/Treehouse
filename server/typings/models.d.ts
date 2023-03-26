@@ -27,6 +27,6 @@ interface ITeacher {
   name: string;
   age: number;
   gender: string;
-  picture: string;
-  description: string[];
+  picture?: string;
+  description: string;
 }

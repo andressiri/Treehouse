@@ -1,5 +1,4 @@
 import { QueryInterface } from "sequelize";
-import { v4 as uuid } from "uuid";
 
 const roomsSeed = {
   async up(queryInterface: QueryInterface) {
@@ -7,7 +6,7 @@ const roomsSeed = {
       "Rooms",
       [
         {
-          id: uuid(),
+          id: 1,
           name: "Rugrats kindergarden",
           capacity: 15,
           description: [
@@ -19,10 +18,10 @@ const roomsSeed = {
           ],
           createdAt: new Date(),
           updatedAt: new Date(),
-          // TeacherId: "Miss Carol",
+          teacherId: 1,
         },
         {
-          id: uuid(),
+          id: 2,
           name: "Hey Arnold! school classroom",
           capacity: 30,
           description: [
@@ -34,10 +33,10 @@ const roomsSeed = {
           ],
           createdAt: new Date(),
           updatedAt: new Date(),
-          // TeacherId: "Miss Slovak",
+          teacherId: 2,
         },
         {
-          id: uuid(),
+          id: 3,
           name: "Lisa Simpson's classroom",
           capacity: 30,
           description: [
@@ -49,10 +48,10 @@ const roomsSeed = {
           ],
           createdAt: new Date(),
           updatedAt: new Date(),
-          // TeacherId: "Mrs. Hoover",
+          teacherId: 3,
         },
         {
-          id: uuid(),
+          id: 4,
           name: "Bart Simpson's classroom",
           capacity: 30,
           description: [
@@ -64,7 +63,7 @@ const roomsSeed = {
           ],
           createdAt: new Date(),
           updatedAt: new Date(),
-          // TeacherId: "Ms. Krabappel",
+          teacherId: 4,
         },
       ],
       {}

@@ -24,10 +24,10 @@ const RoomModel = (sequelize: Sequelize) => {
   Room.init(
     {
       id: {
-        type: DataTypes.UUIDV4,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
       },
       name: DataTypes.STRING,
       capacity: DataTypes.INTEGER,
