@@ -9,11 +9,11 @@ const checkUserAttributes = (
     firstName: "string",
     lastName: "string",
     verified: "boolean",
-    RoleId: "role",
+    roleId: "role",
   };
 
   const arrayOfValidAttributes: string[] = req.params.id
-    ? ["firstName", "lastName", "verified", "RoleId"]
+    ? ["firstName", "lastName", "verified", "roleId"]
     : ["firstName", "lastName"];
 
   const bodyAttributes = Object.keys(req.body);

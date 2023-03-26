@@ -5,7 +5,7 @@ import { QueryInterface, DataTypes } from "sequelize";
 const associateUserRoleMigration = {
   async up(queryInterface: QueryInterface) {
     queryInterface.sequelize.transaction(async () => {
-      await queryInterface.addColumn("Users", "RoleId", {
+      await queryInterface.addColumn("Users", "roleId", {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -20,7 +20,7 @@ const associateUserRoleMigration = {
 
   async down(queryInterface: QueryInterface) {
     queryInterface.sequelize.transaction(async () => {
-      await queryInterface.removeColumn("Users", "RoleId");
+      await queryInterface.removeColumn("Users", "roleId");
     });
   },
 };

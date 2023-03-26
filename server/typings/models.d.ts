@@ -5,7 +5,7 @@ export interface IUser {
   email: string;
   password: string;
   verified?: boolean;
-  RoleId?: number;
+  roleId?: number;
 }
 
 interface IRole {
@@ -20,4 +20,10 @@ interface IRoom {
   capacity: number;
   description: string[];
   TeacherId?: string;
+}
+
+interface ITeacher {
+  id: string;
+  name: string;
+  description: string[];
 }

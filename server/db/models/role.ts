@@ -6,6 +6,13 @@ const RoleModel = (sequelize: Sequelize) => {
     declare id: string;
     declare name: string;
     declare description: string;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    static associate(models: any) {
+      Role.hasMany(models.User, {
+        foreignKey: "roleId",
+      });
+    }
   }
 
   Role.init(
