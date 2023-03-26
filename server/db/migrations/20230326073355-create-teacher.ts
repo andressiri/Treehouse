@@ -2,26 +2,34 @@ import { QueryInterface, DataTypes } from "sequelize";
 
 /** @type {import('sequelize-cli').Migration} */
 
-const roomsMigration = {
+const teachersMigration = {
   async up(queryInterface: QueryInterface) {
     queryInterface.sequelize.transaction(async (transaction) => {
       await queryInterface.createTable(
-        "Rooms",
+        "Teachers",
         {
           id: {
-            type: DataTypes.UUID,
             allowNull: false,
+            autoIncrement: true,
             primaryKey: true,
-            defaultValue: DataTypes.UUID,
+            type: DataTypes.INTEGER,
           },
           name: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
           },
-          capacity: {
+          age: {
             type: DataTypes.INTEGER,
             allowNull: false,
+          },
+          gender: {
+            type: DataTypes.STRING,
+            allowNull: false,
+          },
+          picture: {
+            type: DataTypes.STRING,
+            allowNull: true,
           },
           description: {
             type: DataTypes.ARRAY(DataTypes.STRING),
@@ -47,9 +55,9 @@ const roomsMigration = {
 
   async down(queryInterface: QueryInterface) {
     queryInterface.sequelize.transaction(async (transaction) => {
-      await queryInterface.dropTable("Rooms", { transaction });
+      await queryInterface.dropTable("Teachers", { transaction });
     });
   },
 };
 
-export default roomsMigration;
+export default teachersMigration;
