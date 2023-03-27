@@ -6,7 +6,7 @@ import { uploadFile } from "../../helpers";
 import { UploadedFile } from "express-fileupload";
 import db from "../../db/models";
 
-const { Room } = db;
+const { Room, Student } = db;
 
 const editRoom = asyncHandler(async (req, res) => {
   let fieldsToEdit = req.body;
@@ -38,6 +38,16 @@ const editRoom = asyncHandler(async (req, res) => {
 
   const roomData = { ...updateResult[1][0].dataValues };
   delete roomData.password;
+
+  if (req.body.teacherId)
+    Student.update(
+      {
+        teacherId: req.body.teacherId,
+      },
+      {
+        where: { roomId: req.params.id },
+      }
+    );
 
   res.status(200).json({ message: `${roomData.name} room updated`, roomData });
 });
