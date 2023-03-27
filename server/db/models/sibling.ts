@@ -12,10 +12,12 @@ const SiblingModel = (sequelize: Sequelize) => {
     static associate(models: any) {
       Sibling.belongsTo(models.Student, {
         foreignKey: "siblingIdA",
+        as: "hasASibling",
       });
 
       Sibling.belongsTo(models.Student, {
         foreignKey: "siblingIdB",
+        as: "isASiblingForOne",
       });
     }
   }

@@ -7,6 +7,7 @@ const associateSiblingsMigration = {
     queryInterface.sequelize.transaction(async () => {
       await queryInterface.addColumn("Siblings", "siblingIdA", {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
           model: "Students",
           key: "id",
@@ -17,6 +18,7 @@ const associateSiblingsMigration = {
 
       await queryInterface.addColumn("Siblings", "siblingIdB", {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
           model: "Students",
           key: "id",
