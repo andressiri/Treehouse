@@ -6,7 +6,6 @@ const roomsSeed = {
       "Rooms",
       [
         {
-          id: 1,
           name: "Rugrats kindergarden",
           capacity: 15,
           description:
@@ -18,7 +17,6 @@ const roomsSeed = {
           teacherId: 1,
         },
         {
-          id: 2,
           name: "Hey Arnold! school classroom",
           capacity: 30,
           description:
@@ -30,7 +28,6 @@ const roomsSeed = {
           teacherId: 2,
         },
         {
-          id: 3,
           name: "Lisa Simpson's classroom",
           capacity: 30,
           description:
@@ -42,7 +39,6 @@ const roomsSeed = {
           teacherId: 3,
         },
         {
-          id: 4,
           name: "Bart Simpson's classroom",
           capacity: 30,
           description:

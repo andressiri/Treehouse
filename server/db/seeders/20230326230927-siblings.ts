@@ -6,7 +6,6 @@ const siblingsSeed = {
       "Siblings",
       [
         {
-          id: 1,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -14,7 +13,6 @@ const siblingsSeed = {
           siblingIdB: 6,
         },
         {
-          id: 2,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -22,7 +20,6 @@ const siblingsSeed = {
           siblingIdB: 1,
         },
         {
-          id: 3,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -30,7 +27,6 @@ const siblingsSeed = {
           siblingIdB: 7,
         },
         {
-          id: 4,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -38,7 +34,6 @@ const siblingsSeed = {
           siblingIdB: 2,
         },
         {
-          id: 5,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -46,7 +41,6 @@ const siblingsSeed = {
           siblingIdB: 4,
         },
         {
-          id: 6,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -54,7 +48,6 @@ const siblingsSeed = {
           siblingIdB: 3,
         },
         {
-          id: 7,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -62,7 +55,6 @@ const siblingsSeed = {
           siblingIdB: 33,
         },
         {
-          id: 8,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -70,7 +62,6 @@ const siblingsSeed = {
           siblingIdB: 42,
         },
         {
-          id: 9,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -78,7 +69,6 @@ const siblingsSeed = {
           siblingIdB: 22,
         },
         {
-          id: 10,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -86,7 +76,6 @@ const siblingsSeed = {
           siblingIdB: 42,
         },
         {
-          id: 11,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -94,7 +83,6 @@ const siblingsSeed = {
           siblingIdB: 22,
         },
         {
-          id: 12,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -102,7 +90,6 @@ const siblingsSeed = {
           siblingIdB: 33,
         },
         {
-          id: 13,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -110,7 +97,6 @@ const siblingsSeed = {
           siblingIdB: 30,
         },
         {
-          id: 14,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -118,7 +104,6 @@ const siblingsSeed = {
           siblingIdB: 29,
         },
         {
-          id: 15,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -126,7 +111,6 @@ const siblingsSeed = {
           siblingIdB: 45,
         },
         {
-          id: 16,
           discount: false,
           createdAt: new Date(),
           updatedAt: new Date(),
