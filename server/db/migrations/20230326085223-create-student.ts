@@ -41,14 +41,14 @@ const studentsMigration = {
             },
           },
           picture: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(1000),
             allowNull: true,
             validate: {
               isUrl: true,
             },
           },
           description: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(1000),
             allowNull: false,
           },
           createdAt: {

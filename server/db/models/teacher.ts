@@ -41,8 +41,8 @@ const TeacherModel = (sequelize: Sequelize) => {
       name: DataTypes.STRING,
       age: DataTypes.INTEGER,
       gender: DataTypes.STRING,
-      picture: DataTypes.STRING,
-      description: DataTypes.STRING,
+      picture: DataTypes.STRING(1000),
+      description: DataTypes.STRING(1000),
     },
     {
       sequelize,

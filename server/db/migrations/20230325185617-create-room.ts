@@ -24,7 +24,7 @@ const roomsMigration = {
             allowNull: false,
           },
           description: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
+            type: DataTypes.ARRAY(DataTypes.STRING(1000)),
             allowNull: false,
           },
           createdAt: {

@@ -31,7 +31,7 @@ const RoomModel = (sequelize: Sequelize) => {
       },
       name: DataTypes.STRING,
       capacity: DataTypes.INTEGER,
-      description: DataTypes.ARRAY(DataTypes.STRING),
+      description: DataTypes.ARRAY(DataTypes.STRING(1000)),
       teacherId: DataTypes.INTEGER,
     },
     {
