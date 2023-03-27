@@ -6,7 +6,6 @@ const teachersSeed = {
       "Teachers",
       [
         {
-          id: 1,
           name: "Miss Carol",
           age: 54,
           gender: "female",
@@ -17,7 +16,6 @@ const teachersSeed = {
           updatedAt: new Date(),
         },
         {
-          id: 2,
           name: "Miss Slovak",
           age: 32,
           gender: "female",
@@ -28,7 +26,6 @@ const teachersSeed = {
           updatedAt: new Date(),
         },
         {
-          id: 3,
           name: "Mrs. Hoover",
           age: 41,
           gender: "female",
@@ -39,7 +36,6 @@ const teachersSeed = {
           updatedAt: new Date(),
         },
         {
-          id: 4,
           name: "Ms. Krabappel",
           age: 47,
           gender: "female",

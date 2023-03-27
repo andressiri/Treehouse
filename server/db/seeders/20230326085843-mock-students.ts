@@ -6,7 +6,6 @@ const studentsSeed = {
       "Students",
       [
         {
-          id: 1,
           name: "Tommy Pickles",
           age: 1,
           gender: "male",
@@ -19,7 +18,6 @@ const studentsSeed = {
           teacherId: 1,
         },
         {
-          id: 2,
           name: "Chuckie Finster",
           age: 1,
           gender: "male",
@@ -32,7 +30,6 @@ const studentsSeed = {
           teacherId: 1,
         },
         {
-          id: 3,
           name: "Phil DeVille",
           age: 1,
           gender: "male",
@@ -45,7 +42,6 @@ const studentsSeed = {
           teacherId: 1,
         },
         {
-          id: 4,
           name: "Lil DeVille",
           age: 1,
           gender: "female",
@@ -58,7 +54,6 @@ const studentsSeed = {
           teacherId: 1,
         },
         {
-          id: 5,
           name: "Angelica Pickles",
           age: 3,
           gender: "female",
@@ -71,7 +66,6 @@ const studentsSeed = {
           teacherId: 1,
         },
         {
-          id: 6,
           name: "Dil Pickles",
           age: 0,
           gender: "male",
@@ -84,7 +78,6 @@ const studentsSeed = {
           teacherId: 1,
         },
         {
-          id: 7,
           name: "Kimi Finster",
           age: 1,
           gender: "female",
@@ -97,7 +90,6 @@ const studentsSeed = {
           teacherId: 1,
         },
         {
-          id: 8,
           name: "Susie Carmichael",
           age: 4,
           gender: "female",
@@ -110,7 +102,6 @@ const studentsSeed = {
           teacherId: 1,
         },
         {
-          id: 9,
           name: "Savannah Shane",
           age: 1,
           gender: "female",
@@ -123,7 +114,6 @@ const studentsSeed = {
           teacherId: 1,
         },
         {
-          id: 10,
           name: "Alisa Carmichael",
           age: 0,
           gender: "female",
@@ -136,7 +126,6 @@ const studentsSeed = {
           teacherId: 1,
         },
         {
-          id: 11,
           name: "Arnold",
           age: 9,
           gender: "male",
@@ -149,7 +138,6 @@ const studentsSeed = {
           teacherId: 2,
         },
         {
-          id: 12,
           name: "Helga Pataki",
           age: 9,
           gender: "female",
@@ -162,7 +150,6 @@ const studentsSeed = {
           teacherId: 2,
         },
         {
-          id: 13,
           name: "Gerald Johanssen",
           age: 9,
           gender: "male",
@@ -175,7 +162,6 @@ const studentsSeed = {
           teacherId: 2,
         },
         {
-          id: 14,
           name: "Phoebe Heyerdahl",
           age: 9,
           gender: "female",
@@ -188,7 +174,6 @@ const studentsSeed = {
           teacherId: 2,
         },
         {
-          id: 15,
           name: "Harold Berman",
           age: 10,
           gender: "male",
@@ -201,7 +186,6 @@ const studentsSeed = {
           teacherId: 2,
         },
         {
-          id: 16,
           name: "Rhonda Wellington Lloyd",
           age: 9,
           gender: "female",
@@ -214,7 +198,6 @@ const studentsSeed = {
           teacherId: 2,
         },
         {
-          id: 17,
           name: "Eugene Horowitz",
           age: 9,
           gender: "male",
@@ -227,7 +210,6 @@ const studentsSeed = {
           teacherId: 2,
         },
         {
-          id: 18,
           name: "Lila Sawyer",
           age: 9,
           gender: "female",
@@ -240,7 +222,6 @@ const studentsSeed = {
           teacherId: 2,
         },
         {
-          id: 19,
           name: "Stinky Peterson",
           age: 9,
           gender: "male",
@@ -253,7 +234,6 @@ const studentsSeed = {
           teacherId: 2,
         },
         {
-          id: 20,
           name: "Sid",
           age: 9,
           gender: "male",
@@ -266,7 +246,6 @@ const studentsSeed = {
           teacherId: 2,
         },
         {
-          id: 21,
           name: "Curly",
           age: 9,
           gender: "male",
@@ -279,7 +258,6 @@ const studentsSeed = {
           teacherId: 2,
         },
         {
-          id: 22,
           name: "Lisa Simpson",
           age: 8,
           gender: "female",
@@ -292,7 +270,6 @@ const studentsSeed = {
           teacherId: 3,
         },
         {
-          id: 23,
           name: "Janey Powell",
           age: 8,
           gender: "female",
@@ -305,7 +282,6 @@ const studentsSeed = {
           teacherId: 3,
         },
         {
-          id: 24,
           name: "Allison Taylor",
           age: 8,
           gender: "female",
@@ -318,7 +294,6 @@ const studentsSeed = {
           teacherId: 3,
         },
         {
-          id: 25,
           name: "Üter Zörker",
           age: 8,
           gender: "male",
@@ -331,7 +306,6 @@ const studentsSeed = {
           teacherId: 3,
         },
         {
-          id: 26,
           name: "Ralph Wiggum",
           age: 8,
           gender: "male",
@@ -344,7 +318,6 @@ const studentsSeed = {
           teacherId: 3,
         },
         {
-          id: 27,
           name: "Wendell Borton",
           age: 8,
           gender: "male",
@@ -357,7 +330,6 @@ const studentsSeed = {
           teacherId: 3,
         },
         {
-          id: 28,
           name: "Alex Whitney",
           age: 8,
           gender: "female",
@@ -370,7 +342,6 @@ const studentsSeed = {
           teacherId: 3,
         },
         {
-          id: 29,
           name: "Sherri Mackleberry",
           age: 8,
           gender: "female",
@@ -383,7 +354,6 @@ const studentsSeed = {
           teacherId: 3,
         },
         {
-          id: 30,
           name: "Terri Mackleberry",
           age: 8,
           gender: "female",
@@ -396,7 +366,6 @@ const studentsSeed = {
           teacherId: 3,
         },
         {
-          id: 31,
           name: "Martin Prince",
           age: 8,
           gender: "male",
@@ -409,7 +378,6 @@ const studentsSeed = {
           teacherId: 3,
         },
         {
-          id: 32,
           name: "Lewis Clark",
           age: 8,
           gender: "male",
@@ -422,7 +390,6 @@ const studentsSeed = {
           teacherId: 3,
         },
         {
-          id: 33,
           name: "Bart Simpson",
           age: 10,
           gender: "male",
@@ -435,7 +402,6 @@ const studentsSeed = {
           teacherId: 4,
         },
         {
-          id: 34,
           name: "Milhouse Van Houten",
           age: 10,
           gender: "male",
@@ -448,7 +414,6 @@ const studentsSeed = {
           teacherId: 4,
         },
         {
-          id: 35,
           name: "Nelson Muntz",
           age: 10,
           gender: "male",
@@ -461,7 +426,6 @@ const studentsSeed = {
           teacherId: 4,
         },
         {
-          id: 36,
           name: "Database",
           age: 10,
           gender: "male",
@@ -474,7 +438,6 @@ const studentsSeed = {
           teacherId: 4,
         },
         {
-          id: 37,
           name: "Jimbo Jones",
           age: 14,
           gender: "male",
@@ -487,7 +450,6 @@ const studentsSeed = {
           teacherId: 4,
         },
         {
-          id: 38,
           name: "Dolph Starbeam",
           age: 13,
           gender: "male",
@@ -500,7 +462,6 @@ const studentsSeed = {
           teacherId: 4,
         },
         {
-          id: 39,
           name: "Kearney Zzyzwicz",
           age: 14,
           gender: "male",
@@ -513,7 +474,6 @@ const studentsSeed = {
           teacherId: 4,
         },
         {
-          id: 40,
           name: "Dubya Spuckler",
           age: 13,
           gender: "male",
@@ -526,7 +486,6 @@ const studentsSeed = {
           teacherId: 4,
         },
         {
-          id: 41,
           name: "Erik",
           age: 12,
           gender: "male",
@@ -539,7 +498,6 @@ const studentsSeed = {
           teacherId: 4,
         },
         {
-          id: 42,
           name: "Maggie Simpson",
           age: 1,
           gender: "female",
@@ -552,7 +510,6 @@ const studentsSeed = {
           teacherId: null,
         },
         {
-          id: 43,
           name: "Jessica Lovejoy",
           age: 9,
           gender: "female",
@@ -565,7 +522,6 @@ const studentsSeed = {
           teacherId: null,
         },
         {
-          id: 44,
           name: "Rod Flanders",
           age: 11,
           gender: "male",
@@ -578,7 +534,6 @@ const studentsSeed = {
           teacherId: null,
         },
         {
-          id: 45,
           name: "Todd Flanders",
           age: 10,
           gender: "male",

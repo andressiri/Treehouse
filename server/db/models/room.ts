@@ -6,7 +6,9 @@ const RoomModel = (sequelize: Sequelize) => {
     declare id: number;
     declare name: string;
     declare capacity: number;
-    declare description: string[];
+    declare description: string;
+    declare image: string;
+    declare public: boolean;
     declare teacherId: number;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,7 +33,9 @@ const RoomModel = (sequelize: Sequelize) => {
       },
       name: DataTypes.STRING,
       capacity: DataTypes.INTEGER,
-      description: DataTypes.ARRAY(DataTypes.STRING(1000)),
+      description: DataTypes.STRING(5000),
+      image: DataTypes.STRING(1000),
+      public: DataTypes.BOOLEAN,
       teacherId: DataTypes.INTEGER,
     },
     {

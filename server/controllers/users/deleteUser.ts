@@ -30,7 +30,7 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 
   if (user.roleId === 3) {
-    res.status(401);
+    res.status(403);
     throw new Error("This account can't be deleted, contact the owner");
   }
 

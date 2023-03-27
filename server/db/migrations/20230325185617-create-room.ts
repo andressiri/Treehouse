@@ -24,8 +24,16 @@ const roomsMigration = {
             allowNull: false,
           },
           description: {
-            type: DataTypes.ARRAY(DataTypes.STRING(1000)),
-            allowNull: false,
+            type: DataTypes.STRING(5000),
+          },
+          image: {
+            type: DataTypes.STRING(1000),
+            validate: {
+              isUrl: true,
+            },
+          },
+          public: {
+            type: DataTypes.BOOLEAN,
           },
           createdAt: {
             allowNull: false,

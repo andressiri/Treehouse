@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import dotenv from "dotenv";
+import fileUpload from "express-fileupload";
 import db from "./db/models";
 import session from "express-session";
 import router from "./routes";
@@ -11,6 +12,15 @@ dotenv.config({ path: path.resolve(__dirname, ".env") });
 const devEnvironment = process.env.NODE_ENV === "development";
 
 const app = express();
+
+// Setup fileupload for formdata/multipart
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+    createParentPath: true,
+  })
+);
 
 // Test database connection
 db.sequelize
