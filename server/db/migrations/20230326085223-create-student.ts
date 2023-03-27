@@ -2,40 +2,54 @@ import { QueryInterface, DataTypes } from "sequelize";
 
 /** @type {import('sequelize-cli').Migration} */
 
-const usersMigration = {
+const studentsMigration = {
   async up(queryInterface: QueryInterface) {
     queryInterface.sequelize.transaction(async (transaction) => {
       await queryInterface.createTable(
-        "Users",
+        "Students",
         {
           id: {
-            type: DataTypes.UUID,
             allowNull: false,
+            autoIncrement: true,
             primaryKey: true,
-            defaultValue: DataTypes.UUID,
+            type: DataTypes.INTEGER,
           },
-          firstName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-          },
-          lastName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-          },
-          email: {
+          name: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
-            validate: {
-              isEmail: true,
-            },
           },
-          password: {
-            type: DataTypes.STRING,
+          age: {
+            type: DataTypes.INTEGER,
             allowNull: false,
           },
-          verified: {
-            type: DataTypes.BOOLEAN,
+          gender: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+              isIn: [
+                [
+                  "female",
+                  "male",
+                  "intersex",
+                  "trans",
+                  "non-conforming",
+                  "personal",
+                  "eunuch",
+                ],
+              ],
+            },
+          },
+          picture: {
+            type: DataTypes.STRING(1000),
+            allowNull: true,
+            validate: {
+              isUrl: true,
+            },
+          },
+          description: {
+            type: DataTypes.STRING(1000),
+            allowNull: false,
           },
           createdAt: {
             allowNull: false,
@@ -57,9 +71,9 @@ const usersMigration = {
 
   async down(queryInterface: QueryInterface) {
     queryInterface.sequelize.transaction(async (transaction) => {
-      await queryInterface.dropTable("Users", { transaction });
+      await queryInterface.dropTable("Students", { transaction });
     });
   },
 };
 
-export default usersMigration;
+export default studentsMigration;

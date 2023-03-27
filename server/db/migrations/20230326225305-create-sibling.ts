@@ -2,39 +2,19 @@ import { QueryInterface, DataTypes } from "sequelize";
 
 /** @type {import('sequelize-cli').Migration} */
 
-const usersMigration = {
+const siblingsMigration = {
   async up(queryInterface: QueryInterface) {
     queryInterface.sequelize.transaction(async (transaction) => {
       await queryInterface.createTable(
-        "Users",
+        "Siblings",
         {
           id: {
-            type: DataTypes.UUID,
             allowNull: false,
+            autoIncrement: true,
             primaryKey: true,
-            defaultValue: DataTypes.UUID,
+            type: DataTypes.INTEGER,
           },
-          firstName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-          },
-          lastName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-          },
-          email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-            validate: {
-              isEmail: true,
-            },
-          },
-          password: {
-            type: DataTypes.STRING,
-            allowNull: false,
-          },
-          verified: {
+          discount: {
             type: DataTypes.BOOLEAN,
           },
           createdAt: {
@@ -57,9 +37,9 @@ const usersMigration = {
 
   async down(queryInterface: QueryInterface) {
     queryInterface.sequelize.transaction(async (transaction) => {
-      await queryInterface.dropTable("Users", { transaction });
+      await queryInterface.dropTable("Siblings", { transaction });
     });
   },
 };
 
-export default usersMigration;
+export default siblingsMigration;

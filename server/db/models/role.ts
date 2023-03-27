@@ -3,9 +3,16 @@ import { IRole } from "../../typings/models";
 
 const RoleModel = (sequelize: Sequelize) => {
   class Role extends Model<IRole> implements IRole {
-    declare id: string;
+    declare id: number;
     declare name: string;
     declare description: string;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    static associate(models: any) {
+      Role.hasMany(models.User, {
+        foreignKey: "roleId",
+      });
+    }
   }
 
   Role.init(

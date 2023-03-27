@@ -2,15 +2,13 @@ import { QueryInterface, DataTypes } from "sequelize";
 
 /** @type {import('sequelize-cli').Migration} */
 
-const associateUserRoleMigration = {
+const associateStudentTeacherMigration = {
   async up(queryInterface: QueryInterface) {
     queryInterface.sequelize.transaction(async () => {
-      await queryInterface.addColumn("Users", "roleId", {
+      await queryInterface.addColumn("Students", "teacherId", {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: { min: 1, max: 4 },
         references: {
-          model: "Roles",
+          model: "Teachers",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -21,9 +19,9 @@ const associateUserRoleMigration = {
 
   async down(queryInterface: QueryInterface) {
     queryInterface.sequelize.transaction(async () => {
-      await queryInterface.removeColumn("Users", "roleId");
+      await queryInterface.removeColumn("Students", "teacherId");
     });
   },
 };
 
-export default associateUserRoleMigration;
+export default associateStudentTeacherMigration;
