@@ -29,7 +29,6 @@ const roomsMigration = {
           },
           image: {
             type: DataTypes.STRING(1000),
-            allowNull: false,
             validate: {
               isUrl: true,
             },
