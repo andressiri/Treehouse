@@ -17,8 +17,9 @@ export interface IRoom {
   id: number;
   name: string;
   capacity: number;
-  description: string[];
+  description: string;
   image: string;
+  public: boolean;
   teacherId?: number;
 }
 
