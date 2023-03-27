@@ -577,6 +577,19 @@ const studentsSeed = {
           roomId: null,
           teacherId: null,
         },
+        {
+          id: 45,
+          name: "Todd Flanders",
+          age: 10,
+          gender: "male",
+          picture: null,
+          description:
+            "He is a devout Christian like his family and is known for his innocent and pure-hearted nature. He is often seen alongside his brother and is usually kind to everyone he meets, even those who are mean to him. ",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          roomId: null,
+          teacherId: null,
+        },
       ],
       {}
     );
