@@ -33,7 +33,7 @@ const validateRoomFields = asyncHandler(async (req, res, next) => {
       throw new Error("There is no teacher for that id");
     }
 
-    if (teacher.dataValues.Room.id) {
+    if (teacher.dataValues.Room?.id) {
       res.status(409);
       throw new Error("That teacher has already been assigned a room");
     }

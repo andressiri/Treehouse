@@ -1,5 +1,5 @@
-// @description Get rooms
-// @route GET /api/v1/rooms
+// @description Get rooms with it's teacher and students
+// @route GET /api/v1/rooms/all
 // @access Public
 import asyncHandler from "express-async-handler";
 import db from "../../db/models";

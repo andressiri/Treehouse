@@ -6,6 +6,12 @@ export const checkUUID = param("id")
   .isUUID(4)
   .withMessage("Please send a valid id");
 
+export const checkIntegerId = param("id")
+  .not()
+  .isEmpty()
+  .isInt()
+  .withMessage("Please send a valid id");
+
 export const checkName = check("name")
   .not()
   .isEmpty()

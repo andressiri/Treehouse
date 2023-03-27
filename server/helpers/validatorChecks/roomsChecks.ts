@@ -19,8 +19,8 @@ export const checkRoomDescriptionLength = check("description")
 
 export const checkPublicIsBool = check("public")
   .optional()
-  .isInt()
-  .withMessage("Please send a valid teacher id");
+  .isBoolean()
+  .withMessage("Please send a valid public value");
 
 export const checkTeacherIdIsInt = check("teacherId")
   .optional()

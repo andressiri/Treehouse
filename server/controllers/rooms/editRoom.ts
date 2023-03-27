@@ -1,4 +1,4 @@
-// @description Handle change name
+// @description Handle room edition
 // @route PUT /api/v1/rooms/edit/:id
 // @access Private - Admin only
 import asyncHandler from "express-async-handler";
@@ -37,7 +37,6 @@ const editRoom = asyncHandler(async (req, res) => {
   }
 
   const roomData = { ...updateResult[1][0].dataValues };
-  delete roomData.password;
 
   if (req.body.teacherId)
     Student.update(

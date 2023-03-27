@@ -6,6 +6,7 @@ import {
   getRoom,
   getRooms,
   getRoomsWithRelations,
+  removeTeacher,
 } from "../controllers/rooms";
 import {
   authenticateAdmin,
@@ -14,6 +15,7 @@ import {
   validateRequestFields,
 } from "../middlewares";
 import {
+  checkIntegerId,
   checkName,
   checkRoomCapacity,
   checkRoomCapacityIsInt,
@@ -42,12 +44,13 @@ roomsRouter.get("/", getRooms);
 
 roomsRouter.get("/all", getRoomsWithRelations);
 
-roomsRouter.get("/room/:id", getRoom);
+roomsRouter.get("/room/:id", checkIntegerId, validateRequestFields, getRoom);
 
 roomsRouter.put(
   "/edit/:id",
   authenticateUser,
   authenticateAdmin,
+  checkIntegerId,
   checkRoomCapacityIsInt,
   checkRoomDescriptionLength,
   checkPublicIsBool,
@@ -55,6 +58,13 @@ roomsRouter.put(
   validateRequestFields,
   checkRoomFields,
   editRoom
+);
+
+roomsRouter.delete(
+  "/teacher/:id",
+  checkIntegerId,
+  validateRequestFields,
+  removeTeacher
 );
 
 export default roomsRouter;
