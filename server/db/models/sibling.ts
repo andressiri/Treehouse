@@ -7,6 +7,17 @@ const SiblingModel = (sequelize: Sequelize) => {
     declare discount: boolean;
     declare siblingIdA: number;
     declare siblingIdB: number;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    static associate(models: any) {
+      Sibling.belongsTo(models.Student, {
+        foreignKey: "siblingIdA",
+      });
+
+      Sibling.belongsTo(models.Student, {
+        foreignKey: "siblingIdB",
+      });
+    }
   }
 
   Sibling.init(
@@ -18,8 +29,8 @@ const SiblingModel = (sequelize: Sequelize) => {
         type: DataTypes.INTEGER,
       },
       discount: DataTypes.BOOLEAN,
-      sibilingIdA: DataTypes.INTEGER,
-      sibilingIdB: DataTypes.INTEGER,
+      siblingIdA: DataTypes.INTEGER,
+      siblingIdB: DataTypes.INTEGER,
     },
     {
       sequelize,

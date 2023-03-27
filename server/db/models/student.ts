@@ -29,6 +29,24 @@ const StudentModel = (sequelize: Sequelize) => {
       Student.belongsTo(models.Teacher, {
         foreignKey: "teacherId",
       });
+
+      Student.belongsToMany(models.User, {
+        through: models.Sibling,
+        foreignKey: "siblingIdA",
+      });
+
+      Student.belongsToMany(models.User, {
+        through: models.Sibling,
+        foreignKey: "siblingIdB",
+      });
+
+      Student.hasMany(models.Sibling, {
+        foreignKey: "siblingIdA",
+      });
+
+      Student.hasMany(models.Sibling, {
+        foreignKey: "siblingIdB",
+      });
     }
   }
 

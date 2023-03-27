@@ -5,16 +5,15 @@ export interface IUser {
   email: string;
   password: string;
   verified?: boolean;
-  roleId?: number;
+  roleId: number;
 }
-
-interface IRole {
+export interface IRole {
   id: number;
   name: string;
   description: string;
 }
 
-interface IRoom {
+export interface IRoom {
   id: number;
   name: string;
   capacity: number;
@@ -22,7 +21,7 @@ interface IRoom {
   teacherId?: number;
 }
 
-interface IPerson {
+export interface IPerson {
   id: number;
   name: string;
   age: number;
@@ -38,14 +37,14 @@ interface IPerson {
   description: string;
 }
 
-interface IStudent extends IPerson {
+export interface IStudent extends IPerson {
   roomId?: number;
   teacherId?: number;
 }
 
-interface ISibling {
+export interface ISibling {
   id: number;
   discount: boolean;
-  sibilingIdA?: number;
-  sibilingIdB?: number;
+  siblingIdA: number;
+  siblingIdB: number;
 }
