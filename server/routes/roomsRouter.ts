@@ -2,6 +2,7 @@
 import express from "express";
 import {
   createRoom,
+  getRoom,
   getRooms,
   getRoomsWithRelations,
 } from "../controllers/rooms";
@@ -11,11 +12,7 @@ import {
   authenticateUser,
   validateRequestFields,
 } from "../middlewares";
-import {
-  // checkUUID,
-  checkName,
-  checkRoomCapacity,
-} from "../helpers/validatorChecks";
+import { checkName, checkRoomCapacity } from "../helpers/validatorChecks";
 
 const roomsRouter = express.Router();
 
@@ -32,5 +29,7 @@ roomsRouter.post(
 roomsRouter.get("/", getRooms);
 
 roomsRouter.get("/all", getRoomsWithRelations);
+
+roomsRouter.get("/room/:id", getRoom);
 
 export default roomsRouter;

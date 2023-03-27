@@ -6,7 +6,7 @@ import db from "../../db/models";
 
 const { Room, Teacher, Student } = db;
 
-const getRooms = asyncHandler(async (_req, res) => {
+const getRoomsWithRelations = asyncHandler(async (_req, res) => {
   const rooms = await Room.findAll({ include: [Teacher, Student] });
 
   if (!rooms[0]) {
@@ -17,4 +17,4 @@ const getRooms = asyncHandler(async (_req, res) => {
   res.status(200).json(rooms);
 });
 
-export default getRooms;
+export default getRoomsWithRelations;
