@@ -42,3 +42,10 @@ interface IStudent extends IPerson {
   roomId?: number;
   teacherId?: number;
 }
+
+interface ISibling {
+  id: number;
+  discount: boolean;
+  sibilingIdA?: number;
+  sibilingIdB?: number;
+}
