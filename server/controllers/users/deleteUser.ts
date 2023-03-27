@@ -20,7 +20,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 
   const user: IUser = await User.findOne({
     raw: true,
-    attributes: ["firstName", "lastName", "password", "RoleId"],
+    attributes: ["firstName", "lastName", "password", "roleId"],
     where: { id },
   });
 
@@ -29,13 +29,13 @@ const deleteUser = asyncHandler(async (req, res) => {
     throw new Error("No user registered for that id");
   }
 
-  if (user.RoleId === 3) {
+  if (user.roleId === 3) {
     res.status(401);
     throw new Error("This account can't be deleted, contact the owner");
   }
 
   try {
-    if ((req as RequestWithUser).user.RoleId !== 3) {
+    if ((req as RequestWithUser).user.roleId !== 3) {
       if (id !== (req as RequestWithUser).user.id) {
         res.status(403);
         throw new Error("You can't delete that resource");

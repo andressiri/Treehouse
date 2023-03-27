@@ -19,7 +19,7 @@ const usersSeed = {
           verified: true,
           createdAt: new Date(),
           updatedAt: new Date(),
-          RoleId: 3,
+          roleId: 3,
         },
         {
           id: uuid(),
@@ -30,7 +30,7 @@ const usersSeed = {
           verified: true,
           createdAt: new Date(),
           updatedAt: new Date(),
-          RoleId: 2,
+          roleId: 2,
         },
         {
           id: uuid(),
@@ -41,7 +41,7 @@ const usersSeed = {
           verified: true,
           createdAt: new Date(),
           updatedAt: new Date(),
-          RoleId: 1,
+          roleId: 1,
         },
         {
           id: uuid(),
@@ -52,7 +52,7 @@ const usersSeed = {
           verified: true,
           createdAt: new Date(),
           updatedAt: new Date(),
-          RoleId: 1,
+          roleId: 1,
         },
         {
           id: uuid(),
@@ -63,7 +63,7 @@ const usersSeed = {
           verified: true,
           createdAt: new Date(),
           updatedAt: new Date(),
-          RoleId: 1,
+          roleId: 1,
         },
         {
           id: uuid(),
@@ -74,7 +74,7 @@ const usersSeed = {
           verified: null,
           createdAt: new Date(),
           updatedAt: new Date(),
-          RoleId: 1,
+          roleId: 1,
         },
       ],
       {}

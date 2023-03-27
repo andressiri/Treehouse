@@ -1,5 +1,4 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
-import Role from "./role";
 import { IUser } from "../../typings/models";
 
 const UserModel = (sequelize: Sequelize) => {
@@ -10,10 +9,13 @@ const UserModel = (sequelize: Sequelize) => {
     declare email: string;
     declare password: string;
     declare verified: boolean;
-    declare RoleId: number;
+    declare roleId: number;
 
-    static associate() {
-      User.belongsTo(Role(sequelize));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    static associate(models: any) {
+      User.belongsTo(models.Role, {
+        foreignKey: "roleId",
+      });
     }
   }
 
@@ -30,7 +32,7 @@ const UserModel = (sequelize: Sequelize) => {
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       verified: DataTypes.BOOLEAN,
-      RoleId: DataTypes.INTEGER,
+      roleId: DataTypes.INTEGER,
     },
     {
       sequelize,
