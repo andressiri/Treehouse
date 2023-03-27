@@ -1,6 +1,6 @@
 // @route api/v1/rooms
 import express from "express";
-import { createRoom } from "../controllers/rooms";
+import { createRoom, getRooms } from "../controllers/rooms";
 import {
   authenticateAdmin,
   // authenticateSuperAdmin,
@@ -24,5 +24,7 @@ roomsRouter.post(
   validateRequestFields,
   createRoom
 );
+
+roomsRouter.get("/", getRooms);
 
 export default roomsRouter;
