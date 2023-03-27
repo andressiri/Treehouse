@@ -2,6 +2,7 @@
 import express from "express";
 import {
   createRoom,
+  deleteRoom,
   editRoom,
   getRoom,
   getRooms,
@@ -66,5 +67,7 @@ roomsRouter.delete(
   validateRequestFields,
   removeTeacher
 );
+
+roomsRouter.delete("/:id", checkIntegerId, validateRequestFields, deleteRoom);
 
 export default roomsRouter;

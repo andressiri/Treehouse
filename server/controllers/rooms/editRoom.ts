@@ -9,8 +9,9 @@ import db from "../../db/models";
 const { Room, Student } = db;
 
 const editRoom = asyncHandler(async (req, res) => {
-  let fieldsToEdit = req.body;
+  const id = req.params.id;
   const image = req.files && req.files.image ? req.files.image : null;
+  let fieldsToEdit = req.body;
 
   const uploadedImage = image ? await uploadFile(image as UploadedFile) : null;
 
@@ -27,7 +28,7 @@ const editRoom = asyncHandler(async (req, res) => {
   }
 
   const updateResult = await Room.update(fieldsToEdit, {
-    where: { id: req.params.id },
+    where: { id },
     returning: true,
   });
 
@@ -39,7 +40,7 @@ const editRoom = asyncHandler(async (req, res) => {
   const roomData = { ...updateResult[1][0].dataValues };
 
   if (req.body.teacherId)
-    Student.update(
+    await Student.update(
       {
         teacherId: req.body.teacherId,
       },

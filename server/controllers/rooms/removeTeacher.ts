@@ -7,12 +7,10 @@ import db from "../../db/models";
 const { Room, Student } = db;
 
 const removeTeacher = asyncHandler(async (req, res) => {
+  const id = req.params.id;
   const updateResult = await Room.update(
     { teacherId: null },
-    {
-      where: { id: req.params.id },
-      returning: true,
-    }
+    { where: { id }, returning: true }
   );
 
   if (!updateResult[1].length) {
@@ -22,16 +20,11 @@ const removeTeacher = asyncHandler(async (req, res) => {
 
   const roomData = { ...updateResult[1][0].dataValues };
 
-  Student.update(
-    {
-      teacherId: null,
-    },
-    {
-      where: { roomId: roomData.id },
-    }
-  );
+  await Student.update({ teacherId: null }, { where: { roomId: roomData.id } });
 
-  res.status(200).json({ message: `${roomData.name} room updated`, roomData });
+  res
+    .status(200)
+    .json({ message: `Teacher removed from ${roomData.name} room`, roomData });
 });
 
 export default removeTeacher;
