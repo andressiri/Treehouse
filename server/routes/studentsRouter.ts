@@ -10,6 +10,7 @@ import {
   getStudents,
   getStudentsWithRelations,
   removeFromRoom,
+  removeSibling,
 } from "../controllers/students";
 import {
   authenticateAdmin,
@@ -93,6 +94,16 @@ studentsRouter.put(
   checkSiblingId,
   validateRequestFields,
   addSibling
+);
+
+studentsRouter.delete(
+  `/siblings/${byId}`,
+  authenticateUser,
+  authenticateAdmin,
+  checkIntegerId,
+  checkSiblingId,
+  validateRequestFields,
+  removeSibling
 );
 
 export default studentsRouter;

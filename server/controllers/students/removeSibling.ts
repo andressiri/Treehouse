@@ -1,14 +1,14 @@
-// @description Add sibling to a student (and its other siblings if required)
-// @route PUT /api/v1/students/siblings/:id
+// @description Remove sibling from a student (and its other siblings if required)
+// @route DELETE /api/v1/students/siblings/:id
 // @access Private - Admin only
 import asyncHandler from "express-async-handler";
 import db from "../../db/models";
 
 const { Room, Teacher, Student, Sibling } = db;
 
-const addSibling = asyncHandler(async (req, res) => {
+const removeSibling = asyncHandler(async (req, res) => {
   const id = req.params.id;
-  const { siblingId, addToOtherSiblings } = req.body;
+  const { siblingId, removeFromOtherSiblings } = req.body;
 
   const student = await Student.findByPk(id, {
     attributes: ["id"],
@@ -36,18 +36,18 @@ const addSibling = asyncHandler(async (req, res) => {
     throw new Error("There is no student for that sibling id");
   }
 
-  await student.addHasSibling(siblingId, { discount: null });
-  await student.addIsSibling(siblingId, { discount: null });
+  await Sibling.destroy({ where: { siblingIdA: id, siblingIdB: siblingId } });
+  await Sibling.destroy({ where: { siblingIdA: siblingId, siblingIdB: id } });
 
-  if (addToOtherSiblings) {
+  if (removeFromOtherSiblings) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     student.dataValues.hasSibling.forEach(async (studentSibling: any) => {
-      const temporaryStudent = await Student.findByPk(studentSibling.id, {
-        attributes: ["id"],
+      await Sibling.destroy({
+        where: { siblingIdA: studentSibling.id, siblingIdB: siblingId },
       });
-
-      await temporaryStudent.addHasSibling(siblingId, { discount: null });
-      await temporaryStudent.addIsSibling(siblingId, { discount: null });
+      await Sibling.destroy({
+        where: { siblingIdA: siblingId, siblingIdB: studentSibling.id },
+      });
     });
   }
 
@@ -66,7 +66,7 @@ const addSibling = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json({ messge: `${studentData.name} sibling added`, studentData });
+    .json({ messge: `${studentData.name} sibling removed`, studentData });
 });
 
-export default addSibling;
+export default removeSibling;
