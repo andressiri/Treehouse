@@ -73,4 +73,13 @@ studentsRouter.delete(
   removeFromRoom
 );
 
+studentsRouter.delete(
+  `/${deletion}/${byId}`,
+  authenticateUser,
+  authenticateAdmin,
+  checkIntegerId,
+  validateRequestFields,
+  removeFromRoom
+);
+
 export default studentsRouter;
