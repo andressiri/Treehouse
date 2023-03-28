@@ -1,6 +1,10 @@
 // @route api/v1/teachers
 import express from "express";
-import { createTeacher, getTeachers } from "../controllers/teachers";
+import {
+  createTeacher,
+  getTeachers,
+  getTeachersWithRelations,
+} from "../controllers/teachers";
 import {
   authenticateAdmin,
   authenticateUser,
@@ -29,5 +33,7 @@ teachersRouter.post(
 );
 
 teachersRouter.get("/", getTeachers);
+
+teachersRouter.get("/all", getTeachersWithRelations);
 
 export default teachersRouter;

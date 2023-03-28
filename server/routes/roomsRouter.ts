@@ -71,7 +71,7 @@ roomsRouter.delete(
 );
 
 roomsRouter.delete(
-  "/:id",
+  "/delete/:id",
   authenticateUser,
   authenticateAdmin,
   checkIntegerId,
