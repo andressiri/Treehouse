@@ -21,8 +21,3 @@ export const checkPublicIsBool = check("public")
   .optional()
   .isBoolean()
   .withMessage("Please send a valid public value");
-
-export const checkTeacherIdIsInt = check("teacherId")
-  .optional()
-  .isInt()
-  .withMessage("Please send a valid teacher id");
