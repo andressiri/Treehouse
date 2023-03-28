@@ -2,7 +2,7 @@
 // @route PUT /api/v1/rooms/edit/:id
 // @access Private - Admin only
 import asyncHandler from "express-async-handler";
-import { uploadFile } from "../../helpers";
+import { checkInvalidFields, uploadFile } from "../../helpers";
 import { UploadedFile } from "express-fileupload";
 import db from "../../db/models";
 
@@ -10,6 +10,14 @@ const { Room, Student } = db;
 
 const editRoom = asyncHandler(async (req, res) => {
   const id = req.params.id;
+  const validFields = [
+    "name",
+    "capacity",
+    "description",
+    "image",
+    "public",
+    "teacherId",
+  ];
   const image = req.files && req.files.image ? req.files.image : null;
   let fieldsToEdit = req.body;
 
@@ -22,10 +30,8 @@ const editRoom = asyncHandler(async (req, res) => {
     };
   }
 
-  if (!Object.keys(fieldsToEdit).length) {
-    res.status(400);
-    throw new Error("There is nothing to edit");
-  }
+  const fieldsToEditKeys = Object.keys(fieldsToEdit);
+  checkInvalidFields(fieldsToEditKeys, validFields, res);
 
   const updateResult = await Room.update(fieldsToEdit, {
     where: { id },

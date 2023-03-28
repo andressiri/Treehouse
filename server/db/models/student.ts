@@ -30,13 +30,13 @@ const StudentModel = (sequelize: Sequelize) => {
         foreignKey: "teacherId",
       });
 
-      Student.belongsToMany(models.User, {
+      Student.belongsToMany(models.Student, {
         through: models.Sibling,
         foreignKey: "siblingIdA",
         as: "hasSibling",
       });
 
-      Student.belongsToMany(models.User, {
+      Student.belongsToMany(models.Student, {
         through: models.Sibling,
         foreignKey: "siblingIdB",
         as: "isSibling",

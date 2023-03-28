@@ -8,6 +8,7 @@ const { Room, Student } = db;
 
 const removeTeacher = asyncHandler(async (req, res) => {
   const id = req.params.id;
+
   const updateResult = await Room.update(
     { teacherId: null },
     { where: { id }, returning: true }
