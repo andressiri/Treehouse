@@ -2,7 +2,9 @@
 import express from "express";
 import { byId, withRelations, edit, deletion } from "../config/constants";
 import {
+  addSibling,
   createStudent,
+  deleteStudent,
   editStudent,
   getStudent,
   getStudents,
@@ -23,6 +25,7 @@ import {
   checkGenderIsValid,
   checkDescriptionLength,
   checkRoomIdIsInt,
+  checkSiblingId,
 } from "../helpers/validatorChecks";
 
 const studentsRouter = express.Router();
@@ -79,7 +82,17 @@ studentsRouter.delete(
   authenticateAdmin,
   checkIntegerId,
   validateRequestFields,
-  removeFromRoom
+  deleteStudent
+);
+
+studentsRouter.put(
+  `/siblings/${byId}`,
+  authenticateUser,
+  authenticateAdmin,
+  checkIntegerId,
+  checkSiblingId,
+  validateRequestFields,
+  addSibling
 );
 
 export default studentsRouter;

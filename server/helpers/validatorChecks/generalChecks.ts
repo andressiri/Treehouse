@@ -80,3 +80,10 @@ export const checkRoomIdIsInt = check("roomId")
   .optional()
   .isInt()
   .withMessage("Please send a valid room id");
+
+export const checkSiblingId = check("siblingId")
+  .not()
+  .isEmpty()
+  .withMessage("Please send a sibling id")
+  .isInt()
+  .withMessage("Please send a valid sibling id");

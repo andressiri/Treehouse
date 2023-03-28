@@ -1,3 +1,4 @@
+export { default as addSibling } from "./addSibling";
 export { default as createStudent } from "./createStudent";
 export { default as deleteStudent } from "./deleteStudent";
 export { default as editStudent } from "./editStudent";
