@@ -1,7 +1,7 @@
 // @route api/v1/teachers
 import express from "express";
 // import { byId, withRelations, edit, deletion } from "../config/constants";
-import { createStudent } from "../controllers/students";
+import { createStudent, getStudents } from "../controllers/students";
 import {
   authenticateAdmin,
   authenticateUser,
@@ -32,5 +32,7 @@ studentsRouter.post(
   validateRequestFields,
   createStudent
 );
+
+studentsRouter.get("/", getStudents);
 
 export default studentsRouter;
