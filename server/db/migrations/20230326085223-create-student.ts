@@ -42,14 +42,12 @@ const studentsMigration = {
           },
           picture: {
             type: DataTypes.STRING(1000),
-            allowNull: true,
             validate: {
               isUrl: true,
             },
           },
           description: {
             type: DataTypes.STRING(1000),
-            allowNull: false,
           },
           createdAt: {
             allowNull: false,

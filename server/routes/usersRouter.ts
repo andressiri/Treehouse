@@ -1,5 +1,6 @@
 // @route api/v1/users
 import express from "express";
+import { byId, deletion, edit } from "../config/constants";
 import {
   changePassword,
   deleteUser,
@@ -50,7 +51,7 @@ usersRouter.post(
 usersRouter.get("/", authenticateUser, authenticateAdmin, getUsers);
 
 usersRouter.get(
-  "/user/:id",
+  `/user/${byId}`,
   authenticateUser,
   authenticateAdmin,
   checkUUID,
@@ -80,7 +81,7 @@ usersRouter.put(
 );
 
 usersRouter.put(
-  "/edit/:id",
+  `/${edit}/${byId}`,
   authenticateUser,
   authenticateSuperAdmin,
   checkUUID,
@@ -89,10 +90,10 @@ usersRouter.put(
   editUser
 );
 
-usersRouter.put("/edit", authenticateUser, checkUserAttributes, editUser);
+usersRouter.put(`/${edit}`, authenticateUser, checkUserAttributes, editUser);
 
 usersRouter.delete(
-  "/delete/:id",
+  `/${deletion}/${byId}`,
   authenticateUser,
   checkUUID,
   validateRequestFields,
