@@ -63,11 +63,20 @@ roomsRouter.put(
 
 roomsRouter.delete(
   "/teacher/:id",
+  authenticateUser,
+  authenticateAdmin,
   checkIntegerId,
   validateRequestFields,
   removeTeacher
 );
 
-roomsRouter.delete("/:id", checkIntegerId, validateRequestFields, deleteRoom);
+roomsRouter.delete(
+  "/:id",
+  authenticateUser,
+  authenticateAdmin,
+  checkIntegerId,
+  validateRequestFields,
+  deleteRoom
+);
 
 export default roomsRouter;
