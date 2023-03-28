@@ -17,7 +17,6 @@ const teachersMigration = {
           name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
           },
           age: {
             type: DataTypes.INTEGER,
@@ -42,14 +41,12 @@ const teachersMigration = {
           },
           picture: {
             type: DataTypes.STRING(1000),
-            allowNull: true,
             validate: {
               isUrl: true,
             },
           },
           description: {
             type: DataTypes.STRING(1000),
-            allowNull: false,
           },
           createdAt: {
             allowNull: false,

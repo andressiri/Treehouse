@@ -1,5 +1,5 @@
 // @description Handle delete room
-// @route DELETE /api/v1/rooms/:id
+// @route DELETE /api/v1/rooms/delete/:id
 // @access Private - Admin only
 import asyncHandler from "express-async-handler";
 import db from "../../db/models";

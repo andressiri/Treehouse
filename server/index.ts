@@ -6,6 +6,7 @@ import db from "./db/models";
 import session from "express-session";
 import router from "./routes";
 import { errorHandler } from "./middlewares";
+import { apiRoute, apiVersion } from "./config/constants";
 
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
@@ -48,7 +49,7 @@ app.use(
 );
 
 // @/api/v1 router
-app.use("/api/v1", router);
+app.use(`/${apiRoute}/${apiVersion}`, router);
 
 app.use(errorHandler);
 

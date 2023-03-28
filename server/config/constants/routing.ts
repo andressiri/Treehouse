@@ -1,0 +1,10 @@
+export const apiRoute = "api";
+export const apiVersion = "v1";
+export const usersRoute = "users";
+export const roomsRoute = "rooms";
+export const teachersRoute = "teachers";
+export const studentsRoute = "students";
+export const byId = ":id";
+export const withRelations = "all";
+export const edit = "edit";
+export const deletion = "delete";
