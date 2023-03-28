@@ -7,6 +7,7 @@ import {
   getStudent,
   getStudents,
   getStudentsWithRelations,
+  removeFromRoom,
 } from "../controllers/students";
 import {
   authenticateAdmin,
@@ -61,6 +62,15 @@ studentsRouter.put(
   checkRoomIdIsInt,
   validateRequestFields,
   editStudent
+);
+
+studentsRouter.delete(
+  `/room/${byId}`,
+  authenticateUser,
+  authenticateAdmin,
+  checkIntegerId,
+  validateRequestFields,
+  removeFromRoom
 );
 
 export default studentsRouter;
