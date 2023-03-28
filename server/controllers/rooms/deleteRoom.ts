@@ -17,7 +17,7 @@ const deleteRoom = asyncHandler(async (req, res) => {
 
   if (!roomFound) {
     res.status(404);
-    throw new Error("That room doesn't exist");
+    throw new Error("There is no room for that id");
   }
 
   await Student.update(

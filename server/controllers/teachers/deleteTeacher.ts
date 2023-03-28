@@ -21,7 +21,7 @@ const deleteTeacher = asyncHandler(async (req, res) => {
 
   if (!teacherFound) {
     res.status(404);
-    throw new Error("That teacher doesn't exist");
+    throw new Error("There is no teacher for that id");
   }
 
   if (teacherFound.Room?.id)
