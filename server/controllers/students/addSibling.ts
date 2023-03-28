@@ -10,6 +10,11 @@ const addSibling = asyncHandler(async (req, res) => {
   const id = req.params.id;
   const { siblingId, addToOtherSiblings } = req.body;
 
+  if (id === siblingId) {
+    res.status(400);
+    throw new Error("Id sent and sibling id must be different");
+  }
+
   const student = await Student.findByPk(id, {
     attributes: ["id"],
     include: [
