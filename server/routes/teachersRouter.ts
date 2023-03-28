@@ -1,5 +1,6 @@
 // @route api/v1/teachers
 import express from "express";
+import { withRelations } from "../config/constants";
 import {
   createTeacher,
   getTeachers,
@@ -34,6 +35,6 @@ teachersRouter.post(
 
 teachersRouter.get("/", getTeachers);
 
-teachersRouter.get("/all", getTeachersWithRelations);
+teachersRouter.get(`/${withRelations}`, getTeachersWithRelations);
 
 export default teachersRouter;

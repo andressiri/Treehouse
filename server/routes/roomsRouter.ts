@@ -1,5 +1,6 @@
 // @route api/v1/rooms
 import express from "express";
+import { byId, withRelations, edit, deletion } from "../config/constants";
 import {
   createRoom,
   deleteRoom,
@@ -43,12 +44,17 @@ roomsRouter.post(
 
 roomsRouter.get("/", getRooms);
 
-roomsRouter.get("/all", getRoomsWithRelations);
+roomsRouter.get(`/${withRelations}`, getRoomsWithRelations);
 
-roomsRouter.get("/room/:id", checkIntegerId, validateRequestFields, getRoom);
+roomsRouter.get(
+  `/room/${byId}`,
+  checkIntegerId,
+  validateRequestFields,
+  getRoom
+);
 
 roomsRouter.put(
-  "/edit/:id",
+  `/${edit}/${byId}`,
   authenticateUser,
   authenticateAdmin,
   checkIntegerId,
@@ -62,7 +68,7 @@ roomsRouter.put(
 );
 
 roomsRouter.delete(
-  "/teacher/:id",
+  `/teacher/${byId}`,
   authenticateUser,
   authenticateAdmin,
   checkIntegerId,
@@ -71,7 +77,7 @@ roomsRouter.delete(
 );
 
 roomsRouter.delete(
-  "/delete/:id",
+  `/${deletion}/${byId}`,
   authenticateUser,
   authenticateAdmin,
   checkIntegerId,
