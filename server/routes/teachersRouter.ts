@@ -1,8 +1,9 @@
 // @route api/v1/teachers
 import express from "express";
-import { byId, withRelations } from "../config/constants";
+import { byId, edit, withRelations } from "../config/constants";
 import {
   createTeacher,
+  editTeacher,
   getTeacher,
   getTeachers,
   getTeachersWithRelations,
@@ -16,7 +17,9 @@ import {
   checkIntegerId,
   checkName,
   checkAge,
+  checkAgeIsInt,
   checkGender,
+  checkGenderIsValid,
   checkDescriptionLength,
 } from "../helpers/validatorChecks";
 
@@ -43,6 +46,18 @@ teachersRouter.get(
   checkIntegerId,
   validateRequestFields,
   getTeacher
+);
+
+teachersRouter.put(
+  `/${edit}/${byId}`,
+  authenticateUser,
+  authenticateAdmin,
+  checkIntegerId,
+  checkAgeIsInt,
+  checkGenderIsValid,
+  checkDescriptionLength,
+  validateRequestFields,
+  editTeacher
 );
 
 export default teachersRouter;

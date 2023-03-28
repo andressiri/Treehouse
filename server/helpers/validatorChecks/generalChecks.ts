@@ -19,15 +19,15 @@ export const checkName = check("name")
   .isEmpty()
   .withMessage("Please send a name");
 
-export const checkDescription = check("description")
-  .not()
-  .isEmpty()
-  .withMessage("Please send a description");
-
 export const checkAge = check("age")
   .not()
   .isEmpty()
   .withMessage("Please send an age value")
+  .isInt()
+  .withMessage("Please send a valid age value");
+
+export const checkAgeIsInt = check("age")
+  .optional()
   .isInt()
   .withMessage("Please send a valid age value");
 
@@ -46,6 +46,27 @@ export const checkGender = check("gender")
   ])
   .withMessage("Please send a valid gender");
 
+export const checkGenderIsValid = check("gender")
+  .optional()
+  .isIn([
+    "female",
+    "male",
+    "intersex",
+    "trans",
+    "non-conforming",
+    "personal",
+    "eunuch",
+  ])
+  .withMessage("Please send a valid gender");
+
+export const checkDescription = check("description")
+  .not()
+  .isEmpty()
+  .withMessage("Please send a description")
+  .isLength({ max: 999 })
+  .withMessage("Description max length is 4000 characters");
+
 export const checkDescriptionLength = check("description")
+  .optional()
   .isLength({ max: 999 })
   .withMessage("Description max length is 4000 characters");
