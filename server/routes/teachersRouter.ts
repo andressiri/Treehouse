@@ -1,13 +1,13 @@
 // @route api/v1/teachers
 import express from "express";
-import { createTeacher } from "../controllers/teachers";
+import { createTeacher, getTeachers } from "../controllers/teachers";
 import {
   authenticateAdmin,
   authenticateUser,
   validateRequestFields,
 } from "../middlewares";
 import {
-  checkIntegerId,
+  // checkIntegerId,
   checkName,
   checkAge,
   checkGender,
@@ -27,5 +27,7 @@ teachersRouter.post(
   validateRequestFields,
   createTeacher
 );
+
+teachersRouter.get("/", getTeachers);
 
 export default teachersRouter;
