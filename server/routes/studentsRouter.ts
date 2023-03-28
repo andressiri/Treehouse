@@ -3,6 +3,7 @@ import express from "express";
 import { byId, withRelations, edit, deletion } from "../config/constants";
 import {
   createStudent,
+  getStudent,
   getStudents,
   getStudentsWithRelations,
 } from "../controllers/students";
@@ -12,7 +13,7 @@ import {
   validateRequestFields,
 } from "../middlewares";
 import {
-  // checkIntegerId,
+  checkIntegerId,
   checkName,
   checkAge,
   // checkAgeIsInt,
@@ -40,5 +41,12 @@ studentsRouter.post(
 studentsRouter.get("/", getStudents);
 
 studentsRouter.get(`/${withRelations}`, getStudentsWithRelations);
+
+studentsRouter.get(
+  `/student/${byId}`,
+  checkIntegerId,
+  validateRequestFields,
+  getStudent
+);
 
 export default studentsRouter;
