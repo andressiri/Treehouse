@@ -1,8 +1,9 @@
 // @route api/v1/teachers
 import express from "express";
-import { withRelations } from "../config/constants";
+import { byId, withRelations } from "../config/constants";
 import {
   createTeacher,
+  getTeacher,
   getTeachers,
   getTeachersWithRelations,
 } from "../controllers/teachers";
@@ -12,7 +13,7 @@ import {
   validateRequestFields,
 } from "../middlewares";
 import {
-  // checkIntegerId,
+  checkIntegerId,
   checkName,
   checkAge,
   checkGender,
@@ -36,5 +37,12 @@ teachersRouter.post(
 teachersRouter.get("/", getTeachers);
 
 teachersRouter.get(`/${withRelations}`, getTeachersWithRelations);
+
+teachersRouter.get(
+  `/teacher/${byId}`,
+  checkIntegerId,
+  validateRequestFields,
+  getTeacher
+);
 
 export default teachersRouter;
