@@ -1,8 +1,8 @@
 // @description Handle teacher edition
-// @route PUT /api/v1/teacher/edit/:id
+// @route PUT /api/v1/teachers/edit/:id
 // @access Private - Admin only
 import asyncHandler from "express-async-handler";
-import { uploadFile } from "../../helpers";
+import { checkInvalidFields, uploadFile } from "../../helpers";
 import { UploadedFile } from "express-fileupload";
 import db from "../../db/models";
 
@@ -10,6 +10,7 @@ const { Teacher } = db;
 
 const editTeacher = asyncHandler(async (req, res) => {
   const id = req.params.id;
+  const validFields = ["name", "age", "gender", "picture", "description"];
   const picture = req.files && req.files.picture ? req.files.picture : null;
   let fieldsToEdit = req.body;
 
@@ -24,10 +25,8 @@ const editTeacher = asyncHandler(async (req, res) => {
     };
   }
 
-  if (!Object.keys(fieldsToEdit).length) {
-    res.status(400);
-    throw new Error("There is nothing to edit");
-  }
+  const fieldsToEditKeys = Object.keys(fieldsToEdit);
+  checkInvalidFields(fieldsToEditKeys, validFields, res);
 
   const updateResult = await Teacher.update(fieldsToEdit, {
     where: { id },

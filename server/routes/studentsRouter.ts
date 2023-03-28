@@ -3,6 +3,7 @@ import express from "express";
 import { byId, withRelations, edit, deletion } from "../config/constants";
 import {
   createStudent,
+  editStudent,
   getStudent,
   getStudents,
   getStudentsWithRelations,
@@ -16,9 +17,9 @@ import {
   checkIntegerId,
   checkName,
   checkAge,
-  // checkAgeIsInt,
+  checkAgeIsInt,
   checkGender,
-  // checkGenderIsValid,
+  checkGenderIsValid,
   checkDescriptionLength,
   checkRoomIdIsInt,
 } from "../helpers/validatorChecks";
@@ -47,6 +48,19 @@ studentsRouter.get(
   checkIntegerId,
   validateRequestFields,
   getStudent
+);
+
+studentsRouter.put(
+  `/${edit}/${byId}`,
+  authenticateUser,
+  authenticateAdmin,
+  checkIntegerId,
+  checkAgeIsInt,
+  checkGenderIsValid,
+  checkDescriptionLength,
+  checkRoomIdIsInt,
+  validateRequestFields,
+  editStudent
 );
 
 export default studentsRouter;
