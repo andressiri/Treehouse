@@ -1,8 +1,9 @@
 // @route api/v1/teachers
 import express from "express";
-import { byId, edit, withRelations } from "../config/constants";
+import { byId, withRelations, edit, deletion } from "../config/constants";
 import {
   createTeacher,
+  deleteTeacher,
   editTeacher,
   getTeacher,
   getTeachers,
@@ -58,6 +59,15 @@ teachersRouter.put(
   checkDescriptionLength,
   validateRequestFields,
   editTeacher
+);
+
+teachersRouter.delete(
+  `/${deletion}/${byId}`,
+  authenticateUser,
+  authenticateAdmin,
+  checkIntegerId,
+  validateRequestFields,
+  deleteTeacher
 );
 
 export default teachersRouter;
