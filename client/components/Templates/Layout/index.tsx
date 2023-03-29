@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { BackgroundTexture } from "../../../components/Atoms";
+import { FloatingOpenMenu } from "../../../components/Molecules";
 import { Header, Sidebar } from "../../../components/Organisms";
 import {
   Container,
@@ -27,6 +28,7 @@ const Layout: FC<Props> = ({ children }) => {
         <BackgroundTexture imageSrc={leavesPattern.src} opacity="0.9" />
       </PageTextureContainer>
       <Header />
+      <FloatingOpenMenu />
       <Sidebar />
       {children}
     </Container>
