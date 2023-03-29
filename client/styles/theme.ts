@@ -25,5 +25,11 @@ export const theme: ThemeOptions = createTheme({
     radius: {
       medium: "16px",
     },
+    sidebar: {
+      width: "300px",
+    },
+    header: {
+      height: "120px",
+    },
   },
 });
