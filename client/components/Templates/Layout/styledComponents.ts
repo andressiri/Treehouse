@@ -15,6 +15,10 @@ export const Sidebar = styled("nav")(({ theme }) => ({
   left: "0px",
   width: "320px",
   height: "100vh",
+  padding: "30px 10px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
   background: theme.palette.primary.main,
   color: theme.palette.primary.contrastText,
 }));
