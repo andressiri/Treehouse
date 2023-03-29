@@ -5,9 +5,7 @@ import { Container } from "../components/Templates/MainPage/styledComponents";
 const Home: FC = () => {
   return (
     <Layout>
-      <Container>
-        <h1>Hello Treehouse</h1>
-      </Container>
+      <Container></Container>
     </Layout>
   );
 };
