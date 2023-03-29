@@ -10,6 +10,6 @@ export const Container = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
-  background: "red",
+  background: "transparent",
   color: theme.palette.primary.main,
 }));

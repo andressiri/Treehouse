@@ -11,7 +11,6 @@ const TreehouseLogo: FC = () => {
       <path
         id="Selection"
         fill="currentColor"
-        stroke-width="1"
         d="M 57.00,9.00
         C 55.50,3.01 57.05,1.49 63.00,1.00
           62.47,9.99 59.46,7.56 56.00,14.00
