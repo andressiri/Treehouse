@@ -1,34 +1,34 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { BackgroundTexture } from "../../../components/Atoms";
 import { FloatingOpenMenu } from "../../../components/Molecules";
-import { Header, Sidebar } from "../../../components/Organisms";
-import {
-  Container,
-  NavTextureContainer,
-  PageTextureContainer,
-} from "./styledComponents";
+import { Header, MobileDrawer, Sidebar } from "../../../components/Organisms";
+import { Container, TextureContainer } from "./styledComponents";
 import leavesPattern from "../../../assets/patterns/leavesPattern.webp";
-import signalNoisePattern from "../../../assets/patterns/background-signal-noise-texture.png";
 
 interface Props {
   children: JSX.Element | JSX.Element[];
 }
 
 const Layout: FC<Props> = ({ children }) => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const handleDrawer = () => setIsDrawerOpen((prev: boolean) => !prev);
+
   return (
     <Container>
-      <NavTextureContainer>
-        <BackgroundTexture
-          imageSrc={signalNoisePattern.src}
-          bgWidth="150px"
-          bgHeight="150px"
-        />
-      </NavTextureContainer>
-      <PageTextureContainer>
+      <MobileDrawer
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        onOpen={() => setIsDrawerOpen(true)}
+      />
+      <TextureContainer>
         <BackgroundTexture imageSrc={leavesPattern.src} opacity="0.9" />
-      </PageTextureContainer>
+      </TextureContainer>
       <Header />
-      <FloatingOpenMenu />
+      <FloatingOpenMenu
+        isDrawerOpen={isDrawerOpen}
+        handleDrawer={handleDrawer}
+      />
       <Sidebar />
       {children}
     </Container>

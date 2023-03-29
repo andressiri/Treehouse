@@ -1,10 +1,16 @@
 import { FC, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 import { Tooltip } from "../../../components/Atoms";
 import { Container, StyledIconContainer } from "./styledComponents";
 import useDragControllers from "./useDragControllers";
 
-const FloatingOpenMenu: FC = () => {
+interface Props {
+  isDrawerOpen: boolean;
+  handleDrawer: () => void;
+}
+
+const FloatingOpenMenu: FC<Props> = ({ isDrawerOpen, handleDrawer }) => {
   const [displayTooltip, setDisplayTooltip] = useState(false);
   const dragControllers = useDragControllers();
   const { top, left, touchStart, isDragging, tooltipPosition } =
@@ -29,9 +35,13 @@ const FloatingOpenMenu: FC = () => {
       }}
       topPosition={top}
       leftPosition={left}
+      onClick={() => {
+        if (isDragging.current) return;
+        handleDrawer();
+      }}
     >
       <StyledIconContainer>
-        <MenuIcon />
+        {isDrawerOpen ? <CloseIcon /> : <MenuIcon />}
       </StyledIconContainer>
       {displayTooltip ? (
         <Tooltip tooltipPosition={tooltipPosition}>Open Menu</Tooltip>

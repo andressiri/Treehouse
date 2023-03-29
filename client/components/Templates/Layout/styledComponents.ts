@@ -8,21 +8,13 @@ export const Container = styled(Box)(({ theme }) => ({
   padding: `${theme.custom.header.height} 0px 0px ${theme.custom.sidebar.width}`,
 }));
 
-export const TextureContainer = styled(Box)(() => ({
+export const TextureContainer = styled(Box)(({ theme }) => ({
   zIndex: -1,
   position: "absolute",
   top: "0px",
-  bottom: "0px",
-  height: "100%",
-}));
-
-export const NavTextureContainer = styled(TextureContainer)(({ theme }) => ({
-  left: "0px",
-  width: theme.custom.sidebar.width,
-}));
-
-export const PageTextureContainer = styled(Box)(({ theme }) => ({
   right: "0px",
+  bottom: "0px",
   left: theme.custom.sidebar.width,
   width: `calc(100% - ${theme.custom.sidebar.width})`,
+  height: "100%",
 }));

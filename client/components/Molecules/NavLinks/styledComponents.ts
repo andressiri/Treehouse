@@ -16,7 +16,7 @@ export const StyledItem = styled("li", {
 })<{ isDrawer?: boolean; isDrawerOpen?: boolean; appearingTime: number }>(
   ({ isDrawer, isDrawerOpen, appearingTime }) => ({
     transform:
-      isDrawer && !isDrawerOpen ? "translateX(400%)" : "translateX(0%)",
+      isDrawer && !isDrawerOpen ? "translateX(-400%)" : "translateX(0%)",
     opacity: isDrawer && !isDrawerOpen ? "0.000001" : "1",
     transition: isDrawer ? `${appearingTime}ms all` : "unset",
   })

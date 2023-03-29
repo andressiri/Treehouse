@@ -15,7 +15,7 @@ const NavLinks: FC<Props> = ({ isDrawer, isDrawerOpen }) => {
       <StyledItem
         isDrawer={isDrawer}
         isDrawerOpen={isDrawerOpen}
-        appearingTime={620}
+        appearingTime={600}
       >
         <NavItemButton disableRipple startIcon={<CastForEducationIcon />}>
           Rooms
@@ -24,7 +24,7 @@ const NavLinks: FC<Props> = ({ isDrawer, isDrawerOpen }) => {
       <StyledItem
         isDrawer={isDrawer}
         isDrawerOpen={isDrawerOpen}
-        appearingTime={680}
+        appearingTime={650}
       >
         <NavItemButton disableRipple startIcon={<HistoryEduIcon />}>
           Teachers
@@ -33,7 +33,7 @@ const NavLinks: FC<Props> = ({ isDrawer, isDrawerOpen }) => {
       <StyledItem
         isDrawer={isDrawer}
         isDrawerOpen={isDrawerOpen}
-        appearingTime={680}
+        appearingTime={700}
       >
         <NavItemButton disableRipple startIcon={<LocalLibraryIcon />}>
           Students

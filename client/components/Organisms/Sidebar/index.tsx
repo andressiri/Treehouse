@@ -1,18 +1,11 @@
 import { FC } from "react";
-import { NavLinks, NavLogo } from "../../../components/Molecules";
-import { Container, StyledDivider } from "./styledComponents";
+import { SidebarContent } from "../../../components/Organisms";
+import { Container } from "./styledComponents";
 
-interface Props {
-  isDrawer?: boolean;
-  isDrawerOpen?: boolean;
-}
-
-const Sidebar: FC<Props> = ({ isDrawer, isDrawerOpen }) => {
+const Sidebar: FC = () => {
   return (
-    <Container component="nav">
-      <NavLogo />
-      <StyledDivider isDrawerOpen={isDrawerOpen} appearingTime={590} />
-      <NavLinks isDrawer={isDrawer} isDrawerOpen={isDrawerOpen} />
+    <Container component="aside">
+      <SidebarContent isDrawer={false} isDrawerOpen={true} />
     </Container>
   );
 };
