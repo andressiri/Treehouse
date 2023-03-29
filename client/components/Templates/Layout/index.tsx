@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { Container, Sidebar } from "./styledComponents";
-import { NavLogo } from "../../../components/Molecules";
+import { Header, Sidebar } from "../../../components/Organisms";
+import { Container } from "./styledComponents";
 
 interface Props {
   children: JSX.Element | JSX.Element[];
@@ -9,9 +9,8 @@ interface Props {
 const Layout: FC<Props> = ({ children }) => {
   return (
     <Container>
-      <Sidebar>
-        <NavLogo />
-      </Sidebar>
+      <Header />
+      <Sidebar />
       {children}
     </Container>
   );
