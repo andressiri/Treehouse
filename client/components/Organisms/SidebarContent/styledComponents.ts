@@ -43,3 +43,8 @@ export const StyledDivider = styled(Divider, {
     transition: `${appearingTime}ms all`,
   })
 );
+
+export const SocialMediaContainer = styled(Box)(() => ({
+  marginTop: "auto",
+  paddingTop: "30px",
+}));

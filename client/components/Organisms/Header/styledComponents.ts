@@ -7,7 +7,7 @@ export const Container = styled(Box)(({ theme }) => ({
   left: theme.custom.sidebar.width,
   width: `calc(100% - ${theme.custom.sidebar.width})`,
   height: theme.custom.header.height,
-  padding: "20px 0px",
+  padding: "10px 30px",
   display: "flex",
   gap: "20px",
   alignItems: "center",
@@ -16,7 +16,7 @@ export const Container = styled(Box)(({ theme }) => ({
   color: theme.palette.primary.main,
 }));
 
-export const StyledList = styled("li")(() => ({
+export const StyledList = styled("ul")(() => ({
   display: "flex !important",
   flexDireciton: "row",
   alignItems: "center",

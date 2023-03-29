@@ -1,7 +1,16 @@
 import { FC } from "react";
 import { BackgroundTexture } from "../../../components/Atoms";
-import { NavLinks, NavLogo } from "../../../components/Molecules";
-import { Container, LogoContainer, StyledDivider } from "./styledComponents";
+import {
+  NavLinks,
+  NavLogo,
+  SidebarSocialMedia,
+} from "../../../components/Molecules";
+import {
+  Container,
+  LogoContainer,
+  StyledDivider,
+  SocialMediaContainer,
+} from "./styledComponents";
 import signalNoisePattern from "../../../assets/patterns/background-signal-noise-texture.png";
 
 interface Props {
@@ -22,6 +31,9 @@ const SidebarContent: FC<Props> = ({ isDrawer, isDrawerOpen }) => {
       </LogoContainer>
       <StyledDivider isDrawerOpen={isDrawerOpen} appearingTime={550} />
       <NavLinks isDrawer={isDrawer} isDrawerOpen={isDrawerOpen} />
+      <SocialMediaContainer>
+        <SidebarSocialMedia />
+      </SocialMediaContainer>
     </Container>
   );
 };
