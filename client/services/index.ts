@@ -1,1 +1,1 @@
-export { default as useGetRoomsServices } from "./rooms";
+export * from "./rooms";

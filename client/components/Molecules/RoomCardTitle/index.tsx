@@ -11,9 +11,10 @@ import {
 
 interface Props {
   title: string;
+  roomId: number;
 }
 
-const RoomCardTitle: FC<Props> = ({ title }) => {
+const RoomCardTitle: FC<Props> = ({ title, roomId }) => {
   const [tooltip, setTooltip] = useState<boolean>(false);
 
   return (
@@ -21,7 +22,7 @@ const RoomCardTitle: FC<Props> = ({ title }) => {
       <Title>{title}</Title>
       <ButtonContainer>
         <StyledLink
-          href="/rooms"
+          href={`/rooms/room/${roomId}`}
           onMouseEnter={() => setTooltip(true)}
           onMouseLeave={() => setTooltip(false)}
         >

@@ -4,6 +4,7 @@ import Link from "next/link";
 
 export const Container = styled(Box)(() => ({
   position: "relative",
+  minWidth: "55%",
   height: "250px",
   padding: "20px 20px 20px 10px",
 }));

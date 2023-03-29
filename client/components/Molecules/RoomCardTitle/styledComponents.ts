@@ -14,7 +14,7 @@ export const Container = styled(Box)(({ theme }) => ({
 export const Title = styled(Typography)(() => ({
   margin: "auto",
   textAlign: "center",
-  fontSize: "32px",
+  fontSize: "26px",
   fontWeight: 700,
 }));
 
