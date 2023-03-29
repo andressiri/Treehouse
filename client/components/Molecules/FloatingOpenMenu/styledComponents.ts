@@ -8,9 +8,12 @@ export const Container = styled(Box, {
   ({ topPosition, leftPosition }) => ({
     zIndex: 99999,
     position: "fixed",
-    top: topPosition ? `${topPosition}px` : "30px",
-    left: leftPosition ? `${leftPosition}px` : "30px",
+    top: topPosition ? `${topPosition}px` : "40px",
+    left: leftPosition ? `${leftPosition}px` : "40px",
     borderRadius: "50%",
+    "@media (min-width: 1025px)": {
+      display: "none",
+    },
   })
 );
 

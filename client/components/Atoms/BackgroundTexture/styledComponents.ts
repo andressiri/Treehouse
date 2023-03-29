@@ -1,7 +1,10 @@
 import { styled } from "@mui/material/styles";
 
 export const TextureContainer = styled("div", {
-  shouldForwardProp: (prop) => !["imageSrc", "zIndex"].includes(prop as string),
+  shouldForwardProp: (prop) =>
+    !["imageSrc", "zIndex", "bgWidth", "bgHeight", "opacity"].includes(
+      prop as string
+    ),
 })<{
   imageSrc: string;
   zIndex: number;

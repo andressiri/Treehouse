@@ -68,7 +68,7 @@ export const Container = styled(Box, {
           : `calc(50% - ${width || defaultWidth} / 2)`),
       width: width || defaultWidth,
       height: height || defaultHeight,
-      paddingTop: "2px",
+      paddingTop: "1px",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",

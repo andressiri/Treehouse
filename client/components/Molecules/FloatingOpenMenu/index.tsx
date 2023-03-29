@@ -24,7 +24,6 @@ const FloatingOpenMenu: FC<Props> = ({ isDrawerOpen, handleDrawer }) => {
       }}
       onMouseLeave={() => setDisplayTooltip(false)}
       onTouchStart={(e) => {
-        e.preventDefault();
         setDisplayTooltip(false);
         touchStart(e);
       }}
@@ -44,7 +43,9 @@ const FloatingOpenMenu: FC<Props> = ({ isDrawerOpen, handleDrawer }) => {
         {isDrawerOpen ? <CloseIcon /> : <MenuIcon />}
       </StyledIconContainer>
       {displayTooltip ? (
-        <Tooltip tooltipPosition={tooltipPosition}>Open Menu</Tooltip>
+        <Tooltip tooltipPosition={tooltipPosition} width="80px">
+          Open Menu
+        </Tooltip>
       ) : (
         <></>
       )}
