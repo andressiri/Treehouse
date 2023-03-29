@@ -7,6 +7,12 @@ interface custom {
   radius: {
     medium: string;
   };
+  sidebar: {
+    width: string;
+  };
+  header: {
+    height: string;
+  };
 }
 
 declare module "@mui/material/styles" {
