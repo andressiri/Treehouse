@@ -7,3 +7,4 @@ export { default as RoomCardDescription } from "./RoomCardDescription";
 export { default as RoomCardTeacher } from "./RoomCardTeacher";
 export { default as RoomCardTitle } from "./RoomCardTitle";
 export { default as SidebarSocialMedia } from "./SidebarSocialMedia";
+export { default as StudentListItem } from "./StudentListItem";

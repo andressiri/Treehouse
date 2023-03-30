@@ -33,7 +33,14 @@ const ConfirmModal: FC<Props> = ({
   onClose,
   confirmContext,
 }) => {
-  const { isLoading, isError, setIsError, isSuccess, setMessage } = useContext(
+  const {
+    isError,
+    setIsError,
+    isSuccess,
+    setIsSuccess,
+    setMessage,
+    isLoading,
+  } = useContext(
     confirmContext === "RoomsContext" ? RoomsContext : RoomsContext
   );
 
@@ -46,7 +53,10 @@ const ConfirmModal: FC<Props> = ({
   };
 
   const handleSuccess = () => {
-    Router.reload();
+    console.log(Router.asPath);
+    setIsSuccess(false);
+    setMessage("");
+    Router.replace(Router.asPath);
   };
 
   return (

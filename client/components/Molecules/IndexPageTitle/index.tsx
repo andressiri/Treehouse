@@ -5,7 +5,7 @@ const IndexPageTitle: FC = () => {
   return (
     <Container>
       <Title>Welcome to TreeHouse!</Title>
-      <Subtitle>This are our courses available at the moment</Subtitle>
+      <Subtitle>These are our currently available courses</Subtitle>
     </Container>
   );
 };
