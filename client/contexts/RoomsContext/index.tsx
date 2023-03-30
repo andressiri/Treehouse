@@ -3,6 +3,8 @@ import React, { createContext, FC, useState } from "react";
 interface IContext {
   rooms: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
   setRooms: React.Dispatch<React.SetStateAction<never[]>>;
+  room: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  setRoom: React.Dispatch<React.SetStateAction<object>>;
   isError: boolean;
   setIsError: React.Dispatch<React.SetStateAction<boolean>>;
   isSuccess: boolean;
@@ -16,6 +18,8 @@ interface IContext {
 export const RoomsContext = createContext<IContext>({
   rooms: [],
   setRooms: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  room: {},
+  setRoom: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   isError: false,
   setIsError: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   isSuccess: false,
@@ -32,6 +36,7 @@ interface Props {
 
 export const RoomsContextProvider: FC<Props> = ({ children }) => {
   const [rooms, setRooms] = useState([]);
+  const [room, setRoom] = useState({});
   const [isError, setIsError] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -42,6 +47,8 @@ export const RoomsContextProvider: FC<Props> = ({ children }) => {
       value={{
         rooms,
         setRooms,
+        room,
+        setRoom,
         isError,
         setIsError,
         isSuccess,
