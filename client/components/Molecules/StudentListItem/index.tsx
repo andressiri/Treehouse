@@ -1,4 +1,5 @@
 import { FC, useState, useRef } from "react";
+import Router from "next/router";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import NoMeetingRoomIcon from "@mui/icons-material/NoMeetingRoom";
@@ -51,6 +52,7 @@ const StudentListItem: FC<Props> = ({ id, name, listOf }) => {
           successText={`${name} was removed successfully`}
           open={openConfirm}
           onClose={() => setOpenConfirm(false)}
+          onSuccess={() => Router.replace(Router.asPath)}
           confirmContext="RoomsContext"
         />
       </ActionsContainer>

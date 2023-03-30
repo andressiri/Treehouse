@@ -25,8 +25,14 @@ export const StudentsTitle = styled(Typography)(({ theme }) => ({
 
 export const StudentsFallback = styled(Typography)(({ theme }) => ({
   marginBottom: "30px",
-  color: theme.palette.primary.main,
+  color: theme.palette.secondary.contrastText.replace("0.87)", "0.5)"),
   textAlign: "center",
-  fontSize: "52px",
-  fontWeight: 700,
+  fontSize: "22px",
+  fontWeight: 600,
+  letterSpacing: "1px",
+}));
+
+export const DeleteContainer = styled(Box)(() => ({
+  width: "fit-content",
+  margin: "100px auto 50px auto",
 }));

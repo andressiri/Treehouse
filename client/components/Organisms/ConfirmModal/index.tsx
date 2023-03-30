@@ -1,6 +1,5 @@
 import { FC, useContext } from "react";
 import { RoomsContext } from "../../../contexts";
-import Router from "next/router";
 import CloseIcon from "@mui/icons-material/Close";
 import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import CheckIcon from "@mui/icons-material/Check";
@@ -21,6 +20,8 @@ interface Props {
   successText: string;
   open: boolean;
   onClose: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  onCancel?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  onSuccess: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   confirmContext: "RoomsContext";
 }
 
@@ -31,6 +32,8 @@ const ConfirmModal: FC<Props> = ({
   successText,
   open,
   onClose,
+  onCancel,
+  onSuccess,
   confirmContext,
 }) => {
   const {
@@ -53,10 +56,10 @@ const ConfirmModal: FC<Props> = ({
   };
 
   const handleSuccess = () => {
-    console.log(Router.asPath);
     setIsSuccess(false);
     setMessage("");
-    Router.replace(Router.asPath);
+    onClose();
+    onSuccess();
   };
 
   return (
@@ -77,7 +80,7 @@ const ConfirmModal: FC<Props> = ({
               BGType="primaryOutlined"
               sx={{ width: "160px" }}
               endIcon={<NotInterestedIcon />}
-              onClick={handleClose}
+              onClick={onCancel || handleClose}
             >
               Cancel
             </StyledButton>
