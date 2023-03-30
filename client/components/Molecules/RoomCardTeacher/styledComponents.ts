@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 
 export const Container = styled(Box)(() => ({
-  minWidth: "45%",
+  minWidth: "247px",
   height: "250px",
   paddingBottom: "10px",
   display: "flex",
