@@ -22,10 +22,10 @@ export const TeacherImage = styled(Image)(() => ({
 export const TeacherName = styled(Typography)(({ theme }) => ({
   marginTop: "-35px",
   padding: "3px 8px",
-  background: theme.palette.primary.main,
-  color: theme.palette.primary.contrastText,
+  background: theme.palette.secondary.main,
+  color: theme.palette.secondary.contrastText,
   fontSize: "20px",
   fontWeight: 700,
-  border: `5px solid ${theme.palette.primary.contrastText}`,
+  border: `2px solid ${theme.palette.secondary.contrastText}`,
   borderRadius: "8px",
 }));

@@ -4,6 +4,7 @@ import { Tooltip } from "../../../components/Atoms";
 import {
   Container,
   FadeShadow,
+  DescriptionContainer,
   Description,
   ButtonContainer,
   StyledLink,
@@ -21,7 +22,9 @@ const RoomCardDescription: FC<Props> = ({ description, roomId }) => {
   return (
     <Container>
       <FadeShadow />
-      <Description>{description}</Description>
+      <DescriptionContainer>
+        <Description>{description}</Description>
+      </DescriptionContainer>
       <ButtonContainer>
         <StyledLink
           href={`/rooms/room/${roomId}`}

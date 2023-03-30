@@ -12,16 +12,21 @@ export const Container = styled(Box)(() => ({
 export const FadeShadow = styled(Box)(({ theme }) => ({
   position: "absolute",
   right: "0px",
-  bottom: "0px",
+  bottom: "-1px",
   left: "0px",
   width: "100%",
-  height: "80px",
+  height: "60px",
   background: `linear-gradient( ${theme.palette.primary.contrastText.replace(
     "0.87)",
-    "0.5)"
+    "0.1)"
   )}, ${
     theme.palette.primary.contrastText
-  } 60%, ${theme.palette.primary.contrastText.replace("0.87)", "1)")} 75%)`,
+  } 70%, ${theme.palette.primary.contrastText.replace("0.87)", "1)")} 80%)`,
+}));
+
+export const DescriptionContainer = styled(Box)(() => ({
+  maxHeight: "208px",
+  overflow: "hidden",
 }));
 
 export const Description = styled(Typography)(({ theme }) => ({
