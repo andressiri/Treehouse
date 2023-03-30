@@ -10,8 +10,9 @@ export const Container = styled(Box)(() => ({
 
 export const InfoContainer = styled(Box)(() => ({}));
 
-export const Description = styled(Typography)(() => ({
+export const Description = styled(Typography)(({ theme }) => ({
   margin: "0px auto 30px auto",
+  color: theme.palette.secondary.contrastText,
   fontSize: "18px",
   textAlign: "justify",
 }));
