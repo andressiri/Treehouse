@@ -1,44 +1,40 @@
 import { FC } from "react";
-import CastForEducationIcon from "@mui/icons-material/CastForEducation";
-import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
-import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import { ContainerList, StyledItem, NavItemButton } from "./styledComponents";
+import useGetLinksArray from "./useGetLinksArray";
+import Link from "next/link";
 
 interface Props {
   isDrawer?: boolean;
   isDrawerOpen?: boolean;
 }
 
+interface ILink {
+  text: string;
+  href: string;
+  icon: JSX.Element;
+  time: number;
+}
+
 const NavLinks: FC<Props> = ({ isDrawer, isDrawerOpen }) => {
+  const linksArray = useGetLinksArray();
+
   return (
     <ContainerList>
-      <StyledItem
-        isDrawer={isDrawer}
-        isDrawerOpen={isDrawerOpen}
-        appearingTime={600}
-      >
-        <NavItemButton disableRipple startIcon={<CastForEducationIcon />}>
-          Rooms
-        </NavItemButton>
-      </StyledItem>
-      <StyledItem
-        isDrawer={isDrawer}
-        isDrawerOpen={isDrawerOpen}
-        appearingTime={650}
-      >
-        <NavItemButton disableRipple startIcon={<HistoryEduIcon />}>
-          Teachers
-        </NavItemButton>
-      </StyledItem>
-      <StyledItem
-        isDrawer={isDrawer}
-        isDrawerOpen={isDrawerOpen}
-        appearingTime={700}
-      >
-        <NavItemButton disableRipple startIcon={<LocalLibraryIcon />}>
-          Students
-        </NavItemButton>
-      </StyledItem>
+      {linksArray.map((link: ILink, id: number) => {
+        return (
+          <Link href={link.href} key={`${link.text}${id}`}>
+            <StyledItem
+              isDrawer={isDrawer}
+              isDrawerOpen={isDrawerOpen}
+              appearingTime={link.time}
+            >
+              <NavItemButton disableRipple startIcon={link.icon}>
+                {link.text}
+              </NavItemButton>
+            </StyledItem>
+          </Link>
+        );
+      })}
     </ContainerList>
   );
 };

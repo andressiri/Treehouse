@@ -33,7 +33,7 @@ const RoomCardTitle: FC<Props> = ({ title, roomId }) => {
               width="75px"
               left="-70px"
             >
-              See more...
+              Go to room
             </Tooltip>
           ) : (
             <></>
