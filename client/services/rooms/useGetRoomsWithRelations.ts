@@ -1,9 +1,9 @@
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext } from "react";
 import { RoomsContext } from "../../contexts";
 import { axiosInstance } from "../../utils/helpers";
 
 const useGetRoomsWithRelations = () => {
-  const { rooms, setRooms, setIsError, setIsLoading, setMessage } =
+  const { setRooms, setIsError, setIsLoading, setMessage } =
     useContext(RoomsContext);
 
   const getRoomsWithRelations = useCallback(async () => {
@@ -18,10 +18,6 @@ const useGetRoomsWithRelations = () => {
       setIsLoading(false);
     }
   }, [setRooms, setIsError, setIsLoading, setMessage]);
-
-  useEffect(() => {
-    if (!rooms.length) getRoomsWithRelations();
-  }, [rooms, getRoomsWithRelations]);
 
   return { getRoomsWithRelations };
 };
