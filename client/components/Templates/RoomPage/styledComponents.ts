@@ -23,7 +23,11 @@ export const StudentsTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
 }));
 
-export const DeleteContainer = styled(Box)(() => ({
+export const ActionsContainer = styled(Box)(() => ({
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "40px",
+  alignItems: "center",
   width: "fit-content",
   margin: "100px auto 50px auto",
 }));

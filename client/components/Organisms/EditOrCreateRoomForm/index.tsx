@@ -2,23 +2,36 @@ import { FC, useContext, useEffect, useState } from "react";
 import { RoomsContext } from "../../../contexts";
 import Router from "next/router";
 import CheckIcon from "@mui/icons-material/Check";
-import { useCreateRoom } from "../../../services";
+import { useCreateRoom, useEditRoom } from "../../../services";
 import { StyledButton, StyledTextField } from "../../../components/Atoms";
 import { Container, ErrorContainer, ErrorMessage } from "./styledComponents";
+
+interface Props {
+  propRoom?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+}
 
 interface IFormData {
   name: string;
   description: string;
 }
 
-const CreateRoomForm: FC = () => {
-  const [formData, setFormData] = useState<IFormData>({
-    name: "",
-    description: "",
-  });
+const CreateRoomForm: FC<Props> = ({ propRoom }) => {
   const { room, isSuccess, setIsSuccess, message, setMessage } =
     useContext(RoomsContext);
+  const [formData, setFormData] = useState<IFormData>({
+    name: propRoom ? room.name : "",
+    description: propRoom ? room.description : "",
+  });
   const { createRoom } = useCreateRoom();
+  const { editRoom } = useEditRoom();
+
+  useEffect(() => {
+    if (propRoom)
+      setFormData({
+        name: room.name,
+        description: room.description,
+      });
+  }, [room, propRoom]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -43,6 +56,11 @@ const CreateRoomForm: FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
+    if (propRoom) {
+      editRoom(formData, Number(Router.query.id));
+      return;
+    }
+
     createRoom(formData);
   };
 
@@ -52,14 +70,17 @@ const CreateRoomForm: FC = () => {
       onSubmit={(e: React.FormEvent<HTMLDivElement>) => handleSubmit(e)}
     >
       <StyledTextField
+        value={formData.name}
         name="name"
         onChange={(
           e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
         ) => handleOnChange(e)}
         label="Name"
         variant="outlined"
+        InputLabelProps={formData.name ? { shrink: true } : {}}
       />
       <StyledTextField
+        value={formData.description}
         name="description"
         onChange={(
           e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -68,12 +89,13 @@ const CreateRoomForm: FC = () => {
         variant="outlined"
         multiline={true}
         rows={4}
+        InputLabelProps={formData.description ? { shrink: true } : {}}
       />
       <ErrorContainer>
         {message ? <ErrorMessage>{message}</ErrorMessage> : <></>}
       </ErrorContainer>
       <StyledButton type="submit" endIcon={<CheckIcon />}>
-        Create room
+        {propRoom ? "Edit room" : "Create room"}
       </StyledButton>
     </Container>
   );

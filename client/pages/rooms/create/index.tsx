@@ -1,12 +1,12 @@
 import { FC } from "react";
-import { Layout, CreateRoomPage } from "../../../components/Templates";
+import { Layout, EditOrCreateRoomPage } from "../../../components/Templates";
 
-const Rooms: FC = () => {
+const CreateRoom: FC = () => {
   return (
     <Layout>
-      <CreateRoomPage />
+      <EditOrCreateRoomPage />
     </Layout>
   );
 };
 
-export default Rooms;
+export default CreateRoom;

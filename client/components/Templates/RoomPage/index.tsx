@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import Router from "next/router";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import EditIcon from "@mui/icons-material/Edit";
 import { useDeleteRoom } from "../../../services";
 import {
   FallbackText,
@@ -16,7 +17,7 @@ import {
   Container,
   Description,
   StudentsTitle,
-  DeleteContainer,
+  ActionsContainer,
 } from "./styledComponents";
 
 interface Props {
@@ -37,12 +38,12 @@ const RoomPage: FC<Props> = ({ room }) => {
       )}
       {room.Teacher ? <RoomTeacher teacher={room.Teacher} /> : <></>}
       <StudentsTitle>This are its students</StudentsTitle>
-      {room.Students.length ? (
+      {room.Students && room.Students.length ? (
         <StudentsList studentsArray={room.Students} />
       ) : (
         <FallbackText>There are no students registered</FallbackText>
       )}
-      <DeleteContainer>
+      <ActionsContainer>
         <StyledButton
           BGType="secondaryContrastOutlined"
           endIcon={<WarningAmberIcon />}
@@ -50,7 +51,13 @@ const RoomPage: FC<Props> = ({ room }) => {
         >
           Delete room
         </StyledButton>
-      </DeleteContainer>
+        <StyledButton
+          endIcon={<EditIcon />}
+          onClick={() => Router.push(`/rooms/edit/${room.id}`)}
+        >
+          Edit room
+        </StyledButton>
+      </ActionsContainer>
       <ConfirmModal
         text={`Are you sure you want to delete the ${room.name} room?`}
         confirmAction={() => deleteRoom(Number(Router.query.id))}

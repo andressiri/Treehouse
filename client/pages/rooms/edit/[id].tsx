@@ -1,10 +1,10 @@
-import { Layout, RoomPage } from "../../../components/Templates";
 import { FC, useContext, useEffect } from "react";
-import { RoomsContext } from "../../../contexts";
 import Router from "next/router";
+import { RoomsContext } from "../../../contexts";
 import { useGetRoomByIdEffect } from "../../../services";
+import { Layout, EditOrCreateRoomPage } from "../../../components/Templates";
 
-const RoomById: FC = () => {
+const EditRoom: FC = () => {
   const { room, isError, setIsError, message } = useContext(RoomsContext);
   useGetRoomByIdEffect();
 
@@ -14,12 +14,11 @@ const RoomById: FC = () => {
       Router.push("/");
     }
   }, [isError, setIsError, message]);
-
   return (
     <Layout>
-      <RoomPage room={room} />
+      <EditOrCreateRoomPage room={room} />
     </Layout>
   );
 };
 
-export default RoomById;
+export default EditRoom;
