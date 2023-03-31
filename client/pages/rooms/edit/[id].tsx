@@ -14,6 +14,7 @@ const EditRoom: FC = () => {
       Router.push("/");
     }
   }, [isError, setIsError, message]);
+
   return (
     <Layout>
       <EditOrCreateRoomPage room={room} />
