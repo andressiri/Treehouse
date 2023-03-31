@@ -3,7 +3,7 @@ import Router from "next/router";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import NoMeetingRoomIcon from "@mui/icons-material/NoMeetingRoom";
-import { useRemoveStudentFromRoom } from "../../../services";
+import { useRemoveStudentFromRoom, useRemoveSibling } from "../../../services";
 import { ActionIconButton, LinkIconButton } from "../../../components/Atoms";
 import { ConfirmModal } from "../../../components/Organisms";
 import { Container, Name, ActionsContainer } from "./styledComponents";
@@ -12,16 +12,24 @@ interface Props {
   id: number;
   name: string;
   listOf?: "siblings" | "students";
+  studentId?: string;
 }
 
-const StudentListItem: FC<Props> = ({ id, name, listOf }) => {
+const StudentListItem: FC<Props> = ({ id, name, listOf, studentId }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const siblings = useRef<boolean>(listOf === "siblings");
   const { removeStudentFromRoom } = useRemoveStudentFromRoom();
+  const { removeSibling } = useRemoveSibling();
 
-  const handleDeleteSibling = () => {}; // eslint-disable-line
+  const handleDeleteSibling = (removeFromOtherSiblings: boolean) => {
+    const formData = removeFromOtherSiblings
+      ? { siblingId: `${id}`, removeFromOtherSiblings: true }
+      : { siblingId: `${id}` };
+    removeSibling(formData, Number(studentId));
+  };
+
   const handleRemoveFromClassroom = () => {
-    setOpenConfirm(true);
+    removeStudentFromRoom(id);
   };
 
   return (
@@ -35,9 +43,7 @@ const StudentListItem: FC<Props> = ({ id, name, listOf }) => {
           tooltipWidth="70px"
         />
         <ActionIconButton
-          onClick={
-            siblings.current ? handleDeleteSibling : handleRemoveFromClassroom
-          }
+          onClick={() => setOpenConfirm(true)}
           icon={
             listOf === "siblings" ? <PersonRemoveIcon /> : <NoMeetingRoomIcon />
           }
@@ -45,15 +51,22 @@ const StudentListItem: FC<Props> = ({ id, name, listOf }) => {
           tooltipWidth="120px"
         />
         <ConfirmModal
-          text={`Are you sure you want to remove ${name} ${
-            siblings.current ? "as sibling" : "from the room"
-          }?`}
-          confirmAction={() => removeStudentFromRoom(id)}
+          text={
+            siblings.current
+              ? "Do you want to remove it from the other siblings too?"
+              : `Are you sure you want to remove ${name} from the room`
+          }
+          confirmAction={
+            siblings.current
+              ? () => handleDeleteSibling(true)
+              : handleRemoveFromClassroom
+          }
+          noAction={siblings.current ? () => handleDeleteSibling(false) : null}
           successText={`${name} was removed successfully`}
           open={openConfirm}
           onClose={() => setOpenConfirm(false)}
           onSuccess={() => Router.replace(Router.asPath)}
-          confirmContext="RoomsContext"
+          confirmContext="StudentsContext"
         />
       </ActionsContainer>
     </Container>

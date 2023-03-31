@@ -13,8 +13,8 @@ import {
   removeSibling,
 } from "../controllers/students";
 import {
-  authenticateAdmin,
-  authenticateUser,
+  // authenticateAdmin, // temporary disabled until client has authentication developed
+  // authenticateUser, // temporary disabled until client has authentication developed
   validateRequestFields,
 } from "../middlewares";
 import {
@@ -33,8 +33,8 @@ const studentsRouter = express.Router();
 
 studentsRouter.post(
   "/",
-  authenticateUser,
-  authenticateAdmin,
+  // authenticateUser,
+  // authenticateAdmin,
   checkName,
   checkAge,
   checkGender,
@@ -57,8 +57,8 @@ studentsRouter.get(
 
 studentsRouter.put(
   `/${edit}/${byId}`,
-  authenticateUser,
-  authenticateAdmin,
+  // authenticateUser,
+  // authenticateAdmin,
   checkIntegerId,
   checkAgeIsInt,
   checkGenderIsValid,
@@ -70,8 +70,8 @@ studentsRouter.put(
 
 studentsRouter.delete(
   `/room/${byId}`,
-  authenticateUser,
-  authenticateAdmin,
+  // authenticateUser,
+  // authenticateAdmin,
   checkIntegerId,
   validateRequestFields,
   removeFromRoom
@@ -79,8 +79,8 @@ studentsRouter.delete(
 
 studentsRouter.delete(
   `/${deletion}/${byId}`,
-  authenticateUser,
-  authenticateAdmin,
+  // authenticateUser,
+  // authenticateAdmin,
   checkIntegerId,
   validateRequestFields,
   deleteStudent
@@ -88,8 +88,8 @@ studentsRouter.delete(
 
 studentsRouter.put(
   `/siblings/${byId}`,
-  authenticateUser,
-  authenticateAdmin,
+  // authenticateUser,
+  // authenticateAdmin,
   checkIntegerId,
   checkSiblingId,
   validateRequestFields,
@@ -98,8 +98,8 @@ studentsRouter.put(
 
 studentsRouter.delete(
   `/siblings/${byId}`,
-  authenticateUser,
-  authenticateAdmin,
+  // authenticateUser,
+  // authenticateAdmin,
   checkIntegerId,
   checkSiblingId,
   validateRequestFields,

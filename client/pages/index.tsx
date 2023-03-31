@@ -3,7 +3,7 @@ import { RoomsContext } from "../contexts";
 import { useGetRoomsWithRelationsEffect } from "../services";
 import { useResolveUnhandledErrors } from "../utils/hooks";
 import { IndexPageTitle } from "../components/Molecules";
-import { RoomCardsDisplay } from "../components/Organisms";
+import { CardsDisplay } from "../components/Organisms";
 import { Layout } from "../components/Templates";
 
 const Home: FC = () => {
@@ -18,7 +18,7 @@ const Home: FC = () => {
       ) : (
         <main>
           <IndexPageTitle />
-          <RoomCardsDisplay roomsArray={rooms} />
+          <CardsDisplay displayArray={rooms} modelName="room" />
         </main>
       )}
     </Layout>

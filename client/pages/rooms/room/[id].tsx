@@ -1,8 +1,8 @@
-import { Layout, RoomPage } from "../../../components/Templates";
 import { FC, useContext, useEffect } from "react";
 import { RoomsContext } from "../../../contexts";
 import Router from "next/router";
 import { useGetRoomByIdEffect } from "../../../services";
+import { Layout, RoomPage } from "../../../components/Templates";
 
 const RoomById: FC = () => {
   const { room, isError, setIsError, message } = useContext(RoomsContext);

@@ -4,7 +4,12 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "../styles/theme";
 import createEmotionCache from "../utils/createEmotionCache";
-import { GeneralContextProvider, RoomsContextProvider } from "../contexts";
+import {
+  GeneralContextProvider,
+  RoomsContextProvider,
+  StudentsContextProvider,
+  TeachersContextProvider,
+} from "../contexts";
 import { HeadSetup } from "../components";
 import "../styles/globals.css";
 
@@ -22,12 +27,16 @@ const App: FC<IAppProps> = ({
   return (
     <GeneralContextProvider>
       <RoomsContextProvider>
-        <CacheProvider value={emotionCache}>
-          <HeadSetup />
-          <ThemeProvider theme={theme}>
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </CacheProvider>
+        <StudentsContextProvider>
+          <TeachersContextProvider>
+            <CacheProvider value={emotionCache}>
+              <HeadSetup />
+              <ThemeProvider theme={theme}>
+                <Component {...pageProps} />
+              </ThemeProvider>
+            </CacheProvider>
+          </TeachersContextProvider>
+        </StudentsContextProvider>
       </RoomsContextProvider>
     </GeneralContextProvider>
   );

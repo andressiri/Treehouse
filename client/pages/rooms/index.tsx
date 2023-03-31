@@ -1,7 +1,7 @@
 import { FC, useContext } from "react";
 import { RoomsContext } from "../../contexts";
 import { useGetRoomsWithRelationsEffect } from "../../services";
-import { Layout, RoomsPage } from "../../components/Templates";
+import { Layout, DisplayPage } from "../../components/Templates";
 
 const Rooms: FC = () => {
   const { rooms } = useContext(RoomsContext);
@@ -9,7 +9,7 @@ const Rooms: FC = () => {
 
   return (
     <Layout>
-      <RoomsPage rooms={rooms} />
+      <DisplayPage data={rooms} modelName="room" />
     </Layout>
   );
 };

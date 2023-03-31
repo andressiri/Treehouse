@@ -11,6 +11,7 @@ export const Age = styled(Typography)(({ theme }) => ({
   color: theme.palette.secondary.contrastText,
   fontSize: "22px",
   fontWeight: 600,
+  textTransform: "capitalize",
   "& span": {
     color: theme.palette.primary.main,
   },

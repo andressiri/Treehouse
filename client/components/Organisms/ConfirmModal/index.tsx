@@ -1,5 +1,9 @@
 import { FC, useContext } from "react";
-import { RoomsContext } from "../../../contexts";
+import {
+  RoomsContext,
+  StudentsContext,
+  TeachersContext,
+} from "../../../contexts";
 import CloseIcon from "@mui/icons-material/Close";
 import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import CheckIcon from "@mui/icons-material/Check";
@@ -20,9 +24,9 @@ interface Props {
   successText: string;
   open: boolean;
   onClose: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  onCancel?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  noAction?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   onSuccess: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  confirmContext: "RoomsContext";
+  confirmContext: "RoomsContext" | "StudentsContext" | "TeachersContext";
 }
 
 const ConfirmModal: FC<Props> = ({
@@ -32,10 +36,13 @@ const ConfirmModal: FC<Props> = ({
   successText,
   open,
   onClose,
-  onCancel,
+  noAction,
   onSuccess,
   confirmContext,
 }) => {
+  const ContextOfRooms = useContext(RoomsContext);
+  const ContextOfStudents = useContext(StudentsContext);
+  const ContextOfTeachers = useContext(TeachersContext);
   const {
     isError,
     setIsError,
@@ -43,9 +50,12 @@ const ConfirmModal: FC<Props> = ({
     setIsSuccess,
     setMessage,
     isLoading,
-  } = useContext(
-    confirmContext === "RoomsContext" ? RoomsContext : RoomsContext
-  );
+  } =
+    confirmContext === "RoomsContext"
+      ? ContextOfRooms
+      : confirmContext === "StudentsContext"
+      ? ContextOfStudents
+      : ContextOfTeachers;
 
   const handleClose = () => onClose();
 
@@ -80,16 +90,16 @@ const ConfirmModal: FC<Props> = ({
               BGType="primaryOutlined"
               sx={{ width: "160px" }}
               endIcon={<NotInterestedIcon />}
-              onClick={onCancel || handleClose}
+              onClick={noAction || handleClose}
             >
-              Cancel
+              {noAction ? "No" : "Cancel"}
             </StyledButton>
             <StyledButton
               sx={{ width: "160px" }}
               endIcon={<CheckIcon />}
               onClick={confirmAction}
             >
-              Confirm
+              {noAction ? "Yes" : "Confirm"}
             </StyledButton>
           </ButtonsContainer>
         ) : isError ? (

@@ -15,7 +15,7 @@ interface IFormData {
   description: string;
 }
 
-const CreateRoomForm: FC<Props> = ({ propRoom }) => {
+const EditOrCreateRoomForm: FC<Props> = ({ propRoom }) => {
   const { room, isSuccess, setIsSuccess, message, setMessage } =
     useContext(RoomsContext);
   const [formData, setFormData] = useState<IFormData>({
@@ -43,7 +43,7 @@ const CreateRoomForm: FC<Props> = ({ propRoom }) => {
     return () => {
       setMessage("");
     };
-  }, [room.id, isSuccess, setIsSuccess, setMessage]);
+  }, [room, isSuccess, setIsSuccess, setMessage]);
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -101,4 +101,4 @@ const CreateRoomForm: FC<Props> = ({ propRoom }) => {
   );
 };
 
-export default CreateRoomForm;
+export default EditOrCreateRoomForm;

@@ -1,6 +1,7 @@
 import { SxProps } from "@mui/system";
 
 export interface IStyledButton {
+  disabled?: boolean;
   BGType?:
     | "primaryBG"
     | "secondaryBG"
