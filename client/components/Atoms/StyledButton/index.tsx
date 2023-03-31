@@ -16,6 +16,7 @@ const ContactButton: FC<IStyledButton> = ({
   onBlur,
   tabIndex = 0,
   children,
+  type,
 }) => {
   return (
     <ButtonStyled
@@ -31,6 +32,7 @@ const ContactButton: FC<IStyledButton> = ({
       onFocus={onFocus}
       onBlur={onBlur}
       tabIndex={tabIndex}
+      type={type}
     >
       {children}
     </ButtonStyled>

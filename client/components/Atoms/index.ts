@@ -1,5 +1,6 @@
 export { default as ActionIconButton } from "./ActionIconButton";
 export { default as BackgroundTexture } from "./BackgroundTexture";
+export { default as FallbackText } from "./FallbackText";
 export { default as LinkIconButton } from "./LinkIconButton";
 export { default as SectionTitle } from "./SectionTitle";
 export { default as Spinner } from "./Spinner";

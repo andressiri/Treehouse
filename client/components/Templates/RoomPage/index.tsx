@@ -2,7 +2,11 @@ import { FC, useState } from "react";
 import Router from "next/router";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { useDeleteRoom } from "../../../services";
-import { SectionTitle, StyledButton } from "../../../components/Atoms";
+import {
+  FallbackText,
+  SectionTitle,
+  StyledButton,
+} from "../../../components/Atoms";
 import {
   ConfirmModal,
   RoomTeacher,
@@ -12,7 +16,6 @@ import {
   Container,
   Description,
   StudentsTitle,
-  StudentsFallback,
   DeleteContainer,
 } from "./styledComponents";
 
@@ -27,13 +30,17 @@ const RoomPage: FC<Props> = ({ room }) => {
   return (
     <Container component="section">
       <SectionTitle>{room.name}</SectionTitle>
-      <Description>{room.description}</Description>
+      {room.description ? (
+        <Description>{room.description}</Description>
+      ) : (
+        <FallbackText>This room has no description</FallbackText>
+      )}
       {room.Teacher ? <RoomTeacher teacher={room.Teacher} /> : <></>}
       <StudentsTitle>This are its students</StudentsTitle>
-      {room.Students ? (
+      {room.Students.length ? (
         <StudentsList studentsArray={room.Students} />
       ) : (
-        <StudentsFallback>There are no students registered</StudentsFallback>
+        <FallbackText>There are no students registered</FallbackText>
       )}
       <DeleteContainer>
         <StyledButton
