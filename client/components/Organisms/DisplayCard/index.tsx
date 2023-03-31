@@ -1,32 +1,34 @@
 import { FC } from "react";
-import {
-  RoomCardDescription,
-  DisplayImage,
-  RoomCardTitle,
-} from "../../Molecules";
+import { CardDescription, DisplayImage, CardTitle } from "../../Molecules";
 import { Container, InfoContainer } from "./styledComponents";
 
 interface Props {
   name: string;
-  roomId: number;
+  id: number;
   teacherName?: string;
   image: string;
   description: string;
+  modelName: "room" | "student" | "teacher";
 }
 
 const DisplayCard: FC<Props> = ({
   name,
-  roomId,
+  id,
   teacherName,
   image,
   description,
+  modelName,
 }) => {
   return (
     <Container>
-      <RoomCardTitle title={name} roomId={roomId} />
+      <CardTitle title={name} id={id} modelName={modelName} />
       <InfoContainer>
         <DisplayImage imageSrc={image} name={teacherName} />
-        <RoomCardDescription description={description} roomId={roomId} />
+        <CardDescription
+          description={description}
+          id={id}
+          modelName={modelName}
+        />
       </InfoContainer>
     </Container>
   );

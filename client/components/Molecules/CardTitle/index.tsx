@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Tooltip } from "../../../components/Atoms";
+import { Tooltip } from "../../Atoms";
 import {
   Container,
   Title,
@@ -11,10 +11,11 @@ import {
 
 interface Props {
   title: string;
-  roomId: number;
+  id: number;
+  modelName: "room" | "student" | "teacher";
 }
 
-const RoomCardTitle: FC<Props> = ({ title, roomId }) => {
+const CardTitle: FC<Props> = ({ title, id, modelName }) => {
   const [tooltip, setTooltip] = useState<boolean>(false);
 
   return (
@@ -22,7 +23,7 @@ const RoomCardTitle: FC<Props> = ({ title, roomId }) => {
       <Title>{title}</Title>
       <ButtonContainer>
         <StyledLink
-          href={`/rooms/room/${roomId}`}
+          href={`/${modelName}s/${modelName}/${id}`}
           onMouseEnter={() => setTooltip(true)}
           onMouseLeave={() => setTooltip(false)}
         >
@@ -30,10 +31,10 @@ const RoomCardTitle: FC<Props> = ({ title, roomId }) => {
             <Tooltip
               tooltipPosition="left"
               color="primaryContrast"
-              width="75px"
+              width="90px"
               left="-70px"
             >
-              Go to room
+              {`Go to ${modelName}`}
             </Tooltip>
           ) : (
             <></>
@@ -47,4 +48,4 @@ const RoomCardTitle: FC<Props> = ({ title, roomId }) => {
   );
 };
 
-export default RoomCardTitle;
+export default CardTitle;

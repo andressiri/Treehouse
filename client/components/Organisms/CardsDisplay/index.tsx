@@ -17,7 +17,7 @@ const CardsDisplay: FC<Props> = ({ displayArray, modelName }) => {
           return (
             <DisplayCard
               name={obj.name}
-              roomId={obj.id}
+              id={obj.id}
               teacherName={
                 obj.Teacher?.name && modelName === "room"
                   ? obj.Teacher.name
@@ -31,6 +31,7 @@ const CardsDisplay: FC<Props> = ({ displayArray, modelName }) => {
                   : obj.picture
               }
               description={obj.description}
+              modelName={modelName}
               key={`${obj.id}${obj.name}${id}`}
             />
           );

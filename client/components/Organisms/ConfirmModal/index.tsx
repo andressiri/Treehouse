@@ -1,5 +1,5 @@
 import { FC, useContext } from "react";
-import { RoomsContext } from "../../../contexts";
+import { RoomsContext, StudentsContext } from "../../../contexts";
 import CloseIcon from "@mui/icons-material/Close";
 import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import CheckIcon from "@mui/icons-material/Check";
@@ -22,7 +22,7 @@ interface Props {
   onClose: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   onCancel?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   onSuccess: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  confirmContext: "RoomsContext";
+  confirmContext: "RoomsContext" | "StudentsContext" | "TeachersContext";
 }
 
 const ConfirmModal: FC<Props> = ({
@@ -36,6 +36,8 @@ const ConfirmModal: FC<Props> = ({
   onSuccess,
   confirmContext,
 }) => {
+  const ContextOfRooms = useContext(RoomsContext);
+  const ContextOfStudents = useContext(StudentsContext);
   const {
     isError,
     setIsError,
@@ -43,9 +45,7 @@ const ConfirmModal: FC<Props> = ({
     setIsSuccess,
     setMessage,
     isLoading,
-  } = useContext(
-    confirmContext === "RoomsContext" ? RoomsContext : RoomsContext
-  );
+  } = confirmContext === "RoomsContext" ? ContextOfRooms : ContextOfStudents;
 
   const handleClose = () => onClose();
 

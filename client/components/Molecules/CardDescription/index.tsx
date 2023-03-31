@@ -1,6 +1,6 @@
 import { FC } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { LinkIconButton } from "../../../components/Atoms";
+import { LinkIconButton } from "../../Atoms";
 import {
   Container,
   FadeShadow,
@@ -11,10 +11,11 @@ import {
 
 interface Props {
   description: string;
-  roomId: number;
+  id: number;
+  modelName: "room" | "student" | "teacher";
 }
 
-const RoomCardDescription: FC<Props> = ({ description, roomId }) => {
+const RoomCardDescription: FC<Props> = ({ description, id, modelName }) => {
   return (
     <Container>
       <FadeShadow />
@@ -23,7 +24,7 @@ const RoomCardDescription: FC<Props> = ({ description, roomId }) => {
       </DescriptionContainer>
       <ButtonContainer>
         <LinkIconButton
-          href={`/rooms/room/${roomId}`}
+          href={`/${modelName}s/${modelName}/${id}`}
           icon={<VisibilityIcon />}
           tooltipText="See more..."
           tooltipWidth="75px"
