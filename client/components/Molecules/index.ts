@@ -7,5 +7,6 @@ export { default as NavLinks } from "./NavLinks";
 export { default as NavLogo } from "./NavLogo";
 export { default as PersonBasicInfo } from "./PersonBasicInfo";
 export { default as PersonRoom } from "./PersonRoom";
+export { default as PersonRoomFallback } from "./PersonRoomFallback";
 export { default as SidebarSocialMedia } from "./SidebarSocialMedia";
 export { default as StudentListItem } from "./StudentListItem";

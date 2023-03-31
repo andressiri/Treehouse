@@ -3,6 +3,7 @@ import { ButtonStyled } from "./styledComponents";
 import { IStyledButton } from "../../../typings/buttons";
 
 const ContactButton: FC<IStyledButton> = ({
+  disabled = false,
   BGType = "primaryBG",
   passRef,
   transparent = false,
@@ -20,6 +21,7 @@ const ContactButton: FC<IStyledButton> = ({
 }) => {
   return (
     <ButtonStyled
+      disabled={disabled}
       transparent={transparent}
       hover={hover}
       ref={passRef}

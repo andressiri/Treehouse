@@ -12,6 +12,7 @@ import {
   DisplayImage,
   PersonBasicInfo,
   PersonRoom,
+  PersonRoomFallback,
 } from "../../../components/Molecules";
 import { ConfirmModal, StudentsList } from "../../../components/Organisms";
 import {
@@ -23,11 +24,12 @@ import {
 } from "./styledComponents";
 
 interface Props {
+  rooms: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   data: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   modelName: "student" | "teacher";
 }
 
-const PersonPage: FC<Props> = ({ data, modelName }) => {
+const PersonPage: FC<Props> = ({ rooms, data, modelName }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const { deleteStudent } = useDeleteStudent();
   const { deleteTeacher } = useDeleteTeacher();
@@ -51,7 +53,12 @@ const PersonPage: FC<Props> = ({ data, modelName }) => {
             personName={data.name}
           />
         ) : (
-          <></>
+          <PersonRoomFallback
+            rooms={rooms}
+            modelName={modelName}
+            personId={data.id}
+            personName={data.name}
+          />
         )}
         {modelName === "student" ? (
           <>

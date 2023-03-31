@@ -1,12 +1,18 @@
 import { FC, useContext, useEffect } from "react";
-import { TeachersContext } from "../../../contexts";
+import { RoomsContext, TeachersContext } from "../../../contexts";
 import Router from "next/router";
-import { useGetTeacherByIdEffect } from "../../../services";
+import {
+  useGetRoomsWithRelationsEffect,
+  useGetTeacherByIdEffect,
+} from "../../../services";
 import { Layout, PersonPage } from "../../../components/Templates";
 
 const TeacherById: FC = () => {
   const { teacher, isError, setIsError, message } = useContext(TeachersContext);
+  const { rooms } = useContext(RoomsContext);
+
   useGetTeacherByIdEffect();
+  useGetRoomsWithRelationsEffect();
 
   useEffect(() => {
     if (isError) {
@@ -17,7 +23,7 @@ const TeacherById: FC = () => {
 
   return (
     <Layout>
-      <PersonPage data={teacher} modelName="teacher" />
+      <PersonPage rooms={rooms} data={teacher} modelName="teacher" />
     </Layout>
   );
 };

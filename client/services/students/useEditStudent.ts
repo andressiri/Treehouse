@@ -3,9 +3,9 @@ import { StudentsContext } from "../../contexts";
 import { axiosInstance } from "../../utils/helpers";
 
 interface IFormData {
-  name: string;
-  age: string;
-  gender: string;
+  name?: string;
+  age?: string;
+  gender?: string;
   description?: string;
   roomId?: string;
 }
