@@ -21,7 +21,7 @@ const roomsMigration = {
           },
           capacity: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            // allowNull: false, temporary allowed until client has its logic developed.
           },
           description: {
             type: DataTypes.STRING(5000),
