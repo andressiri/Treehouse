@@ -8,7 +8,11 @@ import {
   SectionTitle,
   StyledButton,
 } from "../../../components/Atoms";
-import { DisplayImage, PersonRoom } from "../../../components/Molecules";
+import {
+  DisplayImage,
+  PersonBasicInfo,
+  PersonRoom,
+} from "../../../components/Molecules";
 import { ConfirmModal, StudentsList } from "../../../components/Organisms";
 import {
   Container,
@@ -33,6 +37,7 @@ const PersonPage: FC<Props> = ({ data, modelName }) => {
       <InnerContainer>
         <SectionTitle>{data.name}</SectionTitle>
         <DisplayImage imageSrc={data.picture} />
+        <PersonBasicInfo age={data.age} gender={data.gender} />
         {data.description ? (
           <Description>{data.description}</Description>
         ) : (

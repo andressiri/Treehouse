@@ -2,14 +2,20 @@ import { FC, useContext, useEffect, useRef, useState } from "react";
 import { StudentsContext, TeachersContext } from "../../../contexts";
 import Router from "next/router";
 import CheckIcon from "@mui/icons-material/Check";
+import { MenuItem } from "@mui/material";
 import {
   useCreateStudent,
   useEditStudent,
   useCreateTeacher,
   useEditTeacher,
 } from "../../../services";
-import { StyledButton, StyledTextField } from "../../../components/Atoms";
+import {
+  StyledButton,
+  StyledSelect,
+  StyledTextField,
+} from "../../../components/Atoms";
 import { Container, ErrorContainer, ErrorMessage } from "./styledComponents";
+import getArrays from "./getArrays";
 
 interface Props {
   rooms: any; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -22,9 +28,11 @@ interface IFormData {
   age: string;
   gender: string;
   description: string;
+  roomId: string;
 }
 
 const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
+  const { genderArray, roomsArray } = getArrays(rooms, modelName);
   const isStudent = useRef<boolean>(modelName === "student");
   const ContextOfStudents = useContext(StudentsContext);
   const { student } = useContext(StudentsContext);
@@ -41,6 +49,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
           age: "",
           gender: "",
           description: "",
+          roomId: "",
         }
       : {
           name: isStudent.current ? student.name : teacher.name,
@@ -49,6 +58,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
           description: isStudent.current
             ? student.description
             : teacher.description,
+          roomId: isStudent.current ? student.roomId : teacher.roomId,
         }
   );
   const { createStudent } = useCreateStudent();
@@ -65,6 +75,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
         description: isStudent.current
           ? student.description
           : teacher.description,
+        roomId: isStudent.current ? student.roomId : teacher.roomId,
       });
   }, [student, teacher, person]);
 
@@ -124,7 +135,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
         onChange={(
           e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
         ) => handleOnChange(e)}
-        label="Name"
+        label="Name*"
         variant="outlined"
         InputLabelProps={formData.name ? { shrink: true } : {}}
       />
@@ -134,20 +145,27 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
         onChange={(
           e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
         ) => handleOnChange(e)}
-        label="Age"
+        label="Age*"
         variant="outlined"
-        InputLabelProps={formData.name ? { shrink: true } : {}}
+        InputLabelProps={formData.age ? { shrink: true } : {}}
       />
-      <StyledTextField
+      <StyledSelect
+        select={true}
         value={formData.gender}
         name="gender"
         onChange={(
           e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
         ) => handleOnChange(e)}
-        label="Gender"
+        label="Gender*"
         variant="outlined"
-        InputLabelProps={formData.name ? { shrink: true } : {}}
-      />
+        InputLabelProps={formData.gender ? { shrink: true } : {}}
+      >
+        {genderArray.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </StyledSelect>
       <StyledTextField
         value={formData.description}
         name="description"
@@ -160,6 +178,29 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
         rows={4}
         InputLabelProps={formData.description ? { shrink: true } : {}}
       />
+      <StyledSelect
+        disabled={!roomsArray.length}
+        select={true}
+        value={formData.roomId}
+        name="roomId"
+        onChange={(
+          e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+        ) => handleOnChange(e)}
+        label={!roomsArray.length ? "No rooms available" : "Room"}
+        variant="outlined"
+        InputLabelProps={formData.roomId ? { shrink: true } : {}}
+      >
+        {roomsArray.map(
+          (
+            option: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+            id: number
+          ) => (
+            <MenuItem key={`${option.name}${id}`} value={option.id}>
+              {option.name}
+            </MenuItem>
+          )
+        )}
+      </StyledSelect>
       <ErrorContainer>
         {message ? <ErrorMessage>{message}</ErrorMessage> : <></>}
       </ErrorContainer>

@@ -4,7 +4,10 @@ import { axiosInstance } from "../../utils/helpers";
 
 interface IFormData {
   name: string;
+  age: string;
+  gender: string;
   description?: string;
+  roomId?: string;
 }
 
 const useCreateStudent = () => {
@@ -16,7 +19,6 @@ const useCreateStudent = () => {
       setIsLoading(true);
       try {
         const response = await axiosInstance(`/students`, formData, "POST");
-        console.log(response);
         setStudent(response.studentData);
         setIsSuccess(true);
         setIsLoading(false);
