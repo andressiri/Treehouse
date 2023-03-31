@@ -8,6 +8,7 @@ import {
   GeneralContextProvider,
   RoomsContextProvider,
   StudentsContextProvider,
+  TeachersContextProvider,
 } from "../contexts";
 import { HeadSetup } from "../components";
 import "../styles/globals.css";
@@ -27,12 +28,14 @@ const App: FC<IAppProps> = ({
     <GeneralContextProvider>
       <RoomsContextProvider>
         <StudentsContextProvider>
-          <CacheProvider value={emotionCache}>
-            <HeadSetup />
-            <ThemeProvider theme={theme}>
-              <Component {...pageProps} />
-            </ThemeProvider>
-          </CacheProvider>
+          <TeachersContextProvider>
+            <CacheProvider value={emotionCache}>
+              <HeadSetup />
+              <ThemeProvider theme={theme}>
+                <Component {...pageProps} />
+              </ThemeProvider>
+            </CacheProvider>
+          </TeachersContextProvider>
         </StudentsContextProvider>
       </RoomsContextProvider>
     </GeneralContextProvider>
