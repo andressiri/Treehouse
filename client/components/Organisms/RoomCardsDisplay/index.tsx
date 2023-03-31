@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { FallbackText } from "../../../components/Atoms";
-import { RoomCard } from "../../../components/Organisms";
+import { DisplayCard } from "../../../components/Organisms";
 import { Container } from "./styledComponents";
 
 interface Props {
@@ -14,15 +14,13 @@ const RoomCardsDisplay: FC<Props> = ({ roomsArray }) => {
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
         roomsArray.map((room: any, id: number) => {
           return (
-            <RoomCard
+            <DisplayCard
               name={room.name}
               roomId={room.id}
               teacherName={
                 room.Teacher?.name ? room.Teacher.name : "No teacher"
               }
-              teacherPicture={
-                room.Teacher?.picture ? room.Teacher.picture : null
-              }
+              image={room.Teacher?.picture ? room.Teacher.picture : null}
               description={room.description}
               key={`${room.id}${room.name}${id}`}
             />

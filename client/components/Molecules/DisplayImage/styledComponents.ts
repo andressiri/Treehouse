@@ -12,14 +12,14 @@ export const Container = styled(Box)(() => ({
   justifyContent: "center",
 }));
 
-export const TeacherImage = styled(Image)(() => ({
+export const StyledImage = styled(Image)(() => ({
   width: "180px",
   height: "180px",
   objectFit: "contain",
   borderRadius: "50%",
 }));
 
-export const TeacherName = styled(Typography)(({ theme }) => ({
+export const Name = styled(Typography)(({ theme }) => ({
   marginTop: "-35px",
   padding: "3px 8px",
   background: theme.palette.secondary.main,
