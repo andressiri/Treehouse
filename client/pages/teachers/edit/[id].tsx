@@ -1,5 +1,4 @@
 import { FC, useContext, useEffect } from "react";
-import Router from "next/router";
 import { RoomsContext, TeachersContext } from "../../../contexts";
 import {
   useGetRoomsWithRelationsEffect,
@@ -16,7 +15,6 @@ const EditTeacher: FC = () => {
   useEffect(() => {
     if (isError) {
       setIsError(false);
-      Router.push("/");
     }
   }, [isError, setIsError, message]);
 

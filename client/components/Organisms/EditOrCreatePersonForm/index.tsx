@@ -2,6 +2,7 @@ import { FC, useContext, useEffect, useRef, useState } from "react";
 import { StudentsContext, TeachersContext } from "../../../contexts";
 import Router from "next/router";
 import CheckIcon from "@mui/icons-material/Check";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { MenuItem } from "@mui/material";
 import {
   useCreateStudent,
@@ -15,7 +16,15 @@ import {
   StyledSelect,
   StyledTextField,
 } from "../../../components/Atoms";
-import { Container, ErrorContainer, ErrorMessage } from "./styledComponents";
+import { DisplayImage } from "../../../components/Molecules";
+import {
+  Container,
+  ImageContainer,
+  StyledFileInput,
+  StyledIconButton,
+  ErrorContainer,
+  ErrorMessage,
+} from "./styledComponents";
 import getArrays from "./getArrays";
 
 interface Props {
@@ -33,6 +42,8 @@ interface IFormData {
 }
 
 const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
+  const inputFile = useRef<HTMLInputElement>(null);
+  const [imagePreview, setImagePreview] = useState(person?.picture);
   const { genderArray, roomsArray } = getArrays(rooms, modelName);
   const isStudent = useRef<boolean>(modelName === "student");
   const ContextOfStudents = useContext(StudentsContext);
@@ -79,6 +90,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
           : teacher.description,
         roomId: isStudent.current ? student.roomId : teacher.Room.id,
       });
+    setImagePreview(isStudent.current ? student.picture : teacher.picture);
   }, [student, teacher, person]);
 
   useEffect(() => {
@@ -137,11 +149,41 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
     createTeacher(formData);
   };
 
+  const handleUploadImage = () =>
+    (inputFile as React.RefObject<HTMLInputElement>).current?.click();
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      if (fileReader.readyState === 2) {
+        sessionStorage.setItem("file", fileReader.result as string);
+        setImagePreview(fileReader.result);
+      }
+    };
+    if (!e.target.files) return;
+
+    fileReader.readAsDataURL(e.target.files[0]);
+  };
+
   return (
     <Container
       component="form"
       onSubmit={(e: React.FormEvent<HTMLDivElement>) => handleSubmit(e)}
     >
+      <ImageContainer onClick={handleUploadImage}>
+        <StyledFileInput
+          accept="image/*"
+          ref={inputFile}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleFileUpload(e)
+          }
+          type="file"
+        />
+        <DisplayImage imageSrc={imagePreview} />
+        <StyledIconButton>
+          <CloudUploadIcon />
+        </StyledIconButton>
+      </ImageContainer>
       <StyledTextField
         value={formData.name}
         name="name"
@@ -218,7 +260,11 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
       <ErrorContainer>
         {message ? <ErrorMessage>{message}</ErrorMessage> : <></>}
       </ErrorContainer>
-      <StyledButton type="submit" endIcon={<CheckIcon />}>
+      <StyledButton
+        type="submit"
+        endIcon={<CheckIcon />}
+        sx={{ marginBottom: "90px" }}
+      >
         {person ? `Edit ${modelName}` : `Create ${modelName}`}
       </StyledButton>
     </Container>

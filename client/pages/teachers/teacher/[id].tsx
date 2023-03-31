@@ -9,7 +9,7 @@ import { Layout, PersonPage } from "../../../components/Templates";
 
 const TeacherById: FC = () => {
   const { teacher, isError, setIsError, message } = useContext(TeachersContext);
-  const { rooms } = useContext(RoomsContext);
+  const { rooms, isSuccess, setIsSuccess } = useContext(RoomsContext);
 
   useGetTeacherByIdEffect();
   useGetRoomsWithRelationsEffect();
@@ -19,7 +19,7 @@ const TeacherById: FC = () => {
       setIsError(false);
       Router.push("/");
     }
-  }, [isError, setIsError, message]);
+  }, [isError, setIsError, isSuccess, setIsSuccess, message]);
 
   return (
     <Layout>

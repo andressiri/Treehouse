@@ -1,5 +1,4 @@
 import { FC, useContext, useEffect } from "react";
-import Router from "next/router";
 import { RoomsContext } from "../../../contexts";
 import { useGetRoomByIdEffect } from "../../../services";
 import { Layout, EditOrCreateRoomPage } from "../../../components/Templates";
@@ -11,7 +10,6 @@ const EditRoom: FC = () => {
   useEffect(() => {
     if (isError) {
       setIsError(false);
-      Router.push("/");
     }
   }, [isError, setIsError, message]);
 
