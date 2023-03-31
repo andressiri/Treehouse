@@ -66,7 +66,9 @@ const StudentSiblings: FC<Props> = ({ students, data }) => {
           onChange={(
             e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
           ) => handleOnChange(e)}
-          label={!studentsArray.length ? "No rooms available" : "Room"}
+          label={
+            !studentsArray.length ? "No siblings available" : "Add Sibling"
+          }
           variant="outlined"
         >
           {studentsArray.map(
@@ -79,7 +81,7 @@ const StudentSiblings: FC<Props> = ({ students, data }) => {
               </MenuItem>
             )
           )}
-          <MenuItem value={""}>No room</MenuItem>
+          <MenuItem value={""}>Cancel</MenuItem>
         </StyledSelect>
         <StyledButton
           disabled={!studentSelected}
