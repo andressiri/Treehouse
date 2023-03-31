@@ -2,7 +2,10 @@ import { styled } from "@mui/material/styles";
 import { Box, Typography } from "@mui/material";
 
 export const Container = styled(Box)(() => ({
-  margin: "30px auto 0px auto",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  margin: "30px auto 60px auto",
 }));
 
 export const Title = styled(Typography)(({ theme }) => ({
@@ -15,7 +18,7 @@ export const Title = styled(Typography)(({ theme }) => ({
 
 export const Description = styled(Typography)(({ theme }) => ({
   color: theme.palette.secondary.contrastText,
-  margin: "0px auto 60px auto",
+  margin: "0px auto 30px auto",
   fontSize: "18px",
   textAlign: "justify",
 }));

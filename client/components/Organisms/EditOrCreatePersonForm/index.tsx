@@ -8,6 +8,7 @@ import {
   useEditStudent,
   useCreateTeacher,
   useEditTeacher,
+  useEditRoom,
 } from "../../../services";
 import {
   StyledButton,
@@ -65,6 +66,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
   const { editStudent } = useEditStudent();
   const { createTeacher } = useCreateTeacher();
   const { editTeacher } = useEditTeacher();
+  const { editRoom } = useEditRoom();
 
   useEffect(() => {
     if (person)
@@ -75,7 +77,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
         description: isStudent.current
           ? student.description
           : teacher.description,
-        roomId: isStudent.current ? student.roomId : teacher.roomId,
+        roomId: isStudent.current ? student.roomId : teacher.Room.id,
       });
   }, [student, teacher, person]);
 
@@ -83,6 +85,8 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
     if (isSuccess) {
       setIsSuccess(false);
       setMessage("");
+      if (modelName === "teacher")
+        editRoom({ teacherId: teacher.id }, Number(formData.roomId));
       Router.push(
         `/${modelName}s/${modelName}/${
           isStudent.current ? student.id : teacher.id
@@ -93,7 +97,16 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
     return () => {
       setMessage("");
     };
-  }, [student, teacher, isSuccess, setIsSuccess, setMessage, modelName]);
+  }, [
+    student,
+    teacher,
+    isSuccess,
+    setIsSuccess,
+    setMessage,
+    modelName,
+    editRoom,
+    formData,
+  ]);
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -200,6 +213,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
             </MenuItem>
           )
         )}
+        <MenuItem value={""}>No room</MenuItem>
       </StyledSelect>
       <ErrorContainer>
         {message ? <ErrorMessage>{message}</ErrorMessage> : <></>}

@@ -43,7 +43,16 @@ const PersonPage: FC<Props> = ({ data, modelName }) => {
         ) : (
           <FallbackText>{`This ${modelName} has no description`}</FallbackText>
         )}
-        {data.Room ? <PersonRoom room={data.Room} /> : <></>}
+        {data.Room ? (
+          <PersonRoom
+            room={data.Room}
+            modelName={modelName}
+            personId={data.id}
+            personName={data.name}
+          />
+        ) : (
+          <></>
+        )}
         {modelName === "student" ? (
           <>
             <StudentsTitle>Sibling of</StudentsTitle>
