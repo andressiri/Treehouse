@@ -1,4 +1,4 @@
-export const API_ORIGIN = "http://localhost:8080";
+export const API_ORIGIN = process.env.NEXT_PUBLIC_API_ORIGIN;
 export const API_ROUTE = "/api";
 export const API_VERSION = "/v1";
 export const FACEBOOK_URL = "https://facebook.com";
