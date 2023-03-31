@@ -6,7 +6,8 @@
   "scripts": {
     "start": "tsc --project ./ && node build/index.js",
     "dev": "nodemon index.ts",
-    "build": "tsc --project ./"
+    "build": "tsc --project ./",
+    "createdb": "npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
   },
   "author": "Andrés Siri",
   "license": "ISC",
