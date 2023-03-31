@@ -9,3 +9,4 @@ export { default as RoomTeacher } from "./RoomTeacher";
 export { default as Sidebar } from "./Sidebar";
 export { default as SidebarContent } from "./SidebarContent";
 export { default as StudentsList } from "./StudentsList";
+export { default as StudentSiblings } from "./StudentSiblings";

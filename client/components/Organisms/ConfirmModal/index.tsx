@@ -24,7 +24,7 @@ interface Props {
   successText: string;
   open: boolean;
   onClose: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  onCancel?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  noAction?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   onSuccess: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   confirmContext: "RoomsContext" | "StudentsContext" | "TeachersContext";
 }
@@ -36,7 +36,7 @@ const ConfirmModal: FC<Props> = ({
   successText,
   open,
   onClose,
-  onCancel,
+  noAction,
   onSuccess,
   confirmContext,
 }) => {
@@ -90,16 +90,16 @@ const ConfirmModal: FC<Props> = ({
               BGType="primaryOutlined"
               sx={{ width: "160px" }}
               endIcon={<NotInterestedIcon />}
-              onClick={onCancel || handleClose}
+              onClick={noAction || handleClose}
             >
-              Cancel
+              {noAction ? "No" : "Cancel"}
             </StyledButton>
             <StyledButton
               sx={{ width: "160px" }}
               endIcon={<CheckIcon />}
               onClick={confirmAction}
             >
-              Confirm
+              {noAction ? "Yes" : "Confirm"}
             </StyledButton>
           </ButtonsContainer>
         ) : isError ? (

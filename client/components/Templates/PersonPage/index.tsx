@@ -14,22 +14,22 @@ import {
   PersonRoom,
   PersonRoomFallback,
 } from "../../../components/Molecules";
-import { ConfirmModal, StudentsList } from "../../../components/Organisms";
+import { ConfirmModal, StudentSiblings } from "../../../components/Organisms";
 import {
   Container,
   InnerContainer,
   Description,
-  StudentsTitle,
   ActionsContainer,
 } from "./styledComponents";
 
 interface Props {
+  students?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   rooms: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   data: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   modelName: "student" | "teacher";
 }
 
-const PersonPage: FC<Props> = ({ rooms, data, modelName }) => {
+const PersonPage: FC<Props> = ({ students, rooms, data, modelName }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const { deleteStudent } = useDeleteStudent();
   const { deleteTeacher } = useDeleteTeacher();
@@ -60,18 +60,8 @@ const PersonPage: FC<Props> = ({ rooms, data, modelName }) => {
             personName={data.name}
           />
         )}
-        {modelName === "student" ? (
-          <>
-            <StudentsTitle>Sibling of</StudentsTitle>
-            {data.hasSibling && data.hasSibling.length ? (
-              <StudentsList
-                studentsArray={data.hasSibling}
-                listOf={"siblings"}
-              />
-            ) : (
-              <FallbackText>There are no siblings registered</FallbackText>
-            )}
-          </>
+        {modelName === "student" || students ? (
+          <StudentSiblings students={students} data={data} />
         ) : (
           <></>
         )}
