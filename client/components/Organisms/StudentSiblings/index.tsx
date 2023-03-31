@@ -50,7 +50,11 @@ const StudentSiblings: FC<Props> = ({ students, data }) => {
     <Container>
       <Title>Sibling of</Title>
       {data.hasSibling && data.hasSibling.length ? (
-        <StudentsList studentsArray={data.hasSibling} listOf={"siblings"} />
+        <StudentsList
+          studentsArray={data.hasSibling}
+          listOf={"siblings"}
+          studentId={data.id}
+        />
       ) : (
         <FallbackText>There are no siblings registered</FallbackText>
       )}

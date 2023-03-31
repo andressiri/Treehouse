@@ -13,7 +13,12 @@ interface Props {
   personName: string;
 }
 
-const PersonRoom: FC<Props> = ({ rooms, modelName, personId, personName }) => {
+const PersonRoomFallback: FC<Props> = ({
+  rooms,
+  modelName,
+  personId,
+  personName,
+}) => {
   const [roomSelected, setRoomSelected] = useState("");
   const { editRoom } = useEditRoom();
   const { editStudent } = useEditStudent();
@@ -30,15 +35,15 @@ const PersonRoom: FC<Props> = ({ rooms, modelName, personId, personName }) => {
     setRoomSelected(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (!roomSelected || roomSelected === "No room") return;
 
     if (modelName === "student") {
-      editStudent({ roomId: roomSelected }, Number(personId));
+      await editStudent({ roomId: roomSelected }, Number(personId));
     }
 
-    editRoom({ teacherId: personId }, Number(roomSelected));
+    await editRoom({ teacherId: personId }, Number(roomSelected));
     Router.replace(Router.asPath);
   };
 
@@ -86,4 +91,4 @@ const PersonRoom: FC<Props> = ({ rooms, modelName, personId, personName }) => {
   );
 };
 
-export default PersonRoom;
+export default PersonRoomFallback;

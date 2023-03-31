@@ -7,11 +7,11 @@ interface IFormData {
   addToOtherSiblings?: boolean;
 }
 
-const useAddSibling = () => {
+const useRemoveSibling = () => {
   const { setStudent, setIsError, setIsSuccess, setIsLoading, setMessage } =
     useContext(StudentsContext);
 
-  const addSibling = useCallback(
+  const removeSibling = useCallback(
     async (formData: IFormData, id: number) => {
       setIsLoading(true);
       try {
@@ -32,7 +32,7 @@ const useAddSibling = () => {
     [setStudent, setIsError, setIsSuccess, setIsLoading, setMessage]
   );
 
-  return { addSibling };
+  return { removeSibling };
 };
 
-export default useAddSibling;
+export default useRemoveSibling;
