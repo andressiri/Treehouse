@@ -22,4 +22,5 @@ export interface IStyledButton {
   onBlur?: MouseEventHandler<HTMLButtonElement>;
   tabIndex?: number;
   children?: string | JSX.Element | JSX.Element[];
+  type?: "button" | "submit" | "reset";
 }
