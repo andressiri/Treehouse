@@ -1,3 +1,4 @@
+export { default as CreateRoomPage } from "./CreateRoomPage";
 export { default as HeadSetup } from "./HeadSetup";
 export { default as Layout } from "./Layout";
 export { default as RoomPage } from "./RoomPage";

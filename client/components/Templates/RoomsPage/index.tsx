@@ -1,19 +1,25 @@
 import { FC } from "react";
-import { SectionTitle } from "../../../components/Atoms";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import { SectionTitle, StyledButton } from "../../../components/Atoms";
 import { RoomCardsDisplay } from "../../../components/Organisms";
-import { Container } from "./styledComponents";
+import { Container, StyledLink } from "./styledComponents";
 
 interface Props {
   rooms: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-const RoomPage: FC<Props> = ({ rooms }) => {
+const RoomsPage: FC<Props> = ({ rooms }) => {
   return (
     <Container component="section">
       <SectionTitle>This are all our rooms</SectionTitle>
       <RoomCardsDisplay roomsArray={rooms} />
+      <StyledLink href="/rooms/create">
+        <StyledButton endIcon={<MeetingRoomIcon />} tabIndex={-1}>
+          Create room
+        </StyledButton>
+      </StyledLink>
     </Container>
   );
 };
 
-export default RoomPage;
+export default RoomsPage;
