@@ -15,7 +15,7 @@ export const InnerContainer = styled(Box)(() => ({
 
 export const Description = styled(Typography)(({ theme }) => ({
   color: theme.palette.secondary.contrastText,
-  margin: "30px auto 60px auto",
+  margin: "0px auto 60px auto",
   fontSize: "18px",
   textAlign: "justify",
 }));
