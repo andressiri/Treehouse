@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 
 export const Container = styled(Box)(() => ({
   width: "100%",
-  padding: "50px",
+  padding: "40px 20px",
   display: "flex",
   justifyContent: "center",
   gap: "50px",
