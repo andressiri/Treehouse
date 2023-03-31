@@ -1,5 +1,9 @@
 import { FC, useContext } from "react";
-import { RoomsContext, StudentsContext } from "../../../contexts";
+import {
+  RoomsContext,
+  StudentsContext,
+  TeachersContext,
+} from "../../../contexts";
 import CloseIcon from "@mui/icons-material/Close";
 import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import CheckIcon from "@mui/icons-material/Check";
@@ -38,6 +42,7 @@ const ConfirmModal: FC<Props> = ({
 }) => {
   const ContextOfRooms = useContext(RoomsContext);
   const ContextOfStudents = useContext(StudentsContext);
+  const ContextOfTeachers = useContext(TeachersContext);
   const {
     isError,
     setIsError,
@@ -45,7 +50,12 @@ const ConfirmModal: FC<Props> = ({
     setIsSuccess,
     setMessage,
     isLoading,
-  } = confirmContext === "RoomsContext" ? ContextOfRooms : ContextOfStudents;
+  } =
+    confirmContext === "RoomsContext"
+      ? ContextOfRooms
+      : confirmContext === "StudentsContext"
+      ? ContextOfStudents
+      : ContextOfTeachers;
 
   const handleClose = () => onClose();
 

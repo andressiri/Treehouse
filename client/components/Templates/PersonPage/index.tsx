@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import Router from "next/router";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import EditIcon from "@mui/icons-material/Edit";
-import { useDeleteStudent } from "../../../services";
+import { useDeleteStudent, useDeleteTeacher } from "../../../services";
 import {
   FallbackText,
   SectionTitle,
@@ -26,6 +26,7 @@ interface Props {
 const PersonPage: FC<Props> = ({ data, modelName }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const { deleteStudent } = useDeleteStudent();
+  const { deleteTeacher } = useDeleteTeacher();
 
   return (
     <Container component="section">
@@ -72,7 +73,12 @@ const PersonPage: FC<Props> = ({ data, modelName }) => {
         <ConfirmModal
           text={`Are you sure you want to delete ${data.name}?`}
           confirmAction={() => {
-            if (modelName === "student") deleteStudent(Number(Router.query.id));
+            if (modelName === "student") {
+              deleteStudent(Number(Router.query.id));
+              return;
+            }
+
+            deleteTeacher(Number(Router.query.id));
           }}
           successText={`${data.name} was deleted successfully`}
           open={openConfirm}

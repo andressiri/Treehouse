@@ -1,12 +1,12 @@
 import { FC, useContext, useEffect, useRef, useState } from "react";
-import { StudentsContext, RoomsContext } from "../../../contexts";
+import { StudentsContext, TeachersContext } from "../../../contexts";
 import Router from "next/router";
 import CheckIcon from "@mui/icons-material/Check";
 import {
   useCreateStudent,
   useEditStudent,
-  useCreateRoom,
-  useEditRoom,
+  useCreateTeacher,
+  useEditTeacher,
 } from "../../../services";
 import { StyledButton, StyledTextField } from "../../../components/Atoms";
 import { Container, ErrorContainer, ErrorMessage } from "./styledComponents";
@@ -28,8 +28,8 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
   const isStudent = useRef<boolean>(modelName === "student");
   const ContextOfStudents = useContext(StudentsContext);
   const { student } = useContext(StudentsContext);
-  const ContextOfTeachers = useContext(RoomsContext);
-  const { room } = useContext(RoomsContext);
+  const ContextOfTeachers = useContext(TeachersContext);
+  const { teacher } = useContext(TeachersContext);
   const { isSuccess, setIsSuccess, message, setMessage } = isStudent.current
     ? ContextOfStudents
     : ContextOfTeachers;
@@ -43,28 +43,30 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
           description: "",
         }
       : {
-          name: isStudent.current ? student.name : room.name,
-          age: isStudent.current ? student.age : room.age,
-          gender: isStudent.current ? student.gender : room.gender,
+          name: isStudent.current ? student.name : teacher.name,
+          age: isStudent.current ? student.age : teacher.age,
+          gender: isStudent.current ? student.gender : teacher.gender,
           description: isStudent.current
             ? student.description
-            : room.description,
+            : teacher.description,
         }
   );
   const { createStudent } = useCreateStudent();
   const { editStudent } = useEditStudent();
-  const { createRoom } = useCreateRoom();
-  const { editRoom } = useEditRoom();
+  const { createTeacher } = useCreateTeacher();
+  const { editTeacher } = useEditTeacher();
 
   useEffect(() => {
     if (person)
       setFormData({
-        name: isStudent.current ? student.name : room.name,
-        age: isStudent.current ? student.age : room.age,
-        gender: isStudent.current ? student.gender : room.gender,
-        description: isStudent.current ? student.description : room.description,
+        name: isStudent.current ? student.name : teacher.name,
+        age: isStudent.current ? student.age : teacher.age,
+        gender: isStudent.current ? student.gender : teacher.gender,
+        description: isStudent.current
+          ? student.description
+          : teacher.description,
       });
-  }, [student, room, person]);
+  }, [student, teacher, person]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -72,7 +74,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
       setMessage("");
       Router.push(
         `/${modelName}s/${modelName}/${
-          isStudent.current ? student.id : room.id
+          isStudent.current ? student.id : teacher.id
         }`
       );
     }
@@ -80,7 +82,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
     return () => {
       setMessage("");
     };
-  }, [student, room, isSuccess, setIsSuccess, setMessage, modelName]);
+  }, [student, teacher, isSuccess, setIsSuccess, setMessage, modelName]);
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -104,11 +106,11 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
     }
 
     if (person) {
-      editRoom(formData, Number(Router.query.id));
+      editTeacher(formData, Number(Router.query.id));
       return;
     }
 
-    createRoom(formData);
+    createTeacher(formData);
   };
 
   return (
