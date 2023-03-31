@@ -18,7 +18,7 @@ const app = express();
 // Setup cors
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.ALLOW_CORS,
   })
 );
 
