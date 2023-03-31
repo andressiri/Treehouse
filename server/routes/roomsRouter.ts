@@ -11,15 +11,15 @@ import {
   removeTeacher,
 } from "../controllers/rooms";
 import {
-  authenticateAdmin,
-  authenticateUser,
+  // authenticateAdmin, // temporary disabled until client has authentication developed
+  // authenticateUser, // temporary disabled until client has authentication developed
   checkRoomFields,
   validateRequestFields,
 } from "../middlewares";
 import {
   checkIntegerId,
   checkName,
-  checkRoomCapacity,
+  // checkRoomCapacity, // temporary disabled until client has this field developed
   checkRoomCapacityIsInt,
   checkRoomDescriptionLength,
   checkPublicIsBool,
@@ -30,10 +30,10 @@ const roomsRouter = express.Router();
 
 roomsRouter.post(
   "/",
-  authenticateUser,
-  authenticateAdmin,
+  // authenticateUser,
+  // authenticateAdmin,
   checkName,
-  checkRoomCapacity,
+  // checkRoomCapacity,
   checkRoomDescriptionLength,
   checkPublicIsBool,
   checkTeacherIdIsInt,
@@ -55,8 +55,8 @@ roomsRouter.get(
 
 roomsRouter.put(
   `/${edit}/${byId}`,
-  authenticateUser,
-  authenticateAdmin,
+  // authenticateUser,
+  // authenticateAdmin,
   checkIntegerId,
   checkRoomCapacityIsInt,
   checkRoomDescriptionLength,
@@ -69,8 +69,8 @@ roomsRouter.put(
 
 roomsRouter.delete(
   `/teacher/${byId}`,
-  authenticateUser,
-  authenticateAdmin,
+  // authenticateUser,
+  // authenticateAdmin,
   checkIntegerId,
   validateRequestFields,
   removeTeacher
@@ -78,8 +78,8 @@ roomsRouter.delete(
 
 roomsRouter.delete(
   `/${deletion}/${byId}`,
-  authenticateUser,
-  authenticateAdmin,
+  // authenticateUser,
+  // authenticateAdmin,
   checkIntegerId,
   validateRequestFields,
   deleteRoom

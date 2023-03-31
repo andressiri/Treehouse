@@ -10,8 +10,8 @@ import {
   getTeachersWithRelations,
 } from "../controllers/teachers";
 import {
-  authenticateAdmin,
-  authenticateUser,
+  // authenticateAdmin, // temporary disabled until client has authentication developed
+  // authenticateUser, // temporary disabled until client has authentication developed
   validateRequestFields,
 } from "../middlewares";
 import {
@@ -28,8 +28,8 @@ const teachersRouter = express.Router();
 
 teachersRouter.post(
   "/",
-  authenticateUser,
-  authenticateAdmin,
+  // authenticateUser,
+  // authenticateAdmin,
   checkName,
   checkAge,
   checkGender,
@@ -51,8 +51,8 @@ teachersRouter.get(
 
 teachersRouter.put(
   `/${edit}/${byId}`,
-  authenticateUser,
-  authenticateAdmin,
+  // authenticateUser,
+  // authenticateAdmin,
   checkIntegerId,
   checkAgeIsInt,
   checkGenderIsValid,
@@ -63,8 +63,8 @@ teachersRouter.put(
 
 teachersRouter.delete(
   `/${deletion}/${byId}`,
-  authenticateUser,
-  authenticateAdmin,
+  // authenticateUser,
+  // authenticateAdmin,
   checkIntegerId,
   validateRequestFields,
   deleteTeacher

@@ -14,6 +14,9 @@ export const Container = styled(Box)(({ theme }) => ({
   justifyContent: "flex-end",
   background: "transparent",
   color: theme.palette.primary.main,
+  "@media (max-width: 1200px)": {
+    display: "none",
+  },
 }));
 
 export const StyledList = styled("ul")(() => ({

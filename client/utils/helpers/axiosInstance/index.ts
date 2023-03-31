@@ -25,7 +25,7 @@ const axiosInstance = async (endpoint: string, data = {}, method = "GET") => {
       (formData as FormData).append(key, data[key as keyof typeof data]);
     }
     const file = await (await fetch(storageFile)).blob();
-    (formData as FormData).append("image", file, `${v4()}.jpeg`);
+    (formData as FormData).append("picture", file, `${v4()}.jpeg`);
   }
 
   try {

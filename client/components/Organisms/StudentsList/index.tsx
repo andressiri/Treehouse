@@ -4,8 +4,10 @@ import { Container } from "./styledComponents";
 
 interface Props {
   studentsArray: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
+  listOf?: "siblings" | "students";
+  studentId?: string;
 }
-const StudentsList: FC<Props> = ({ studentsArray }) => {
+const StudentsList: FC<Props> = ({ studentsArray, listOf, studentId }) => {
   return (
     <Container>
       {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
@@ -14,6 +16,8 @@ const StudentsList: FC<Props> = ({ studentsArray }) => {
           <StudentListItem
             id={student.id}
             name={student.name}
+            listOf={listOf}
+            studentId={studentId}
             key={`${student.name}${id}`}
           />
         );

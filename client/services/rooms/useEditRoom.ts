@@ -3,8 +3,9 @@ import { RoomsContext } from "../../contexts";
 import { axiosInstance } from "../../utils/helpers";
 
 interface IFormData {
-  name: string;
+  name?: string;
   description?: string;
+  teacherId?: string;
 }
 
 const useEditRoom = () => {

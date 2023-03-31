@@ -12,7 +12,7 @@ interface IPosition {
 const useDragControllers = () => {
   const { viewportWidth, viewportHeight } = useContext(GeneralContext);
   const [tooltipPosition, setTooltipPosition] =
-    useState<TooltipPosition>("left");
+    useState<TooltipPosition>("right");
   const [top, setTop] = useState<number | null>(null);
   const [left, setLeft] = useState<number | null>(null);
   const startPosition = useRef<IPosition>({ x: 0, y: 0 });
