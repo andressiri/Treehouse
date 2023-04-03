@@ -173,7 +173,7 @@ Para instalar esta aplicación y probarla en desarrollo necesitas tener instalad
 
    </details>
 
-9. Crear un archivo `.env` en el directorio `/client` con las siguientes variables:
+9. Crear un archivo `.env` en el directorio `/server` con las siguientes variables:
    <pre>
    NODE_ENV = development
    PORT = 8080
@@ -214,6 +214,11 @@ Para instalar esta aplicación y probarla en desarrollo necesitas tener instalad
       ![obtener la nueva contraseña de aplicación](/assets/README/gmail%20application%20password/4.%20Obtener%20la%20constrase%C3%B1a%20de%20aplicaci%C3%B3n.png)
 
    </details>
+   
+10. Crear un archivo `.env.local` en el directorio `/client` con las siguientes variables:
+   <pre>
+   NEXT_PUBLIC_API_ORIGIN = http://localhost:8080 (o el puerto en el que elijas correr el servidor)
+   </pre>
 
-10. Crear la base de datos, hacer las migraciones y poblarla con el comando `npm run createdb` en el directorio server. Esto correrá tres comandos del cliente de Sequelize. El primero creará la base de datos, el segundo creará las tablas necesarias con las condiciones necesarias para el funcionamiento de la API y el tercero poblará la base de datos. Para el correcto funcionamiento es necesario mantener actualizadas las carpetas de migraciones, modelos y seeds de la carpeta `/server/db/sequelizeCLI` con las carpetas correspondientes creadas al hacer el build de `Typescript`, ya que el client de sequelize (sequelize-cli) sólo corre en "runtime". Carpetas iniciales son provistas, pero debe considerarse al hacer cambios.
-11. Finalmente, para correr el cliente en el puerto 3000 usar el comando `npm run dev` en el directorio `/client`, y para el servidor en el puerto 8080 usar el comando `npm run dev` en el directorio `/server`.
+11. Crear la base de datos, hacer las migraciones y poblarla con el comando `npm run createdb` en el directorio server. Esto correrá tres comandos del cliente de Sequelize. El primero creará la base de datos, el segundo creará las tablas necesarias con las condiciones necesarias para el funcionamiento de la API y el tercero poblará la base de datos. Para el correcto funcionamiento es necesario mantener actualizadas las carpetas de migraciones, modelos y seeds de la carpeta `/server/db/sequelizeCLI` con las carpetas correspondientes creadas al hacer el build de `Typescript`, ya que el client de sequelize (sequelize-cli) sólo corre en "runtime". Carpetas iniciales son provistas, pero debe considerarse al hacer cambios.
+12. Finalmente, para correr el cliente en el puerto 3000 usar el comando `npm run dev` en el directorio `/client`, y para el servidor en el puerto 8080 usar el comando `npm run dev` en el directorio `/server`.
