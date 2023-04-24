@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
 import { axiosInstance } from "../../utils/helpers";
+import { DELETION, STUDENTS_ROUTE } from "../../config/constants";
 
 const useDeleteStudent = () => {
   const { setIsError, setIsSuccess, setIsLoading, setMessage } =
@@ -10,7 +11,11 @@ const useDeleteStudent = () => {
     async (id: number) => {
       setIsLoading(true);
       try {
-        await axiosInstance(`/students/delete/${id}`, {}, "DELETE");
+        await axiosInstance(
+          `/${STUDENTS_ROUTE}/${DELETION}/${id}`,
+          {},
+          "DELETE"
+        );
         setIsSuccess(true);
         setIsLoading(false);
       } catch (err) {

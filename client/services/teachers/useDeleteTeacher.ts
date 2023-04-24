@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { TeachersContext } from "../../contexts";
 import { axiosInstance } from "../../utils/helpers";
+import { DELETION, TEACHERS_ROUTE } from "../../config/constants";
 
 const useDeleteTeacher = () => {
   const { setIsError, setIsSuccess, setIsLoading, setMessage } =
@@ -10,7 +11,11 @@ const useDeleteTeacher = () => {
     async (id: number) => {
       setIsLoading(true);
       try {
-        await axiosInstance(`/teachers/delete/${id}`, {}, "DELETE");
+        await axiosInstance(
+          `/${TEACHERS_ROUTE}/${DELETION}/${id}`,
+          {},
+          "DELETE"
+        );
         setIsSuccess(true);
         setIsLoading(false);
       } catch (err) {

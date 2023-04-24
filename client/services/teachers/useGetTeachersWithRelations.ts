@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { TeachersContext } from "../../contexts";
 import { axiosInstance } from "../../utils/helpers";
+import { WITH_RELATIONS, TEACHERS_ROUTE } from "../../config/constants";
 
 const useGetTeachersWithRelations = () => {
   const { setTeachers, setIsError, setIsLoading, setMessage } =
@@ -9,7 +10,9 @@ const useGetTeachersWithRelations = () => {
   const getTeachersWithRelations = useCallback(async () => {
     setIsLoading(true);
     try {
-      const teachersData = await axiosInstance("/teachers/all");
+      const teachersData = await axiosInstance(
+        `/${TEACHERS_ROUTE}/${WITH_RELATIONS}`
+      );
       setTeachers(teachersData);
       setIsLoading(false);
     } catch (err) {

@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { RoomsContext } from "../../contexts";
 import { axiosInstance } from "../../utils/helpers";
+import { STUDENTS_HANDLE_ROOM, STUDENTS_ROUTE } from "../../config/constants";
 
 const useRemoveStudentFromRoom = () => {
   const { setIsError, setIsSuccess, setIsLoading, setMessage } =
@@ -10,7 +11,11 @@ const useRemoveStudentFromRoom = () => {
     async (id: number) => {
       setIsLoading(true);
       try {
-        await axiosInstance(`/students/room/${id}`, {}, "DELETE");
+        await axiosInstance(
+          `/${STUDENTS_ROUTE}/${STUDENTS_HANDLE_ROOM}/${id}`,
+          {},
+          "DELETE"
+        );
         setIsSuccess(true);
         setIsLoading(false);
       } catch (err) {

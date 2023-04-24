@@ -1,6 +1,10 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
 import { axiosInstance } from "../../utils/helpers";
+import {
+  STUDENTS_ROUTE,
+  STUDENTS_HANDLE_SIBLINGS,
+} from "../../config/constants";
 
 interface IFormData {
   siblingId: string;
@@ -16,7 +20,7 @@ const useRemoveSibling = () => {
       setIsLoading(true);
       try {
         const response = await axiosInstance(
-          `/students/siblings/${id}`,
+          `/${STUDENTS_ROUTE}/${STUDENTS_HANDLE_SIBLINGS}/${id}`,
           formData,
           "DELETE"
         );

@@ -1,6 +1,12 @@
 // @route api/v1/teachers
 import express from "express";
-import { byId, withRelations, edit, deletion } from "../config/constants";
+import {
+  BY_ID,
+  WITH_RELATIONS,
+  EDIT,
+  DELETION,
+  TEACHERS_SINGULAR,
+} from "../config/constants";
 import {
   createTeacher,
   deleteTeacher,
@@ -40,17 +46,17 @@ teachersRouter.post(
 
 teachersRouter.get("/", getTeachers);
 
-teachersRouter.get(`/${withRelations}`, getTeachersWithRelations);
+teachersRouter.get(`/${WITH_RELATIONS}`, getTeachersWithRelations);
 
 teachersRouter.get(
-  `/teacher/${byId}`,
+  `/${TEACHERS_SINGULAR}/:${BY_ID}`,
   checkIntegerId,
   validateRequestFields,
   getTeacher
 );
 
 teachersRouter.put(
-  `/${edit}/${byId}`,
+  `/${EDIT}/:${BY_ID}`,
   // authenticateUser,
   // authenticateAdmin,
   checkIntegerId,
@@ -62,7 +68,7 @@ teachersRouter.put(
 );
 
 teachersRouter.delete(
-  `/${deletion}/${byId}`,
+  `/${DELETION}/:${BY_ID}`,
   // authenticateUser,
   // authenticateAdmin,
   checkIntegerId,

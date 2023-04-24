@@ -1,3 +1,6 @@
+export const API_ORIGIN = process.env.NEXT_PUBLIC_API_ORIGIN;
+
+// Following constants are directly copied from server routing constants config
 // General
 export const API_ROUTE = "api";
 export const API_VERSION = "v1";

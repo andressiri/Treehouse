@@ -2,12 +2,13 @@
 // @route GET /api/v1/students/student/:id
 // @access Public
 import asyncHandler from "express-async-handler";
+import { BY_ID } from "../../config/constants";
 import db from "../../db/models";
 
 const { Room, Teacher, Student, Siblings } = db;
 
 const getStudent = asyncHandler(async (req, res) => {
-  const id = req.params.id;
+  const id = req.params[BY_ID];
 
   const studentData = await Student.findByPk(id, {
     include: [

@@ -2,12 +2,13 @@
 // @route DELETE /api/v1/student/room/:id
 // @access Private - Admin only
 import asyncHandler from "express-async-handler";
+import { BY_ID } from "../../config/constants";
 import db from "../../db/models";
 
 const { Student } = db;
 
 const removeFromRoom = asyncHandler(async (req, res) => {
-  const id = req.params.id;
+  const id = req.params[BY_ID];
 
   const updateResult = await Student.update(
     { roomId: null, teacherId: null },

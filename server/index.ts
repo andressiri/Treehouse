@@ -7,7 +7,7 @@ import session from "express-session";
 import cors from "cors";
 import router from "./routes";
 import { errorHandler } from "./middlewares";
-import { apiRoute, apiVersion } from "./config/constants";
+import { API_ROUTE, API_VERSION } from "./config/constants";
 
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
@@ -57,7 +57,7 @@ app.use(
 );
 
 // @/api/v1 router
-app.use(`/${apiRoute}/${apiVersion}`, router);
+app.use(`/${API_ROUTE}/${API_VERSION}`, router);
 
 app.use(errorHandler);
 

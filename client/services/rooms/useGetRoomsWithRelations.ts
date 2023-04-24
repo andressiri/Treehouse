@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { RoomsContext } from "../../contexts";
 import { axiosInstance } from "../../utils/helpers";
+import { ROOMS_ROUTE, WITH_RELATIONS } from "../../config/constants";
 
 const useGetRoomsWithRelations = () => {
   const { setRooms, setIsError, setIsLoading, setMessage } =
@@ -9,7 +10,9 @@ const useGetRoomsWithRelations = () => {
   const getRoomsWithRelations = useCallback(async () => {
     setIsLoading(true);
     try {
-      const roomsData = await axiosInstance("/rooms/all");
+      const roomsData = await axiosInstance(
+        `/${ROOMS_ROUTE}/${WITH_RELATIONS}`
+      );
       setRooms(roomsData);
       setIsLoading(false);
     } catch (err) {

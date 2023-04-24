@@ -2,13 +2,14 @@
 // @route PUT /api/v1/users/edit or /api/v1/users/edit/:id
 // @access Private or SuperAdmin
 import asyncHandler from "express-async-handler";
+import { BY_ID } from "../../config/constants";
 import { RequestWithUser } from "../../typings/express";
 import db from "../../db/models";
 
 const { User } = db;
 
 const editUser = asyncHandler(async (req, res) => {
-  const id = req.params.id || (req as RequestWithUser).user.id;
+  const id = req.params[BY_ID] || (req as RequestWithUser).user.id;
 
   const updateResult = await User.update(req.body, {
     where: { id },

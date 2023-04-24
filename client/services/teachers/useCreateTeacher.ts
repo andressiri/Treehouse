@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { TeachersContext } from "../../contexts";
 import { axiosInstance } from "../../utils/helpers";
+import { TEACHERS_ROUTE } from "../../config/constants";
 
 interface IFormData {
   name: string;
@@ -18,7 +19,11 @@ const useCreateTeacher = () => {
     async (formData: IFormData) => {
       setIsLoading(true);
       try {
-        const response = await axiosInstance(`/teachers`, formData, "POST");
+        const response = await axiosInstance(
+          `/${TEACHERS_ROUTE}`,
+          formData,
+          "POST"
+        );
         setTeacher(response.teacherData);
         setIsSuccess(true);
         setIsLoading(false);

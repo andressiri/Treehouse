@@ -2,13 +2,14 @@
 // @route PUT /api/v1/users/verification/:code
 // @access Public - It requires previous code socilitation
 import asyncHandler from "express-async-handler";
+import { BY_CODE } from "../../config/constants";
 import { createToken, requestTimeLimiter } from "../../helpers";
 import db from "../../db/models";
 
 const { User } = db;
 
 const userVerification = asyncHandler(async (req, res) => {
-  const code = req.params.code;
+  const code = req.params[BY_CODE];
   const email = req.session.emailToVerify;
 
   if (!code) {

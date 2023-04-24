@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
 import { axiosInstance } from "../../utils/helpers";
+import { EDIT, STUDENTS_ROUTE } from "../../config/constants";
 
 interface IFormData {
   name?: string;
@@ -19,7 +20,7 @@ const useEditStudent = () => {
       setIsLoading(true);
       try {
         const response = await axiosInstance(
-          `/students/edit/${id}`,
+          `/${STUDENTS_ROUTE}/${EDIT}/${id}`,
           formData,
           "PUT"
         );

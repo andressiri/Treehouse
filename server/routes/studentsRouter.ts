@@ -1,6 +1,14 @@
 // @route api/v1/teachers
 import express from "express";
-import { byId, withRelations, edit, deletion } from "../config/constants";
+import {
+  BY_ID,
+  WITH_RELATIONS,
+  EDIT,
+  DELETION,
+  STUDENTS_SINGULAR,
+  STUDENTS_HANDLE_ROOM,
+  STUDENTS_HANDLE_SIBLINGS,
+} from "../config/constants";
 import {
   addSibling,
   createStudent,
@@ -46,17 +54,17 @@ studentsRouter.post(
 
 studentsRouter.get("/", getStudents);
 
-studentsRouter.get(`/${withRelations}`, getStudentsWithRelations);
+studentsRouter.get(`/${WITH_RELATIONS}`, getStudentsWithRelations);
 
 studentsRouter.get(
-  `/student/${byId}`,
+  `/${STUDENTS_SINGULAR}/:${BY_ID}`,
   checkIntegerId,
   validateRequestFields,
   getStudent
 );
 
 studentsRouter.put(
-  `/${edit}/${byId}`,
+  `/${EDIT}/:${BY_ID}`,
   // authenticateUser,
   // authenticateAdmin,
   checkIntegerId,
@@ -69,7 +77,7 @@ studentsRouter.put(
 );
 
 studentsRouter.delete(
-  `/room/${byId}`,
+  `/${STUDENTS_HANDLE_ROOM}/:${BY_ID}`,
   // authenticateUser,
   // authenticateAdmin,
   checkIntegerId,
@@ -78,7 +86,7 @@ studentsRouter.delete(
 );
 
 studentsRouter.delete(
-  `/${deletion}/${byId}`,
+  `/${DELETION}/:${BY_ID}`,
   // authenticateUser,
   // authenticateAdmin,
   checkIntegerId,
@@ -87,7 +95,7 @@ studentsRouter.delete(
 );
 
 studentsRouter.put(
-  `/siblings/${byId}`,
+  `/${STUDENTS_HANDLE_SIBLINGS}/:${BY_ID}`,
   // authenticateUser,
   // authenticateAdmin,
   checkIntegerId,
@@ -97,7 +105,7 @@ studentsRouter.put(
 );
 
 studentsRouter.delete(
-  `/siblings/${byId}`,
+  `/${STUDENTS_HANDLE_SIBLINGS}/:${BY_ID}`,
   // authenticateUser,
   // authenticateAdmin,
   checkIntegerId,

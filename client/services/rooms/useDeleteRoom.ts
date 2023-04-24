@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { RoomsContext } from "../../contexts";
 import { axiosInstance } from "../../utils/helpers";
+import { DELETION, ROOMS_ROUTE } from "../../config/constants";
 
 const useDeleteRoom = () => {
   const { setIsError, setIsSuccess, setIsLoading, setMessage } =
@@ -10,7 +11,7 @@ const useDeleteRoom = () => {
     async (id: number) => {
       setIsLoading(true);
       try {
-        await axiosInstance(`/rooms/delete/${id}`, {}, "DELETE");
+        await axiosInstance(`/${ROOMS_ROUTE}/${DELETION}/${id}`, {}, "DELETE");
         setIsSuccess(true);
         setIsLoading(false);
       } catch (err) {
