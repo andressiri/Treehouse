@@ -1,8 +1,7 @@
 import { FC, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
-import { RoomsContext, StudentsContext } from "../../../contexts";
+import { StudentsContext } from "../../../contexts";
 import {
-  useGetRoomsWithRelationsEffect,
   useGetStudentByIdEffect,
   useGetStudentsWithRelationsEffect,
 } from "../../../services";
@@ -30,12 +29,10 @@ const StudentById: FC<Props> = ({ staticStudent }) => {
     setIsSuccess,
     message,
   } = useContext(StudentsContext);
-  const { rooms } = useContext(RoomsContext);
   const { isReady, push, query } = useRouter();
 
   useGetStudentsWithRelationsEffect();
   useGetStudentByIdEffect();
-  useGetRoomsWithRelationsEffect();
 
   useEffect(() => {
     if (isSuccess) {
@@ -53,7 +50,6 @@ const StudentById: FC<Props> = ({ staticStudent }) => {
     <Layout>
       <PersonPage
         students={students}
-        rooms={rooms}
         data={
           !isReady || !student || student.id !== query.id
             ? staticStudent

@@ -1,10 +1,7 @@
 import { FC, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
-import { RoomsContext, TeachersContext } from "../../../contexts";
-import {
-  useGetRoomsWithRelationsEffect,
-  useGetTeacherByIdEffect,
-} from "../../../services";
+import { TeachersContext } from "../../../contexts";
+import { useGetTeacherByIdEffect } from "../../../services";
 import { Layout, PersonPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
@@ -21,23 +18,20 @@ interface Props {
 
 const TeacherById: FC<Props> = ({ staticTeacher }) => {
   const { teacher, isError, setIsError, message } = useContext(TeachersContext);
-  const { rooms, isSuccess, setIsSuccess } = useContext(RoomsContext);
   const { isReady, push, query } = useRouter();
 
   useGetTeacherByIdEffect();
-  useGetRoomsWithRelationsEffect();
 
   useEffect(() => {
     if (isError) {
       setIsError(false);
       push("/");
     }
-  }, [isError, setIsError, isSuccess, setIsSuccess, message, push]);
+  }, [isError, setIsError, message, push]);
 
   return (
     <Layout>
       <PersonPage
-        rooms={rooms}
         data={
           !isReady || !teacher || teacher.id !== query.id
             ? staticTeacher

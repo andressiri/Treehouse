@@ -24,12 +24,11 @@ import {
 
 interface Props {
   students?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  rooms: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   data: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   modelName: "student" | "teacher";
 }
 
-const PersonPage: FC<Props> = ({ students, rooms, data, modelName }) => {
+const PersonPage: FC<Props> = ({ students, data, modelName }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const { deleteStudent } = useDeleteStudent();
   const { deleteTeacher } = useDeleteTeacher();
@@ -54,7 +53,6 @@ const PersonPage: FC<Props> = ({ students, rooms, data, modelName }) => {
           />
         ) : (
           <PersonRoomFallback
-            rooms={rooms}
             modelName={modelName}
             personId={data.id}
             personName={data.name}

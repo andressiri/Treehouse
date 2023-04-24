@@ -1,10 +1,7 @@
 import { FC, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
-import { RoomsContext, TeachersContext } from "../../../contexts";
-import {
-  useGetRoomsWithRelationsEffect,
-  useGetTeacherByIdEffect,
-} from "../../../services";
+import { TeachersContext } from "../../../contexts";
+import { useGetTeacherByIdEffect } from "../../../services";
 import { Layout, EditOrCreatePersonPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
@@ -20,11 +17,9 @@ interface Props {
 }
 
 const EditTeacher: FC<Props> = ({ staticTeacher }) => {
-  const { rooms } = useContext(RoomsContext);
   const { teacher, isError, setIsError, message } = useContext(TeachersContext);
   const { isReady, query } = useRouter();
 
-  useGetRoomsWithRelationsEffect();
   useGetTeacherByIdEffect();
 
   useEffect(() => {
@@ -41,7 +36,6 @@ const EditTeacher: FC<Props> = ({ staticTeacher }) => {
             ? staticTeacher
             : teacher
         }
-        rooms={rooms}
         modelName="teacher"
       />
     </Layout>

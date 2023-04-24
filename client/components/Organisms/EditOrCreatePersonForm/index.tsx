@@ -16,7 +16,7 @@ import {
   StyledSelect,
   StyledTextField,
 } from "../../../components/Atoms";
-import { DisplayImage } from "../../../components/Molecules";
+import { DisplayImage, RoomSelect } from "../../../components/Molecules";
 import {
   Container,
   ImageContainer,
@@ -28,7 +28,6 @@ import {
 import getArrays from "./getArrays";
 
 interface Props {
-  rooms: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   person?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   modelName: "student" | "teacher";
 }
@@ -41,10 +40,10 @@ interface IFormData {
   roomId: string;
 }
 
-const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
+const EditOrCreatePersonForm: FC<Props> = ({ person, modelName }) => {
   const inputFile = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState(person?.picture);
-  const { genderArray, roomsArray } = getArrays(rooms, modelName);
+  const { genderArray } = getArrays();
   const isStudent = useRef<boolean>(modelName === "student");
   const ContextOfStudents = useContext(StudentsContext);
   const { student } = useContext(StudentsContext);
@@ -233,30 +232,14 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
         rows={4}
         InputLabelProps={formData.description ? { shrink: true } : {}}
       />
-      <StyledSelect
-        disabled={!roomsArray.length}
-        select={true}
+      <RoomSelect
         value={formData.roomId}
         name="roomId"
         onChange={(
           e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
         ) => handleOnChange(e)}
-        label={!roomsArray.length ? "No rooms available" : "Room"}
-        variant="outlined"
-        InputLabelProps={formData.roomId ? { shrink: true } : {}}
-      >
-        {roomsArray.map(
-          (
-            option: any, // eslint-disable-line @typescript-eslint/no-explicit-any
-            id: number
-          ) => (
-            <MenuItem key={`${option.name}${id}`} value={option.id}>
-              {option.name}
-            </MenuItem>
-          )
-        )}
-        <MenuItem value={""}>No room</MenuItem>
-      </StyledSelect>
+        showJustTeacherless={modelName === "teacher"}
+      />
       <ErrorContainer>
         {message ? <ErrorMessage>{message}</ErrorMessage> : <></>}
       </ErrorContainer>

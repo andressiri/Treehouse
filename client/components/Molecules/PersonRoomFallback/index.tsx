@@ -1,33 +1,21 @@
 import { FC, useState } from "react";
 import Router from "next/router";
-import { MenuItem } from "@mui/material";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
-import { StyledButton, StyledSelect } from "../../../components/Atoms";
-import { Container, FormContainer, Title } from "./styledComponents";
 import { useEditRoom, useEditStudent } from "../../../services";
+import { StyledButton } from "../../../components/Atoms";
+import { RoomSelect } from "../../../components/Molecules";
+import { Container, FormContainer, Title } from "./styledComponents";
 
 interface Props {
-  rooms: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   modelName: "student" | "teacher";
   personId: string;
   personName: string;
 }
 
-const PersonRoomFallback: FC<Props> = ({
-  rooms,
-  modelName,
-  personId,
-  personName,
-}) => {
+const PersonRoomFallback: FC<Props> = ({ modelName, personId, personName }) => {
   const [roomSelected, setRoomSelected] = useState("");
   const { editRoom } = useEditRoom();
   const { editStudent } = useEditStudent();
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const roomsArray = rooms.filter((room: any) => {
-    if (modelName === "teacher" && room.teacherId) return null;
-    return true;
-  });
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -54,29 +42,14 @@ const PersonRoomFallback: FC<Props> = ({
         component="form"
         onSubmit={(e: React.FormEvent<HTMLDivElement>) => handleSubmit(e)}
       >
-        <StyledSelect
-          disabled={!roomsArray.length}
-          select={true}
+        <RoomSelect
           value={roomSelected}
           name="roomSelected"
           onChange={(
             e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
           ) => handleOnChange(e)}
-          label={!roomsArray.length ? "No rooms available" : "Room"}
-          variant="outlined"
-        >
-          {roomsArray.map(
-            (
-              option: any, // eslint-disable-line @typescript-eslint/no-explicit-any
-              id: number
-            ) => (
-              <MenuItem key={`${option.name}${id}`} value={option.id}>
-                {option.name}
-              </MenuItem>
-            )
-          )}
-          <MenuItem value={""}>No room</MenuItem>
-        </StyledSelect>
+          showJustTeacherless={modelName === "teacher"}
+        />
         <StyledButton
           disabled={!roomSelected}
           type="submit"
