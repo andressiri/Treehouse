@@ -1,7 +1,10 @@
 import { FC, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { RoomsContext } from "../../../contexts";
-import { useGetRoomByIdEffect } from "../../../services";
+import {
+  useGetRoomByIdEffect,
+  useHandleRoomsResponseEffect,
+} from "../../../services";
 import { Layout, EditOrCreateRoomPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
@@ -17,16 +20,11 @@ interface Props {
 }
 
 const EditRoom: FC<Props> = ({ staticRoom }) => {
-  const { room, isError, setIsError, message } = useContext(RoomsContext);
+  const { room } = useContext(RoomsContext);
   const { isReady, query } = useRouter();
 
   useGetRoomByIdEffect();
-
-  useEffect(() => {
-    if (isError) {
-      setIsError(false);
-    }
-  }, [isError, setIsError, message]);
+  useHandleRoomsResponseEffect({});
 
   return (
     <Layout>
@@ -55,7 +53,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   if (!staticRoom.id)
     return {
       redirect: {
-        destination: "/",
+        destination: "/404",
         permanent: false,
       },
     };
