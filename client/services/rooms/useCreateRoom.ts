@@ -1,6 +1,6 @@
 import { useCallback, useContext } from "react";
 import { RoomsContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { serviceInstance } from "../../utils/helpers";
 import { ROOMS_ROUTE } from "../../config/constants";
 
 interface IFormData {
@@ -14,21 +14,14 @@ const useCreateRoom = () => {
 
   const createRoom = useCallback(
     async (formData: IFormData) => {
-      setIsLoading(true);
-      try {
-        const response = await axiosInstance(
-          `/${ROOMS_ROUTE}`,
-          formData,
-          "POST"
-        );
-        setRoom(response.roomData);
-        setIsSuccess(true);
-        setIsLoading(false);
-      } catch (err) {
-        setIsError(true);
-        setMessage(`${err}`);
-        setIsLoading(false);
-      }
+      await serviceInstance({
+        route: `/${ROOMS_ROUTE}`,
+        method: "POST",
+        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
+        setState: setRoom,
+        formData,
+        sanitizeData: true,
+      });
     },
     [setRoom, setIsError, setIsSuccess, setIsLoading, setMessage]
   );

@@ -7,8 +7,6 @@ const useGetRoomsWithRelationsEffect = () => {
   useEffect(() => {
     getRoomsWithRelations();
   }, [getRoomsWithRelations]);
-
-  return { getRoomsWithRelations };
 };
 
 export default useGetRoomsWithRelationsEffect;

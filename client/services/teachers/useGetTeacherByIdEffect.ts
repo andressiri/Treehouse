@@ -12,8 +12,8 @@ const useGetTeacherByIdEffect = () => {
     if (!isReady) return;
 
     if (!Number.isInteger(Number(query.id))) {
-      setIsError(true);
       setMessage("That is an invalid id");
+      setIsError(true);
       return;
     }
 

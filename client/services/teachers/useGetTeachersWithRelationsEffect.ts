@@ -7,8 +7,6 @@ const useGetTeachersWithRelationsEffect = () => {
   useEffect(() => {
     getTeachersWithRelations();
   }, [getTeachersWithRelations]);
-
-  return { getTeachersWithRelations };
 };
 
 export default useGetTeachersWithRelationsEffect;

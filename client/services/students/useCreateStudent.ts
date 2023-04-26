@@ -1,6 +1,6 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { serviceInstance } from "../../utils/helpers";
 import { STUDENTS_ROUTE } from "../../config/constants";
 
 interface IFormData {
@@ -17,21 +17,14 @@ const useCreateStudent = () => {
 
   const createStudent = useCallback(
     async (formData: IFormData) => {
-      setIsLoading(true);
-      try {
-        const response = await axiosInstance(
-          `/${STUDENTS_ROUTE}`,
-          formData,
-          "POST"
-        );
-        setStudent(response.studentData);
-        setIsSuccess(true);
-        setIsLoading(false);
-      } catch (err) {
-        setIsError(true);
-        setMessage(`${err}`);
-        setIsLoading(false);
-      }
+      await serviceInstance({
+        route: `/${STUDENTS_ROUTE}`,
+        method: "POST",
+        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
+        setState: setStudent,
+        formData,
+        sanitizeData: true,
+      });
     },
     [setStudent, setIsError, setIsSuccess, setIsLoading, setMessage]
   );

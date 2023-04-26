@@ -7,8 +7,6 @@ const useGetStudentsWithRelationsEffect = () => {
   useEffect(() => {
     getStudentsWithRelations();
   }, [getStudentsWithRelations]);
-
-  return { getStudentsWithRelations };
 };
 
 export default useGetStudentsWithRelationsEffect;

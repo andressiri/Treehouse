@@ -1,30 +1,22 @@
 import { useCallback, useContext } from "react";
-import { RoomsContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { StudentsContext } from "../../contexts";
+import { serviceInstance } from "../../utils/helpers";
 import { STUDENTS_HANDLE_ROOM, STUDENTS_ROUTE } from "../../config/constants";
 
 const useRemoveStudentFromRoom = () => {
-  const { setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(RoomsContext);
+  const { setStudent, setIsError, setIsSuccess, setIsLoading, setMessage } =
+    useContext(StudentsContext);
 
   const removeStudentFromRoom = useCallback(
     async (id: number) => {
-      setIsLoading(true);
-      try {
-        await axiosInstance(
-          `/${STUDENTS_ROUTE}/${STUDENTS_HANDLE_ROOM}/${id}`,
-          {},
-          "DELETE"
-        );
-        setIsSuccess(true);
-        setIsLoading(false);
-      } catch (err) {
-        setIsError(true);
-        setMessage(`${err}`);
-        setIsLoading(false);
-      }
+      await serviceInstance({
+        route: `/${STUDENTS_ROUTE}/${STUDENTS_HANDLE_ROOM}/${id}`,
+        method: "DELETE",
+        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
+        setState: setStudent,
+      });
     },
-    [setIsError, setIsSuccess, setIsLoading, setMessage]
+    [setStudent, setIsError, setIsSuccess, setIsLoading, setMessage]
   );
 
   return { removeStudentFromRoom };

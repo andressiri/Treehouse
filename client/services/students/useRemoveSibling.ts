@@ -1,6 +1,6 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { serviceInstance } from "../../utils/helpers";
 import {
   STUDENTS_ROUTE,
   STUDENTS_HANDLE_SIBLINGS,
@@ -17,21 +17,14 @@ const useRemoveSibling = () => {
 
   const removeSibling = useCallback(
     async (formData: IFormData, id: number) => {
-      setIsLoading(true);
-      try {
-        const response = await axiosInstance(
-          `/${STUDENTS_ROUTE}/${STUDENTS_HANDLE_SIBLINGS}/${id}`,
-          formData,
-          "DELETE"
-        );
-        setStudent(response.studentData);
-        setIsSuccess(true);
-        setIsLoading(false);
-      } catch (err) {
-        setIsError(true);
-        setMessage(`${err}`);
-        setIsLoading(false);
-      }
+      await serviceInstance({
+        route: `/${STUDENTS_ROUTE}/${STUDENTS_HANDLE_SIBLINGS}/${id}`,
+        method: "DELETE",
+        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
+        setState: setStudent,
+        formData,
+        sanitizeData: true,
+      });
     },
     [setStudent, setIsError, setIsSuccess, setIsLoading, setMessage]
   );

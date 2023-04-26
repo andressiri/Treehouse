@@ -1,6 +1,6 @@
 import { useCallback, useContext } from "react";
 import { TeachersContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { serviceInstance } from "../../utils/helpers";
 import { EDIT, TEACHERS_ROUTE } from "../../config/constants";
 
 interface IFormData {
@@ -10,27 +10,21 @@ interface IFormData {
   description?: string;
   roomId?: string;
 }
+
 const useEditTeacher = () => {
   const { setTeacher, setIsError, setIsSuccess, setIsLoading, setMessage } =
     useContext(TeachersContext);
 
   const editTeacher = useCallback(
     async (formData: IFormData, id: number) => {
-      setIsLoading(true);
-      try {
-        const response = await axiosInstance(
-          `/${TEACHERS_ROUTE}/${EDIT}/${id}`,
-          formData,
-          "PUT"
-        );
-        setTeacher(response.teacherData);
-        setIsSuccess(true);
-        setIsLoading(false);
-      } catch (err) {
-        setIsError(true);
-        setMessage(`${err}`);
-        setIsLoading(false);
-      }
+      await serviceInstance({
+        route: `/${TEACHERS_ROUTE}/${EDIT}/${id}`,
+        method: "PUT",
+        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
+        setState: setTeacher,
+        formData,
+        sanitizeData: true,
+      });
     },
     [setTeacher, setIsError, setIsSuccess, setIsLoading, setMessage]
   );
