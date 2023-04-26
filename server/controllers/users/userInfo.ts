@@ -22,7 +22,7 @@ const userInfo = asyncHandler(async (req, res) => {
     throw new Error("No user registered for that id");
   }
 
-  res.json({ userData });
+  res.json(userData);
 });
 
 export default userInfo;

@@ -24,7 +24,7 @@ const removeFromRoom = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     message: `${studentData.name} removed from it's room`,
-    studentData,
+    data: studentData,
   });
 });
 

@@ -66,9 +66,10 @@ const editStudent = asyncHandler(async (req, res) => {
 
   const studentData = { ...updateResult[1][0].dataValues };
 
-  res
-    .status(200)
-    .json({ message: `${studentData.name} student updated`, studentData });
+  res.status(200).json({
+    message: `${studentData.name} student updated`,
+    data: studentData,
+  });
 });
 
 export default editStudent;

@@ -24,9 +24,10 @@ const removeTeacher = asyncHandler(async (req, res) => {
 
   await Student.update({ teacherId: null }, { where: { roomId: roomData.id } });
 
-  res
-    .status(200)
-    .json({ message: `Teacher removed from ${roomData.name} room`, roomData });
+  res.status(200).json({
+    message: `Teacher removed from ${roomData.name} room`,
+    data: roomData,
+  });
 });
 
 export default removeTeacher;

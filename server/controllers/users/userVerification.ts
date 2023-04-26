@@ -45,7 +45,7 @@ const userVerification = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     message: "Code is correct, email verified",
-    token: createToken(id, true),
+    data: createToken(id, true),
   });
 });
 

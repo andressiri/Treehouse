@@ -30,7 +30,7 @@ const login = asyncHandler(async (req, res) => {
   delete userData.password;
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    res.status(201).json({ message: "User authenticated", userData });
+    res.status(201).json({ message: "User authenticated", data: userData });
   } else {
     res.status(400);
     throw new Error("Invalid credentials");

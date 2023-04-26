@@ -12,7 +12,7 @@ const getUsers = asyncHandler(async (_req, res) => {
     attributes: { exclude: ["password"] },
   });
 
-  res.json({ usersData });
+  res.json(usersData);
 });
 
 export default getUsers;

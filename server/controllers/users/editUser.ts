@@ -24,7 +24,7 @@ const editUser = asyncHandler(async (req, res) => {
   const userData = { ...updateResult[1][0].dataValues };
   delete userData.password;
 
-  res.status(200).json({ message: "User updated", userData });
+  res.status(200).json({ message: "User updated", data: userData });
 });
 
 export default editUser;

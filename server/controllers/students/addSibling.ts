@@ -72,7 +72,7 @@ const addSibling = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json({ messge: `${studentData.name} sibling added`, studentData });
+    .json({ messge: `${studentData.name} sibling added`, data: studentData });
 });
 
 export default addSibling;

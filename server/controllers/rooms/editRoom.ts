@@ -56,7 +56,9 @@ const editRoom = asyncHandler(async (req, res) => {
       }
     );
 
-  res.status(200).json({ message: `${roomData.name} room updated`, roomData });
+  res
+    .status(200)
+    .json({ message: `${roomData.name} room updated`, data: roomData });
 });
 
 export default editRoom;
