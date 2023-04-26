@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect } from "react";
+import { FC, useContext } from "react";
 import { useRouter } from "next/router";
 import { RoomsContext } from "../../../contexts";
 import {
