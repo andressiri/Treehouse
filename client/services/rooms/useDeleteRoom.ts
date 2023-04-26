@@ -8,8 +8,8 @@ const useDeleteRoom = () => {
     useContext(RoomsContext);
 
   const deleteRoom = useCallback(
-    async (id: number) => {
-      await serviceInstance({
+    (id: number) => {
+      serviceInstance({
         route: `/${ROOMS_ROUTE}/${DELETION}/${id}`,
         method: "DELETE",
         context: { setIsError, setIsSuccess, setIsLoading, setMessage },

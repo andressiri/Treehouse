@@ -16,8 +16,8 @@ const useEditTeacher = () => {
     useContext(TeachersContext);
 
   const editTeacher = useCallback(
-    async (formData: IFormData, id: number) => {
-      await serviceInstance({
+    (formData: IFormData, id: number) => {
+      serviceInstance({
         route: `/${TEACHERS_ROUTE}/${EDIT}/${id}`,
         method: "PUT",
         context: { setIsError, setIsSuccess, setIsLoading, setMessage },

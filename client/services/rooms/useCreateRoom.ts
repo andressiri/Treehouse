@@ -13,8 +13,8 @@ const useCreateRoom = () => {
     useContext(RoomsContext);
 
   const createRoom = useCallback(
-    async (formData: IFormData) => {
-      await serviceInstance({
+    (formData: IFormData) => {
+      serviceInstance({
         route: `/${ROOMS_ROUTE}`,
         method: "POST",
         context: { setIsError, setIsSuccess, setIsLoading, setMessage },

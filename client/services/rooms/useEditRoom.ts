@@ -14,8 +14,8 @@ const useEditRoom = () => {
     useContext(RoomsContext);
 
   const editRoom = useCallback(
-    async (formData: IFormData, id: number) => {
-      await serviceInstance({
+    (formData: IFormData, id: number) => {
+      serviceInstance({
         route: `/${ROOMS_ROUTE}/${EDIT}/${id}`,
         method: "PUT",
         context: { setIsError, setIsSuccess, setIsLoading, setMessage },

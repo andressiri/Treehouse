@@ -16,8 +16,8 @@ const useAddSibling = () => {
     useContext(StudentsContext);
 
   const addSibling = useCallback(
-    async (formData: IFormData, id: number) => {
-      await serviceInstance({
+    (formData: IFormData, id: number) => {
+      serviceInstance({
         route: `/${STUDENTS_ROUTE}/${STUDENTS_HANDLE_SIBLINGS}/${id}`,
         method: "PUT",
         context: { setIsError, setIsSuccess, setIsLoading, setMessage },

@@ -8,8 +8,8 @@ const useGetTeacherById = () => {
     useContext(TeachersContext);
 
   const getTeacherById = useCallback(
-    async (id: number) => {
-      await serviceInstance({
+    (id: number) => {
+      serviceInstance({
         route: `/${TEACHERS_ROUTE}/${TEACHERS_SINGULAR}/${id}`,
         context: { setIsError, setIsSuccess, setIsLoading, setMessage },
         setState: setTeacher,

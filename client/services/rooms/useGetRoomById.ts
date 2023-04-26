@@ -8,7 +8,7 @@ const useGetRoomById = () => {
     useContext(RoomsContext);
 
   const getRoomById = useCallback(
-    async (id: number) => {
+    (id: number) => {
       serviceInstance({
         route: `/${ROOMS_ROUTE}/${ROOMS_SINGULAR}/${id}`,
         context: { setIsError, setIsSuccess, setIsLoading, setMessage },

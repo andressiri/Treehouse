@@ -7,8 +7,8 @@ const useGetTeachersWithRelations = () => {
   const { setTeachers, setIsError, setIsSuccess, setIsLoading, setMessage } =
     useContext(TeachersContext);
 
-  const getTeachersWithRelations = useCallback(async () => {
-    await serviceInstance({
+  const getTeachersWithRelations = useCallback(() => {
+    serviceInstance({
       route: `/${TEACHERS_ROUTE}/${WITH_RELATIONS}`,
       context: { setIsError, setIsSuccess, setIsLoading, setMessage },
       setState: setTeachers,

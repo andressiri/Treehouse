@@ -8,8 +8,8 @@ const useRemoveTeacherFromRoom = () => {
     useContext(RoomsContext);
 
   const removeTeacherFromRoom = useCallback(
-    async (id: number) => {
-      await serviceInstance({
+    (id: number) => {
+      serviceInstance({
         route: `/${ROOMS_ROUTE}/${ROOMS_HANDLE_TEACHER}/${id}`, // id is room id
         method: "DELETE",
         context: { setIsError, setIsSuccess, setIsLoading, setMessage },

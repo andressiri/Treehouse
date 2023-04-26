@@ -16,8 +16,8 @@ const useRemoveSibling = () => {
     useContext(StudentsContext);
 
   const removeSibling = useCallback(
-    async (formData: IFormData, id: number) => {
-      await serviceInstance({
+    (formData: IFormData, id: number) => {
+      serviceInstance({
         route: `/${STUDENTS_ROUTE}/${STUDENTS_HANDLE_SIBLINGS}/${id}`,
         method: "DELETE",
         context: { setIsError, setIsSuccess, setIsLoading, setMessage },

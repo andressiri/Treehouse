@@ -16,8 +16,8 @@ const useCreateTeacher = () => {
     useContext(TeachersContext);
 
   const createTeacher = useCallback(
-    async (formData: IFormData) => {
-      await serviceInstance({
+    (formData: IFormData) => {
+      serviceInstance({
         route: `/${TEACHERS_ROUTE}`,
         method: "POST",
         context: { setIsError, setIsSuccess, setIsLoading, setMessage },

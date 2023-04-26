@@ -8,8 +8,8 @@ const useDeleteStudent = () => {
     useContext(StudentsContext);
 
   const deleteStudent = useCallback(
-    async (id: number) => {
-      await serviceInstance({
+    (id: number) => {
+      serviceInstance({
         route: `/${STUDENTS_ROUTE}/${DELETION}/${id}`,
         method: "DELETE",
         context: { setIsError, setIsSuccess, setIsLoading, setMessage },
