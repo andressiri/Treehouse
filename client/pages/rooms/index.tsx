@@ -1,6 +1,9 @@
 import { FC, useContext } from "react";
 import { RoomsContext } from "../../contexts";
-import { useGetRoomsWithRelationsEffect } from "../../services";
+import {
+  useGetRoomsWithRelationsEffect,
+  useHandleRoomsResponseEffect,
+} from "../../services";
 import { Layout, DisplayPage } from "../../components/Templates";
 import {
   API_ORIGIN,
@@ -19,6 +22,7 @@ const Rooms: FC<Props> = ({ staticRooms }) => {
   const { rooms } = useContext(RoomsContext);
 
   useGetRoomsWithRelationsEffect();
+  useHandleRoomsResponseEffect({});
 
   return (
     <Layout>
