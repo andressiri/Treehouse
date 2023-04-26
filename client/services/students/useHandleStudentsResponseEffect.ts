@@ -3,34 +3,42 @@ import { StudentsContext } from "../../contexts";
 import { toast } from "react-toastify";
 
 interface Props {
+  errorCondition?: boolean;
+  successCondition?: boolean;
   errorAction?: () => void;
   successAction?: () => void;
-  useToast?: boolean;
-  toastMessage?: string;
+  errorToast?: boolean;
+  errorMessage?: string;
+  successToast?: boolean;
+  successMessage?: string;
 }
 
 const useHandleStudentsResponseEffect = ({
+  errorCondition = true,
+  successCondition = true,
   errorAction,
   successAction,
-  useToast,
-  toastMessage,
+  errorToast,
+  errorMessage,
+  successToast,
+  successMessage,
 }: Props) => {
   const { isError, setIsError, isSuccess, setIsSuccess, message, setMessage } =
     useContext(StudentsContext);
 
   useEffect(() => {
-    if (isError) {
+    if (errorCondition && isError) {
       if (errorAction) errorAction();
-      if (useToast && (message || toastMessage))
-        toast.error(toastMessage || message);
+      if (errorToast && (message || errorMessage))
+        toast.error(errorMessage || message);
       setMessage("");
       setIsError(false);
     }
 
-    if (isSuccess) {
+    if (successCondition && isSuccess) {
       if (successAction) successAction();
-      if (useToast && (message || toastMessage))
-        toast.success(toastMessage || message);
+      if (successToast && (message || successMessage))
+        toast.success(successMessage || message);
       setMessage("");
       setIsSuccess(false);
     }
@@ -38,10 +46,14 @@ const useHandleStudentsResponseEffect = ({
     isError,
     isSuccess,
     message,
+    errorCondition,
+    successCondition,
     errorAction,
     successAction,
-    useToast,
-    toastMessage,
+    errorToast,
+    errorMessage,
+    successToast,
+    successMessage,
     setIsError,
     setIsSuccess,
     setMessage,
