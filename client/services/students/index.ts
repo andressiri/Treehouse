@@ -6,5 +6,6 @@ export { default as useGetStudentById } from "./useGetStudentById";
 export { default as useGetStudentByIdEffect } from "./useGetStudentByIdEffect";
 export { default as useGetStudentsWithRelations } from "./useGetStudentsWithRelations";
 export { default as useGetStudentsWithRelationsEffect } from "./useGetStudentsWithRelationsEffect";
+export { default as useHandleStudentsResponseEffect } from "./useHandleStudentsResponseEffect";
 export { default as useRemoveSibling } from "./useRemoveSibling";
 export { default as useRemoveStudentFromRoom } from "./useRemoveStudentFromRoom";

@@ -5,3 +5,4 @@ export { default as useGetTeacherById } from "./useGetTeacherById";
 export { default as useGetTeacherByIdEffect } from "./useGetTeacherByIdEffect";
 export { default as useGetTeachersWithRelations } from "./useGetTeachersWithRelations";
 export { default as useGetTeachersWithRelationsEffect } from "./useGetTeachersWithRelationsEffect";
+export { default as useHandleTeachersResponseEffect } from "./useHandleTeachersResponseEffect";
