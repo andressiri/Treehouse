@@ -24,7 +24,7 @@ const Home: FC<Props> = ({ staticRooms }) => {
   const { rooms } = useContext(RoomsContext);
 
   useGetRoomsWithRelationsEffect();
-  useHandleRoomsResponseEffect({});
+  useHandleRoomsResponseEffect({ errorToast: true });
 
   return (
     <Layout>

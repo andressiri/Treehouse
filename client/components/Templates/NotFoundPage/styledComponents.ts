@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 
 export const Container = styled(Box)(({ theme }) => ({
   width: "100%",
-  height: "100%",
+  minHeight: `calc(100vh - ${theme.custom.header.height})`,
   paddingBottom: theme.custom.header.height,
   display: "flex",
   flexDirection: "column",
