@@ -1,8 +1,12 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState, useRef } from "react";
 import { RoomsContext } from "../../../contexts";
 import Router from "next/router";
 import CheckIcon from "@mui/icons-material/Check";
-import { useCreateRoom, useEditRoom } from "../../../services";
+import {
+  useCreateRoom,
+  useEditRoom,
+  useHandleRoomsResponseEffect,
+} from "../../../services";
 import { StyledButton, StyledTextField } from "../../../components/Atoms";
 import { Container, ErrorContainer, ErrorMessage } from "./styledComponents";
 
@@ -16,34 +20,38 @@ interface IFormData {
 }
 
 const EditOrCreateRoomForm: FC<Props> = ({ propRoom }) => {
-  const { room, isSuccess, setIsSuccess, message, setMessage } =
-    useContext(RoomsContext);
+  const { room, message } = useContext(RoomsContext);
   const [formData, setFormData] = useState<IFormData>({
-    name: propRoom ? room.name : "",
-    description: propRoom ? room.description : "",
+    name: propRoom ? propRoom.name : "",
+    description: propRoom ? propRoom.description : "",
   });
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const submitted = useRef<boolean>(false);
   const { createRoom } = useCreateRoom();
   const { editRoom } = useEditRoom();
 
   useEffect(() => {
     if (propRoom)
       setFormData({
-        name: room.name,
-        description: room.description,
+        name: propRoom.name,
+        description: propRoom.description,
       });
-  }, [room, propRoom]);
+  }, [propRoom]);
 
-  useEffect(() => {
-    if (isSuccess) {
-      setIsSuccess(false);
-      setMessage("");
-      Router.push(`/rooms/room/${room.id}`);
-    }
+  const errorAction = () => {
+    submitted.current = false;
+    setErrorMessage(message);
+  };
+  const successAction = () => {
+    Router.push(`/rooms/room/${room.id}`);
+  };
 
-    return () => {
-      setMessage("");
-    };
-  }, [room, isSuccess, setIsSuccess, setMessage]);
+  useHandleRoomsResponseEffect({
+    successCondition: submitted.current,
+    errorAction,
+    successAction,
+    successToast: true,
+  });
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -56,6 +64,10 @@ const EditOrCreateRoomForm: FC<Props> = ({ propRoom }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
+
+    submitted.current = true;
+    setErrorMessage("");
+
     if (propRoom) {
       editRoom(formData, Number(Router.query.id));
       return;
@@ -92,7 +104,7 @@ const EditOrCreateRoomForm: FC<Props> = ({ propRoom }) => {
         InputLabelProps={formData.description ? { shrink: true } : {}}
       />
       <ErrorContainer>
-        {message ? <ErrorMessage>{message}</ErrorMessage> : <></>}
+        <ErrorMessage>{errorMessage}</ErrorMessage>
       </ErrorContainer>
       <StyledButton type="submit" endIcon={<CheckIcon />}>
         {propRoom ? "Edit room" : "Create room"}
