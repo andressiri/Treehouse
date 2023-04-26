@@ -6,24 +6,18 @@ import React, {
   useState,
 } from "react";
 import { getWindowDimensions } from "../../utils/helpers";
+import { IContextProviderProps, IGeneralContext } from "../../typings/contexts";
 
-interface IContext {
-  viewportWidth: number;
-  viewportHeight: number;
-}
-
-export const GeneralContext = createContext<IContext>({
+export const GeneralContext = createContext<IGeneralContext>({
   viewportWidth:
     typeof window !== "undefined" ? getWindowDimensions().width : 0,
   viewportHeight:
     typeof window !== "undefined" ? getWindowDimensions().height : 0,
 });
 
-interface Props {
-  children: React.ReactNode;
-}
-
-export const GeneralContextProvider: FC<Props> = ({ children }) => {
+export const GeneralContextProvider: FC<IContextProviderProps> = ({
+  children,
+}) => {
   const [viewportWidth, setViewportWidth] = useState<number>(
     typeof window !== "undefined" ? getWindowDimensions().width : 0
   );

@@ -1,40 +1,23 @@
 import React, { createContext, FC, useState } from "react";
+import {
+  IContextProviderProps,
+  ITeachersContext,
+} from "../../typings/contexts";
+import { serviceContextInitialValues } from "../../config/constants";
 
-interface IContext {
-  teachers: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
-  setTeachers: React.Dispatch<React.SetStateAction<never[]>>;
-  teacher: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  setTeacher: React.Dispatch<React.SetStateAction<object>>;
-  isError: boolean;
-  setIsError: React.Dispatch<React.SetStateAction<boolean>>;
-  isSuccess: boolean;
-  setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>;
-  isLoading: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  message: string;
-  setMessage: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export const TeachersContext = createContext<IContext>({
+export const TeachersContext = createContext<ITeachersContext>({
   teachers: [],
-  setTeachers: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  setTeachers: () => [],
   teacher: {},
-  setTeacher: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  isError: false,
-  setIsError: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  isSuccess: false,
-  setIsSuccess: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  isLoading: false,
-  setIsLoading: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  message: "",
-  setMessage: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  setTeacher: () => {
+    return {};
+  },
+  ...serviceContextInitialValues,
 });
 
-interface Props {
-  children: React.ReactNode;
-}
-
-export const TeachersContextProvider: FC<Props> = ({ children }) => {
+export const TeachersContextProvider: FC<IContextProviderProps> = ({
+  children,
+}) => {
   const [teachers, setTeachers] = useState([]);
   const [teacher, setTeacher] = useState({});
   const [isError, setIsError] = useState<boolean>(false);
