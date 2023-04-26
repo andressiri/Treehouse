@@ -1,3 +1,13 @@
+:root {
+  --toastify-color-success: #0ba810;
+  --toastify-toast-min-height: 56px;
+}
+
+.Toastify__toast-container {
+  font-size: 20px;
+  font-weight: 600;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
