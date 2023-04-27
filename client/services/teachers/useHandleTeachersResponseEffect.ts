@@ -27,20 +27,28 @@ const useHandleTeachersResponseEffect = ({
     useContext(TeachersContext);
 
   useEffect(() => {
-    if (errorCondition && isError) {
-      if (errorAction) errorAction();
-      if (errorToast && (message || errorMessage))
-        toast.error(errorMessage || message);
-      setMessage("");
+    if (isError) {
       setIsError(false);
+
+      if (errorCondition) {
+        if (errorAction) errorAction();
+        if (errorToast && (message || errorMessage))
+          toast.error(errorMessage || message);
+      }
+
+      setMessage("");
     }
 
-    if (successCondition && isSuccess) {
-      if (successAction) successAction();
-      if (successToast && (message || successMessage))
-        toast.success(successMessage || message);
-      setMessage("");
+    if (isSuccess) {
       setIsSuccess(false);
+
+      if (successCondition) {
+        if (successAction) successAction();
+        if (successToast && (message || successMessage))
+          toast.success(successMessage || message);
+      }
+
+      setMessage("");
     }
   }, [
     isError,

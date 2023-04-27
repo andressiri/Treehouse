@@ -1,5 +1,5 @@
 // @description Handle remove student from room
-// @route DELETE /api/v1/student/room/:id
+// @route DELETE /api/v1/students/room/:id
 // @access Private - Admin only
 import asyncHandler from "express-async-handler";
 import { BY_ID } from "../../config/constants";

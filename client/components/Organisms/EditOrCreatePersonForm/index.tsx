@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useRef, useState } from "react";
+import { FC, useContext, useRef, useState } from "react";
 import { StudentsContext, TeachersContext } from "../../../contexts";
 import Router from "next/router";
 import CheckIcon from "@mui/icons-material/Check";
@@ -10,6 +10,10 @@ import {
   useCreateTeacher,
   useEditTeacher,
   useEditRoom,
+  useHandleStudentsResponseEffect,
+  useHandleTeachersResponseEffect,
+  useHandleRoomsResponseEffect,
+  useRemoveStudentFromRoom,
 } from "../../../services";
 import {
   StyledButton,
@@ -41,83 +45,96 @@ interface IFormData {
 }
 
 const EditOrCreatePersonForm: FC<Props> = ({ person, modelName }) => {
-  const inputFile = useRef<HTMLInputElement>(null);
+  const [formData, setFormData] = useState<IFormData>({
+    name: person?.name || "",
+    age: person?.age || "",
+    gender: person?.gender || "",
+    description: person?.description || "",
+    roomId: person?.roomId || "",
+  });
   const [imagePreview, setImagePreview] = useState(person?.picture);
-  const { genderArray } = getArrays();
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const isStudent = useRef<boolean>(modelName === "student");
-  const ContextOfStudents = useContext(StudentsContext);
+  const submitted = useRef<boolean>(false);
+  const studentRemoved = useRef<boolean>(false);
+  const inputFile = useRef<HTMLInputElement>(null);
   const { student } = useContext(StudentsContext);
-  const ContextOfTeachers = useContext(TeachersContext);
   const { teacher } = useContext(TeachersContext);
-  const { isSuccess, setIsSuccess, message, setMessage } = isStudent.current
-    ? ContextOfStudents
-    : ContextOfTeachers;
-
-  const [formData, setFormData] = useState<IFormData>(
-    !person
-      ? {
-          name: "",
-          age: "",
-          gender: "",
-          description: "",
-          roomId: "",
-        }
-      : {
-          name: isStudent.current ? student.name : teacher.name,
-          age: isStudent.current ? student.age : teacher.age,
-          gender: isStudent.current ? student.gender : teacher.gender,
-          description: isStudent.current
-            ? student.description
-            : teacher.description,
-          roomId: isStudent.current ? student.roomId : teacher.roomId,
-        }
-  );
+  const ContextOfStudents = useContext(StudentsContext);
+  const ContextOfTeachers = useContext(TeachersContext);
+  const { message } = isStudent.current ? ContextOfStudents : ContextOfTeachers;
+  const { genderArray } = getArrays();
   const { createStudent } = useCreateStudent();
   const { editStudent } = useEditStudent();
+  const { removeStudentFromRoom } = useRemoveStudentFromRoom();
   const { createTeacher } = useCreateTeacher();
   const { editTeacher } = useEditTeacher();
   const { editRoom } = useEditRoom();
 
-  useEffect(() => {
-    if (person)
-      setFormData({
-        name: isStudent.current ? student.name : teacher.name,
-        age: isStudent.current ? student.age : teacher.age,
-        gender: isStudent.current ? student.gender : teacher.gender,
-        description: isStudent.current
-          ? student.description
-          : teacher.description,
-        roomId: isStudent.current ? student.roomId : teacher.Room.id,
-      });
-    setImagePreview(isStudent.current ? student.picture : teacher.picture);
-  }, [student, teacher, person]);
+  const errorAction = () => {
+    submitted.current = false;
+    studentRemoved.current = false;
+    setErrorMessage(message);
+  };
 
-  useEffect(() => {
-    if (isSuccess) {
-      setIsSuccess(false);
-      setMessage("");
-      if (modelName === "teacher")
-        editRoom({ teacherId: teacher.id }, Number(formData.roomId));
-      Router.push(
-        `/${modelName}s/${modelName}/${
-          isStudent.current ? student.id : teacher.id
-        }`
-      );
+  const studentsSuccessAction = () => {
+    if (
+      formData.roomId ||
+      (!formData.roomId && (!person || !person.roomId)) ||
+      studentRemoved.current
+    ) {
+      Router.push(`/students/student/${student.id}`);
+    } else {
+      studentRemoved.current = true;
+      removeStudentFromRoom(Number(student.id));
     }
+  };
 
-    return () => {
-      setMessage("");
-    };
-  }, [
-    student,
-    teacher,
-    isSuccess,
-    setIsSuccess,
-    setMessage,
-    modelName,
-    editRoom,
-    formData,
-  ]);
+  const teachersSuccessAction = () => {
+    if (!formData.roomId) {
+      Router.push(`/teachers/teacher/${teacher.id}`);
+    } else {
+      editRoom({ teacherId: teacher.id }, Number(formData.roomId));
+    }
+  };
+
+  const roomSuccessAction = () => {
+    submitted.current = false;
+    setErrorMessage("");
+    Router.push(`/teachers/teacher/${teacher.id}`);
+  };
+
+  useHandleStudentsResponseEffect({
+    successCondition: submitted.current,
+    errorAction,
+    successAction: studentsSuccessAction,
+    successToast: Boolean(
+      formData.roomId ||
+        (!formData.roomId && (!person || !person.roomId)) ||
+        studentRemoved.current
+    ),
+    successMessage: `${student.name} ${
+      person ? "updated" : "created"
+    } successfully`,
+  });
+
+  useHandleTeachersResponseEffect({
+    successCondition: submitted.current,
+    errorAction,
+    successAction: teachersSuccessAction,
+    successToast: Boolean(!formData.roomId),
+  });
+
+  useHandleRoomsResponseEffect({
+    successCondition: submitted.current,
+    errorAction,
+    successAction: roomSuccessAction,
+    errorToast: true,
+    successToast: true,
+    successMessage: `${teacher.name} ${
+      person ? "updated" : "created"
+    } successfully`,
+  });
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -130,6 +147,10 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, modelName }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
+
+    submitted.current = true;
+    setErrorMessage("");
+
     if (person && isStudent.current) {
       editStudent(formData, Number(Router.query.id));
       return;
@@ -140,12 +161,19 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, modelName }) => {
       return;
     }
 
+    const teacherData = {
+      name: formData.name,
+      age: formData.age,
+      gender: formData.gender,
+      description: formData.description,
+    };
+
     if (person) {
-      editTeacher(formData, Number(Router.query.id));
+      editTeacher(teacherData, Number(Router.query.id));
       return;
     }
 
-    createTeacher(formData);
+    createTeacher(teacherData);
   };
 
   const handleUploadImage = () =>
@@ -241,7 +269,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, modelName }) => {
         showJustTeacherless={modelName === "teacher"}
       />
       <ErrorContainer>
-        {message ? <ErrorMessage>{message}</ErrorMessage> : <></>}
+        <ErrorMessage>{errorMessage}</ErrorMessage>
       </ErrorContainer>
       <StyledButton
         type="submit"

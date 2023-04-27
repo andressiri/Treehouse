@@ -8,7 +8,6 @@ interface IFormData {
   age: string;
   gender: string;
   description?: string;
-  roomId?: string;
 }
 
 const useEditTeacher = () => {
