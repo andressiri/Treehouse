@@ -8,3 +8,12 @@ declare global {
     blurDataURL?: string;
   };
 }
+
+export type Gender =
+  | "female"
+  | "male"
+  | "intersex"
+  | "trans"
+  | "non-conforming"
+  | "personal"
+  | "eunuch";

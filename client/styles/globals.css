@@ -1,5 +1,10 @@
 :root {
-  --toastify-color-success: #0ba810;
+  --toastify-color-light: rgba(222, 222, 222, 1);
+  --toastify-color-dark: rgba(33, 33, 33, 1);
+  --toastify-color-info: rgba(30, 72, 201, 1);
+  --toastify-color-success: #2e7d32;
+  --toastify-color-warning: #ed6c02;
+  --toastify-color-error: #d32f2f;
   --toastify-toast-min-height: 56px;
 }
 
