@@ -1,6 +1,9 @@
 import { FC, useContext } from "react";
 import { StudentsContext } from "../../contexts";
-import { useGetStudentsWithRelationsEffect } from "../../services";
+import {
+  useGetStudentsWithRelationsEffect,
+  useHandleStudentsResponseEffect,
+} from "../../services";
 import { Layout, DisplayPage } from "../../components/Templates";
 import {
   API_ORIGIN,
@@ -19,6 +22,7 @@ const Students: FC<Props> = ({ staticStudents }) => {
   const { students } = useContext(StudentsContext);
 
   useGetStudentsWithRelationsEffect();
+  useHandleStudentsResponseEffect({ errorToast: true });
 
   return (
     <Layout>
