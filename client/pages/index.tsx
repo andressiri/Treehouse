@@ -23,8 +23,8 @@ interface Props {
 const Home: FC<Props> = ({ staticRooms }) => {
   const { rooms } = useContext(RoomsContext);
 
-  useGetRoomsWithRelationsEffect();
   useHandleRoomsResponseEffect({ errorToast: true });
+  useGetRoomsWithRelationsEffect();
 
   return (
     <Layout>

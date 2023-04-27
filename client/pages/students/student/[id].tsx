@@ -1,9 +1,10 @@
-import { FC, useContext, useEffect } from "react";
+import { FC, useContext } from "react";
 import { useRouter } from "next/router";
 import { StudentsContext } from "../../../contexts";
 import {
   useGetStudentByIdEffect,
   useGetStudentsWithRelationsEffect,
+  useHandleStudentsResponseEffect,
 } from "../../../services";
 import { Layout, PersonPage } from "../../../components/Templates";
 import {
@@ -20,31 +21,12 @@ interface Props {
 }
 
 const StudentById: FC<Props> = ({ staticStudent }) => {
-  const {
-    students,
-    student,
-    isError,
-    setIsError,
-    isSuccess,
-    setIsSuccess,
-    message,
-  } = useContext(StudentsContext);
-  const { isReady, push, query } = useRouter();
+  const { students, student } = useContext(StudentsContext);
+  const { isReady, query } = useRouter();
 
-  useGetStudentsWithRelationsEffect();
+  useHandleStudentsResponseEffect({ errorToast: true });
   useGetStudentByIdEffect();
-
-  useEffect(() => {
-    if (isSuccess) {
-      // toast message
-      setIsSuccess(false);
-    }
-
-    if (isError) {
-      setIsError(false);
-      push("/");
-    }
-  }, [isError, setIsError, isSuccess, setIsSuccess, message, push]);
+  useGetStudentsWithRelationsEffect();
 
   return (
     <Layout>
@@ -79,7 +61,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   if (!staticStudent.id)
     return {
       redirect: {
-        destination: "/",
+        destination: "/404",
         permanent: false,
       },
     };

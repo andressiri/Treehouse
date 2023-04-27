@@ -23,8 +23,8 @@ const RoomById: FC<Props> = ({ staticRoom }) => {
   const { room } = useContext(RoomsContext);
   const { isReady, query } = useRouter();
 
-  useGetRoomByIdEffect();
   useHandleRoomsResponseEffect({ errorToast: true });
+  useGetRoomByIdEffect();
 
   return (
     <Layout>

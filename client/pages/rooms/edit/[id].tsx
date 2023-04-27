@@ -23,8 +23,8 @@ const EditRoom: FC<Props> = ({ staticRoom }) => {
   const { room } = useContext(RoomsContext);
   const { isReady, query } = useRouter();
 
-  useGetRoomByIdEffect();
   useHandleRoomsResponseEffect({});
+  useGetRoomByIdEffect();
 
   return (
     <Layout>

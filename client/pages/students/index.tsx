@@ -21,8 +21,8 @@ interface Props {
 const Students: FC<Props> = ({ staticStudents }) => {
   const { students } = useContext(StudentsContext);
 
-  useGetStudentsWithRelationsEffect();
   useHandleStudentsResponseEffect({ errorToast: true });
+  useGetStudentsWithRelationsEffect();
 
   return (
     <Layout>
