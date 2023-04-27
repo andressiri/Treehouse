@@ -1,7 +1,10 @@
-import { FC, useContext, useEffect } from "react";
+import { FC, useContext } from "react";
 import { useRouter } from "next/router";
 import { StudentsContext } from "../../../contexts";
-import { useGetStudentByIdEffect } from "../../../services";
+import {
+  useGetStudentByIdEffect,
+  useHandleStudentsResponseEffect,
+} from "../../../services";
 import { Layout, EditOrCreatePersonPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
@@ -17,16 +20,11 @@ interface Props {
 }
 
 const EditStudent: FC<Props> = ({ staticStudent }) => {
-  const { student, isError, setIsError, message } = useContext(StudentsContext);
+  const { student } = useContext(StudentsContext);
   const { isReady, query } = useRouter();
 
   useGetStudentByIdEffect();
-
-  useEffect(() => {
-    if (isError) {
-      setIsError(false);
-    }
-  }, [isError, setIsError, message]);
+  useHandleStudentsResponseEffect({ errorToast: true });
 
   return (
     <Layout>
@@ -60,7 +58,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   if (!staticStudent.id)
     return {
       redirect: {
-        destination: "/",
+        destination: "/404",
         permanent: false,
       },
     };
