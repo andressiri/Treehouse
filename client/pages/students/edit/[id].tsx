@@ -23,7 +23,7 @@ const EditStudent: FC<Props> = ({ staticStudent }) => {
   const { student } = useContext(StudentsContext);
   const { isReady, query } = useRouter();
 
-  useHandleStudentsResponseEffect({ errorToast: true });
+  useHandleStudentsResponseEffect({});
   useGetStudentByIdEffect();
 
   return (
