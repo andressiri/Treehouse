@@ -1,7 +1,10 @@
-import { FC, useContext, useEffect } from "react";
+import { FC, useContext } from "react";
 import { useRouter } from "next/router";
 import { TeachersContext } from "../../../contexts";
-import { useGetTeacherByIdEffect } from "../../../services";
+import {
+  useGetTeacherByIdEffect,
+  useHandleTeachersResponseEffect,
+} from "../../../services";
 import { Layout, PersonPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
@@ -17,17 +20,11 @@ interface Props {
 }
 
 const TeacherById: FC<Props> = ({ staticTeacher }) => {
-  const { teacher, isError, setIsError, message } = useContext(TeachersContext);
-  const { isReady, push, query } = useRouter();
+  const { teacher } = useContext(TeachersContext);
+  const { isReady, query } = useRouter();
 
+  useHandleTeachersResponseEffect({ errorToast: true });
   useGetTeacherByIdEffect();
-
-  useEffect(() => {
-    if (isError) {
-      setIsError(false);
-      push("/");
-    }
-  }, [isError, setIsError, message, push]);
 
   return (
     <Layout>
@@ -61,7 +58,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   if (!staticTeacher.id)
     return {
       redirect: {
-        destination: "/",
+        destination: "/404",
         permanent: false,
       },
     };
