@@ -17,3 +17,7 @@ export interface ITeacherWithRelations extends ITeacher {
   Room: IRoom | object;
   Students: IStudent[] | [];
 }
+
+export type AnyTeacher = ITeacher | ITeacherWithRelations;
+
+export type AnyTeacherArray = ITeacher[] | ITeacherWithRelations[];

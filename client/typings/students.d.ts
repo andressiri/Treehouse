@@ -33,3 +33,7 @@ export interface IStudentWithRelations extends IStudent {
   Teacher: ITeacher;
   hasSibling: IStudentWithSibling[] | [];
 }
+
+export type AnyStudent = IStudent | IStudentWithRelations;
+
+export type AnyStudentArray = IStudent[] | IStudentWithRelations[];

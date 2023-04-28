@@ -1,3 +1,7 @@
+import { IRoom, IRoomWithRelations } from "./rooms";
+import { IStudent, IStudentWithRelations } from "./students";
+import { ITeacher, ITeacherWithRelations } from "./teachers";
+
 export interface IContextProviderProps {
   children: React.ReactNode;
 }
@@ -25,26 +29,53 @@ interface IServiceHandlers {
   setMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
+export type SetRooms = React.Dispatch<
+  React.SetStateAction<IRoom[] | IRoomWithRelations[] | []>
+>;
+export type SetRoom = React.Dispatch<
+  React.SetStateAction<IRoom | IRoomWithRelations | object>
+>;
 export interface IRoomsContext extends IServiceContext {
-  rooms: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
-  setRooms: React.Dispatch<React.SetStateAction<never[]>>;
-  room: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  setRoom: React.Dispatch<React.SetStateAction<object>>;
+  rooms: IRoom[] | IRoomWithRelations[] | [];
+  setRooms: SetRooms;
+  room: IRoom | IRoomWithRelations | object;
+  setRoom: SetRoom;
 }
 
+export type SetStudents = React.Dispatch<
+  React.SetStateAction<IStudent[] | IStudentWithRelations[] | []>
+>;
+export type SetStudent = React.Dispatch<
+  React.SetStateAction<IStudent | IStudentWithRelations | object>
+>;
 export interface IStudentsContext extends IServiceContext {
-  students: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
-  setStudents: React.Dispatch<React.SetStateAction<never[]>>;
-  student: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  setStudent: React.Dispatch<React.SetStateAction<object>>;
+  students: IStudent[] | IStudentWithRelations[] | [];
+  setStudents: SetStudents;
+  student: IStudent | IStudentWithRelations | object;
+  setStudent: SetStudent;
 }
 
+export type SetTeachers = React.Dispatch<
+  React.SetStateAction<ITeacher[] | ITeacherWithRelations[] | []>
+>;
+
+export type SetTeacher = React.Dispatch<
+  React.SetStateAction<ITeacher | ITeacherWithRelations | object>
+>;
 export interface ITeachersContext extends IServiceContext {
-  teachers: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
-  setTeachers: React.Dispatch<React.SetStateAction<never[]>>;
-  teacher: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  setTeacher: React.Dispatch<React.SetStateAction<object>>;
+  teachers: ITeacher[] | ITeacherWithRelations[] | [];
+  setTeachers: setTeacher;
+  teacher: ITeacher | ITeacherWithRelations | object;
+  setTeacher: SetTeacher;
 }
+
+export type SetServiceState =
+  | SetRooms
+  | SetRoom
+  | SetStudents
+  | SetStudent
+  | SetTeachers
+  | SetTeacher;
 
 export type ServicesContexts =
   | IServiceContext

@@ -17,3 +17,7 @@ export interface IRoomWithRelations extends IRoom {
   Teacher: ITeacher | object;
   Students: IStudent[] | [];
 }
+
+export type AnyRoom = IRoom | IRoomWithRelations;
+
+export type AnyRoomArray = IRoom[] | IRoomWithRelations[];

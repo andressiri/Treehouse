@@ -1,5 +1,6 @@
 import React, { createContext, FC, useState } from "react";
 import { IContextProviderProps, IRoomsContext } from "../../typings/contexts";
+import { IRoom, IRoomWithRelations } from "../../typings/rooms";
 import { serviceContextInitialValues } from "../../config/constants";
 
 export const RoomsContext = createContext<IRoomsContext>({
@@ -15,12 +16,12 @@ export const RoomsContext = createContext<IRoomsContext>({
 export const RoomsContextProvider: FC<IContextProviderProps> = ({
   children,
 }) => {
-  const [rooms, setRooms] = useState([]);
-  const [room, setRoom] = useState({});
-  const [isError, setIsError] = useState<boolean>(false);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+  const [rooms, setRooms] = useState<IRoom[] | IRoomWithRelations[] | []>([]);
+  const [room, setRoom] = useState<IRoom | IRoomWithRelations | object>({});
+  const [isError, setIsError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   return (
     <RoomsContext.Provider
