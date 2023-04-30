@@ -2,11 +2,7 @@ import { FC, useContext, useState, useRef } from "react";
 import { RoomsContext } from "../../../contexts";
 import Router from "next/router";
 import CheckIcon from "@mui/icons-material/Check";
-import {
-  useCreateRoom,
-  useEditRoom,
-  useHandleRoomsResponseEffect,
-} from "../../../services";
+import { useCreateRoom, useEditRoom } from "../../../services";
 import { StyledButton, StyledTextField } from "../../../components/Atoms";
 import { Container, ErrorContainer, ErrorMessage } from "./styledComponents";
 import { AnyRoom } from "../../../typings/rooms";
@@ -22,27 +18,33 @@ interface IFormData {
 }
 
 const EditOrCreateRoomForm: FC<Props> = ({ propRoom }) => {
-  const { room, message } = useContext(RoomsContext);
+  const { room } = useContext(RoomsContext);
   const [formData, setFormData] = useState<IFormData>({
     name: propRoom?.name || "",
     description: propRoom?.description || "",
   });
   const [errorMessage, setErrorMessage] = useState<string>("");
   const submitted = useRef<boolean>(false);
-  const { createRoom } = useCreateRoom();
-  const { editRoom } = useEditRoom();
 
-  const errorAction = () => {
+  const errorAction = (message: string) => {
     submitted.current = false;
     setErrorMessage(message);
   };
+
   const successAction = () => {
     Router.push(`/${ROOMS_ROUTE}/${ROOMS_SINGULAR}/${(room as AnyRoom)?.id}`);
   };
 
-  useHandleRoomsResponseEffect({
+  const { editRoom, message: editMessage } = useEditRoom({
     successCondition: submitted.current,
-    errorAction,
+    errorAction: () => errorAction(editMessage),
+    successAction,
+    successToast: true,
+  });
+
+  const { createRoom, message: createMessage } = useCreateRoom({
+    successCondition: submitted.current,
+    errorAction: () => errorAction(createMessage),
     successAction,
     successToast: true,
   });
