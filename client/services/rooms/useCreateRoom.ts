@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { RoomsContext } from "../../contexts";
-import { serviceInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
 import { ROOMS_ROUTE } from "../../config/constants";
 
 interface IFormData {
@@ -8,25 +9,31 @@ interface IFormData {
   description?: string;
 }
 
-const useCreateRoom = () => {
-  const { setRoom, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(RoomsContext);
+const useCreateRoom = (responseOptions: IHandleResponseOptions) => {
+  const { setRoom } = useContext(RoomsContext);
+  const { excecuteRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const createRoom = useCallback(
     (formData: IFormData) => {
-      serviceInstance({
+      excecuteRequest({
         route: `/${ROOMS_ROUTE}`,
         method: "POST",
-        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
         setState: setRoom,
         formData,
         sanitizeData: true,
       });
     },
-    [setRoom, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [excecuteRequest, setRoom]
   );
 
-  return { createRoom };
+  return {
+    createRoom,
+    isError,
+    isSuccess,
+    isLoading,
+    message,
+  };
 };
 
 export default useCreateRoom;
