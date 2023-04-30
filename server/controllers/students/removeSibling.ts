@@ -70,9 +70,10 @@ const removeSibling = asyncHandler(async (req, res) => {
     ],
   });
 
-  res
-    .status(200)
-    .json({ messge: `${studentData.name} sibling removed`, data: studentData });
+  res.status(200).json({
+    message: `${studentData.name} sibling removed`,
+    data: studentData,
+  });
 });
 
 export default removeSibling;
