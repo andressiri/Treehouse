@@ -8,22 +8,29 @@ import {
   useRemoveStudentFromRoom,
   useRemoveTeacherFromRoom,
 } from "../../../services";
+import { PersonEntities } from "../../../typings/global";
+import { STUDENT_ENTITY } from "../../../config/constants";
 
+interface Room {
+  id: number;
+  name: string;
+  description?: string;
+}
 interface Props {
-  room: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  modelName: "student" | "teacher";
-  personId: string;
+  room: Room;
+  personId: number;
   personName: string;
+  entityName: PersonEntities;
 }
 
-const PersonRoom: FC<Props> = ({ room, modelName, personId, personName }) => {
+const PersonRoom: FC<Props> = ({ room, personId, personName, entityName }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
-
+  const isStudent = entityName === STUDENT_ENTITY;
   const { removeStudentFromRoom } = useRemoveStudentFromRoom();
   const { removeTeacherFromRoom } = useRemoveTeacherFromRoom();
 
   const handleRemove = () => {
-    if (modelName === "student") {
+    if (isStudent) {
       removeStudentFromRoom(Number(personId));
       return;
     }

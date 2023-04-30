@@ -7,12 +7,13 @@ import { useRemoveStudentFromRoom, useRemoveSibling } from "../../../services";
 import { ActionIconButton, LinkIconButton } from "../../../components/Atoms";
 import { ConfirmModal } from "../../../components/Organisms";
 import { Container, Name, ActionsContainer } from "./styledComponents";
+import { STUDENTS_ROUTE, STUDENTS_SINGULAR } from "../../../config/constants";
 
 interface Props {
   id: number;
   name: string;
   listOf?: "siblings" | "students";
-  studentId?: string;
+  studentId?: number;
 }
 
 const StudentListItem: FC<Props> = ({ id, name, listOf, studentId }) => {
@@ -37,7 +38,7 @@ const StudentListItem: FC<Props> = ({ id, name, listOf, studentId }) => {
       <Name>{name}</Name>
       <ActionsContainer>
         <LinkIconButton
-          href={`/students/student/${id}`}
+          href={`/${STUDENTS_ROUTE}/${STUDENTS_SINGULAR}/${id}`}
           icon={<VisibilityIcon />}
           tooltipText="See more..."
           tooltipWidth="70px"
@@ -61,7 +62,9 @@ const StudentListItem: FC<Props> = ({ id, name, listOf, studentId }) => {
               ? () => handleDeleteSibling(true)
               : handleRemoveFromClassroom
           }
-          noAction={siblings.current ? () => handleDeleteSibling(false) : null}
+          noAction={
+            siblings.current ? () => handleDeleteSibling(false) : undefined
+          }
           successText={`${name} was removed successfully`}
           open={openConfirm}
           onClose={() => setOpenConfirm(false)}

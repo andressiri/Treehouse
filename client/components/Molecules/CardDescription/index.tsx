@@ -8,14 +8,15 @@ import {
   Description,
   ButtonContainer,
 } from "./styledComponents";
+import { Entities } from "../../../typings/global";
 
 interface Props {
-  description: string;
   id: number;
-  modelName: "room" | "student" | "teacher";
+  description?: string;
+  entityName: Entities;
 }
 
-const RoomCardDescription: FC<Props> = ({ description, id, modelName }) => {
+const RoomCardDescription: FC<Props> = ({ id, description, entityName }) => {
   return (
     <Container>
       <FadeShadow />
@@ -24,7 +25,7 @@ const RoomCardDescription: FC<Props> = ({ description, id, modelName }) => {
       </DescriptionContainer>
       <ButtonContainer>
         <LinkIconButton
-          href={`/${modelName}s/${modelName}/${id}`}
+          href={`/${entityName}s/${entityName}/${id}`}
           icon={<VisibilityIcon />}
           tooltipText="See more..."
           tooltipWidth="75px"

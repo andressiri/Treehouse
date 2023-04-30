@@ -5,15 +5,22 @@ import { useEditRoom, useEditStudent } from "../../../services";
 import { StyledButton } from "../../../components/Atoms";
 import { RoomSelect } from "../../../components/Molecules";
 import { Container, FormContainer, Title } from "./styledComponents";
+import { PersonEntities } from "../../../typings/global";
+import { STUDENT_ENTITY } from "../../../config/constants";
 
 interface Props {
-  modelName: "student" | "teacher";
-  personId: string;
+  personId: number;
   personName: string;
+  entityName: PersonEntities;
 }
 
-const PersonRoomFallback: FC<Props> = ({ modelName, personId, personName }) => {
+const PersonRoomFallback: FC<Props> = ({
+  personId,
+  personName,
+  entityName,
+}) => {
   const [roomSelected, setRoomSelected] = useState("");
+  const isStudent = entityName === STUDENT_ENTITY;
   const { editRoom } = useEditRoom();
   const { editStudent } = useEditStudent();
 
@@ -27,11 +34,11 @@ const PersonRoomFallback: FC<Props> = ({ modelName, personId, personName }) => {
     e.preventDefault();
     if (!roomSelected || roomSelected === "No room") return;
 
-    if (modelName === "student") {
+    if (isStudent) {
       await editStudent({ roomId: roomSelected }, Number(personId));
     }
 
-    await editRoom({ teacherId: personId }, Number(roomSelected));
+    await editRoom({ teacherId: `${personId}` }, Number(roomSelected));
     Router.replace(Router.asPath);
   };
 
@@ -48,7 +55,7 @@ const PersonRoomFallback: FC<Props> = ({ modelName, personId, personName }) => {
           onChange={(
             e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
           ) => handleOnChange(e)}
-          showJustTeacherless={modelName === "teacher"}
+          showJustTeacherless={!isStudent}
         />
         <StyledButton
           disabled={!roomSelected}

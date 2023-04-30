@@ -31,16 +31,11 @@ const RoomSelect: FC<Props> = ({
       variant="outlined"
       InputLabelProps={value ? { shrink: true } : {}}
     >
-      {roomsArray.map(
-        (
-          option: any, // eslint-disable-line @typescript-eslint/no-explicit-any
-          id: number
-        ) => (
-          <MenuItem key={`${option.name}${id}`} value={option.id}>
-            {option.name}
-          </MenuItem>
-        )
-      )}
+      {roomsArray.map((option, id) => (
+        <MenuItem key={`${option.name}${id}`} value={option.value}>
+          {option.name}
+        </MenuItem>
+      ))}
     </StyledSelect>
   );
 };

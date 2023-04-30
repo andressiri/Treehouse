@@ -1,32 +1,41 @@
 import { useContext, useMemo } from "react";
 import { RoomsContext } from "../../../contexts";
-import { useGetRoomsWithRelationsEffect } from "../../../services";
+import {
+  useGetRoomsWithRelationsEffect,
+  useHandleRoomsResponseEffect,
+} from "../../../services";
+import { sortByName } from "../../../utils/helpers";
+import { SelectOption } from "../../../typings/global";
+import { AnyRoomArray, IRoom } from "../../../typings/rooms";
 
 const useGetRoomsArray = (showJustTeacherless?: boolean) => {
   const { rooms } = useContext(RoomsContext);
 
+  useHandleRoomsResponseEffect({});
   useGetRoomsWithRelationsEffect();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const roomsArray: any[] = useMemo(() => {
-    const arrayWithNoRoomOption = rooms.concat([
-      {
-        value: "",
-        name: "No room",
-      },
+  const roomsOptionsArray: SelectOption[] = useMemo(() => {
+    const sanitizedArray: SelectOption[] = (rooms as AnyRoomArray)
+      .filter((room: IRoom) => {
+        if (showJustTeacherless && room.teacherId) return false;
+        return true;
+      })
+      .map((room: IRoom) => {
+        return {
+          value: `${room.id}`,
+          name: room.name,
+        };
+      })
+      .sort(sortByName);
+
+    const arrayWithNoRoomOption = sanitizedArray.concat([
+      { value: "", name: "No room" },
     ]);
 
-    if (!showJustTeacherless) return arrayWithNoRoomOption;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return arrayWithNoRoomOption.filter((room: any) => {
-      if (!room.teacherId) return true;
-
-      return false;
-    });
+    return arrayWithNoRoomOption;
   }, [rooms, showJustTeacherless]);
 
-  return roomsArray;
+  return roomsOptionsArray;
 };
 
 export default useGetRoomsArray;
