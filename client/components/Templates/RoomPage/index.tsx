@@ -20,9 +20,12 @@ import {
   StudentsTitle,
   ActionsContainer,
 } from "./styledComponents";
+import { IRoomWithRelations } from "../../../typings/rooms";
+import { ITeacher } from "../../../typings/teachers";
+import { EDIT, ROOMS_ROUTE } from "../../../config/constants";
 
 interface Props {
-  room: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  room: IRoomWithRelations;
 }
 
 const RoomPage: FC<Props> = ({ room }) => {
@@ -38,7 +41,11 @@ const RoomPage: FC<Props> = ({ room }) => {
         ) : (
           <FallbackText>This room has no description</FallbackText>
         )}
-        {room.Teacher ? <RoomTeacher teacher={room.Teacher} /> : <></>}
+        {(room.Teacher as ITeacher)?.id ? (
+          <RoomTeacher teacher={room.Teacher as ITeacher} />
+        ) : (
+          <></>
+        )}
         <StudentsTitle>This are its students</StudentsTitle>
         {room.Students && room.Students.length ? (
           <StudentsList studentsArray={room.Students} />
@@ -55,7 +62,7 @@ const RoomPage: FC<Props> = ({ room }) => {
           </StyledButton>
           <StyledButton
             endIcon={<EditIcon />}
-            onClick={() => Router.push(`/rooms/edit/${room.id}`)}
+            onClick={() => Router.push(`/${ROOMS_ROUTE}/${EDIT}/${room.id}`)}
           >
             Edit room
           </StyledButton>

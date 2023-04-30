@@ -21,45 +21,54 @@ import {
   Description,
   ActionsContainer,
 } from "./styledComponents";
+import { PersonEntities } from "../../../typings/global";
+import { IRoom } from "../../../typings/rooms";
+import { IStudentWithRelations } from "../../../typings/students";
+import { ITeacherWithRelations } from "../../../typings/teachers";
+import { STUDENT_ENTITY } from "../../../config/constants";
 
 interface Props {
-  students?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  data: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  modelName: "student" | "teacher";
+  person: IStudentWithRelations | ITeacherWithRelations;
+  entityName: PersonEntities;
 }
 
-const PersonPage: FC<Props> = ({ students, data, modelName }) => {
+const PersonPage: FC<Props> = ({ person, entityName }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
+  const isStudent = entityName === STUDENT_ENTITY;
   const { deleteStudent } = useDeleteStudent();
   const { deleteTeacher } = useDeleteTeacher();
 
   return (
     <Container component="section">
       <InnerContainer>
-        <SectionTitle>{data.name}</SectionTitle>
-        <DisplayImage imageSrc={data.picture} />
-        <PersonBasicInfo age={data.age} gender={data.gender} />
-        {data.description ? (
-          <Description>{data.description}</Description>
+        <SectionTitle>{person.name}</SectionTitle>
+        <DisplayImage imageSrc={person.picture} />
+        <PersonBasicInfo age={person.age} gender={person.gender} />
+        {person.description ? (
+          <Description>{person.description}</Description>
         ) : (
-          <FallbackText>{`This ${modelName} has no description`}</FallbackText>
+          <FallbackText>{`This ${entityName} has no description`}</FallbackText>
         )}
-        {data.Room ? (
+        {(person.Room as IRoom)?.id ? (
           <PersonRoom
-            room={data.Room}
-            modelName={modelName}
-            personId={data.id}
-            personName={data.name}
+            room={{
+              id: (person.Room as IRoom).id,
+              name: (person.Room as IRoom).name,
+              description: (person.Room as IRoom).description,
+            }}
+            personId={person.id}
+            personName={person.name}
+            entityName={entityName}
           />
         ) : (
           <PersonRoomFallback
-            modelName={modelName}
-            personId={data.id}
-            personName={data.name}
+            personId={person.id}
+            personName={person.name}
+            entityName={entityName}
           />
         )}
-        {modelName === "student" || students ? (
-          <StudentSiblings students={students} data={data} />
+        {isStudent ? (
+          <StudentSiblings person={person as IStudentWithRelations} />
         ) : (
           <></>
         )}
@@ -70,32 +79,30 @@ const PersonPage: FC<Props> = ({ students, data, modelName }) => {
             endIcon={<WarningAmberIcon />}
             onClick={() => setOpenConfirm(true)}
           >
-            {`Delete ${modelName}`}
+            {`Delete ${entityName}`}
           </StyledButton>
           <StyledButton
             endIcon={<EditIcon />}
-            onClick={() => Router.push(`/${modelName}s/edit/${data.id}`)}
+            onClick={() => Router.push(`/${entityName}s/edit/${person.id}`)}
           >
-            {`Edit ${modelName}`}
+            {`Edit ${entityName}`}
           </StyledButton>
         </ActionsContainer>
         <ConfirmModal
-          text={`Are you sure you want to delete ${data.name}?`}
+          text={`Are you sure you want to delete ${person.name}?`}
           confirmAction={() => {
-            if (modelName === "student") {
+            if (isStudent) {
               deleteStudent(Number(Router.query.id));
               return;
             }
 
             deleteTeacher(Number(Router.query.id));
           }}
-          successText={`${data.name} was deleted successfully`}
+          successText={`${person.name} was deleted successfully`}
           open={openConfirm}
           onClose={() => setOpenConfirm(false)}
           onSuccess={() => Router.push("/")}
-          confirmContext={
-            modelName === "student" ? "StudentsContext" : "TeachersContext"
-          }
+          confirmContext={isStudent ? "StudentsContext" : "TeachersContext"}
         />
       </InnerContainer>
     </Container>
