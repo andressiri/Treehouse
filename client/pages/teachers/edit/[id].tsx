@@ -12,11 +12,13 @@ import {
   API_VERSION,
   TEACHERS_ROUTE,
   TEACHERS_SINGULAR,
+  TEACHER_ENTITY,
 } from "../../../config/constants";
 import { GetStaticPaths, GetStaticProps } from "next";
+import { AnyTeacher } from "../../../typings/teachers";
 
 interface Props {
-  staticTeacher?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  staticTeacher?: AnyTeacher;
 }
 
 const EditTeacher: FC<Props> = ({ staticTeacher }) => {
@@ -36,11 +38,13 @@ const EditTeacher: FC<Props> = ({ staticTeacher }) => {
     <Layout>
       <EditOrCreatePersonPage
         person={
-          !isReady || !teacher || teacher.id !== query.id
+          !isReady ||
+          !(teacher as AnyTeacher)?.id ||
+          (teacher as AnyTeacher).id !== Number(query.id)
             ? staticTeacher
-            : teacher
+            : (teacher as AnyTeacher)
         }
-        modelName="teacher"
+        entityName={TEACHER_ENTITY}
       />
     </Layout>
   );

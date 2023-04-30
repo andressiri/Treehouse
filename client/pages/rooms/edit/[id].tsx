@@ -14,9 +14,10 @@ import {
   ROOMS_SINGULAR,
 } from "../../../config/constants";
 import { GetStaticPaths, GetStaticProps } from "next";
+import { AnyRoom } from "../../../typings/rooms";
 
 interface Props {
-  staticRoom?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  staticRoom?: AnyRoom;
 }
 
 const EditRoom: FC<Props> = ({ staticRoom }) => {
@@ -29,7 +30,13 @@ const EditRoom: FC<Props> = ({ staticRoom }) => {
   return (
     <Layout>
       <EditOrCreateRoomPage
-        room={!isReady || !room || room.id !== query.id ? staticRoom : room}
+        room={
+          !isReady ||
+          !(room as AnyRoom)?.id ||
+          (room as AnyRoom).id !== Number(query.id)
+            ? staticRoom
+            : (room as AnyRoom)
+        }
       />
     </Layout>
   );

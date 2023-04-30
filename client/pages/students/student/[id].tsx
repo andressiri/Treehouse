@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { StudentsContext } from "../../../contexts";
 import {
   useGetStudentByIdEffect,
-  useGetStudentsWithRelationsEffect,
   useHandleStudentsResponseEffect,
 } from "../../../services";
 import { Layout, PersonPage } from "../../../components/Templates";
@@ -13,31 +12,33 @@ import {
   API_VERSION,
   STUDENTS_ROUTE,
   STUDENTS_SINGULAR,
+  STUDENT_ENTITY,
 } from "../../../config/constants";
 import { GetStaticPaths, GetStaticProps } from "next";
+import { IStudentWithRelations } from "../../../typings/students";
 
 interface Props {
-  staticStudent?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  staticStudent: IStudentWithRelations;
 }
 
 const StudentById: FC<Props> = ({ staticStudent }) => {
-  const { students, student } = useContext(StudentsContext);
+  const { student } = useContext(StudentsContext);
   const { isReady, query } = useRouter();
 
   useHandleStudentsResponseEffect({ errorToast: true });
   useGetStudentByIdEffect();
-  useGetStudentsWithRelationsEffect();
 
   return (
     <Layout>
       <PersonPage
-        students={students}
-        data={
-          !isReady || !student || student.id !== query.id
+        person={
+          !isReady ||
+          !(student as IStudentWithRelations)?.id ||
+          (student as IStudentWithRelations).id !== Number(query.id)
             ? staticStudent
-            : student
+            : (student as IStudentWithRelations)
         }
-        modelName="student"
+        entityName={STUDENT_ENTITY}
       />
     </Layout>
   );

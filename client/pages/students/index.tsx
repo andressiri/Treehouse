@@ -11,11 +11,13 @@ import {
   API_VERSION,
   WITH_RELATIONS,
   STUDENTS_ROUTE,
+  STUDENT_ENTITY,
 } from "../../config/constants";
 import { GetStaticProps } from "next";
+import { AnyStudentArray } from "../../typings/students";
 
 interface Props {
-  staticStudents?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  staticStudents: AnyStudentArray;
 }
 
 const Students: FC<Props> = ({ staticStudents }) => {
@@ -27,8 +29,8 @@ const Students: FC<Props> = ({ staticStudents }) => {
   return (
     <Layout>
       <DisplayPage
-        data={!students[0] ? staticStudents : students}
-        modelName="student"
+        data={!students[0] ? staticStudents : (students as AnyStudentArray)}
+        entityName={STUDENT_ENTITY}
       />
     </Layout>
   );

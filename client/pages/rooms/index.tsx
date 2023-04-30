@@ -11,11 +11,13 @@ import {
   API_VERSION,
   WITH_RELATIONS,
   ROOMS_ROUTE,
+  ROOM_ENTITY,
 } from "../../config/constants";
 import { GetStaticProps } from "next";
+import { AnyRoomArray } from "../../typings/rooms";
 
 interface Props {
-  staticRooms?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  staticRooms: AnyRoomArray;
 }
 
 const Rooms: FC<Props> = ({ staticRooms }) => {
@@ -26,7 +28,10 @@ const Rooms: FC<Props> = ({ staticRooms }) => {
 
   return (
     <Layout>
-      <DisplayPage data={!rooms[0] ? staticRooms : rooms} modelName="room" />
+      <DisplayPage
+        data={!rooms[0] ? staticRooms : (rooms as AnyRoomArray)}
+        entityName={ROOM_ENTITY}
+      />
     </Layout>
   );
 };
