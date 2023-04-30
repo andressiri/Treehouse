@@ -27,13 +27,7 @@ const useCreateRoom = (responseOptions: IHandleResponseOptions) => {
     [excecuteRequest, setRoom]
   );
 
-  return {
-    createRoom,
-    isError,
-    isSuccess,
-    isLoading,
-    message,
-  };
+  return { createRoom, isError, isSuccess, isLoading, message };
 };
 
 export default useCreateRoom;

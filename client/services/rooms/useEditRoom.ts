@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { RoomsContext } from "../../contexts";
-import { serviceInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
 import { EDIT, ROOMS_ROUTE } from "../../config/constants";
 
 interface IFormData {
@@ -9,25 +10,25 @@ interface IFormData {
   teacherId?: string;
 }
 
-const useEditRoom = () => {
-  const { setRoom, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(RoomsContext);
+const useEditRoom = (responseOptions: IHandleResponseOptions) => {
+  const { setRoom } = useContext(RoomsContext);
+  const { excecuteRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const editRoom = useCallback(
     (formData: IFormData, id: number) => {
-      serviceInstance({
+      excecuteRequest({
         route: `/${ROOMS_ROUTE}/${EDIT}/${id}`,
         method: "PUT",
-        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
         setState: setRoom,
         formData,
         sanitizeData: true,
       });
     },
-    [setRoom, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [excecuteRequest, setRoom]
   );
 
-  return { editRoom };
+  return { editRoom, isError, isSuccess, isLoading, message };
 };
 
 export default useEditRoom;
