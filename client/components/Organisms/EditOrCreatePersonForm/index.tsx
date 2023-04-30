@@ -15,6 +15,7 @@ import {
   useHandleRoomsResponseEffect,
   useRemoveStudentFromRoom,
 } from "../../../services";
+import { arrayBufferToBase64 } from "../../../utils/helpers";
 import {
   StyledButton,
   StyledSelect,
@@ -30,10 +31,20 @@ import {
   ErrorMessage,
 } from "./styledComponents";
 import getArrays from "./getArrays";
+import { PersonEntities } from "../../../typings/global";
+import { AnyTeacher } from "../../../typings/teachers";
+import { AnyStudent } from "../../../typings/students";
+import {
+  STUDENTS_ROUTE,
+  STUDENTS_SINGULAR,
+  TEACHERS_ROUTE,
+  TEACHERS_SINGULAR,
+  STUDENT_ENTITY,
+} from "../../../config/constants";
 
 interface Props {
-  person?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  modelName: "student" | "teacher";
+  person?: AnyStudent | AnyTeacher;
+  entityName: PersonEntities;
 }
 
 interface IFormData {
@@ -44,17 +55,21 @@ interface IFormData {
   roomId: string;
 }
 
-const EditOrCreatePersonForm: FC<Props> = ({ person, modelName }) => {
+const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
   const [formData, setFormData] = useState<IFormData>({
     name: person?.name || "",
-    age: person?.age || "",
+    age: person?.age ? `${person.age}` : "",
     gender: person?.gender || "",
     description: person?.description || "",
-    roomId: person?.roomId || "",
+    roomId: (person as AnyStudent)?.roomId
+      ? `${(person as AnyStudent)?.roomId}`
+      : "",
   });
-  const [imagePreview, setImagePreview] = useState(person?.picture);
+  const [imagePreview, setImagePreview] = useState<string | undefined>(
+    person?.picture
+  );
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const isStudent = useRef<boolean>(modelName === "student");
+  const isStudent = entityName === STUDENT_ENTITY;
   const submitted = useRef<boolean>(false);
   const studentRemoved = useRef<boolean>(false);
   const inputFile = useRef<HTMLInputElement>(null);
@@ -62,7 +77,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, modelName }) => {
   const { teacher } = useContext(TeachersContext);
   const ContextOfStudents = useContext(StudentsContext);
   const ContextOfTeachers = useContext(TeachersContext);
-  const { message } = isStudent.current ? ContextOfStudents : ContextOfTeachers;
+  const { message } = isStudent ? ContextOfStudents : ContextOfTeachers;
   const { genderArray } = getArrays();
   const { createStudent } = useCreateStudent();
   const { editStudent } = useEditStudent();
@@ -80,28 +95,37 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, modelName }) => {
   const studentsSuccessAction = () => {
     if (
       formData.roomId ||
-      (!formData.roomId && (!person || !person.roomId)) ||
+      (!formData.roomId && (!person || !(person as AnyStudent).roomId)) ||
       studentRemoved.current
     ) {
-      Router.push(`/students/student/${student.id}`);
+      Router.push(
+        `/${STUDENTS_ROUTE}/${STUDENTS_SINGULAR}/${(student as AnyStudent)?.id}`
+      );
     } else {
       studentRemoved.current = true;
-      removeStudentFromRoom(Number(student.id));
+      removeStudentFromRoom((student as AnyStudent)?.id);
     }
   };
 
   const teachersSuccessAction = () => {
     if (!formData.roomId) {
-      Router.push(`/teachers/teacher/${teacher.id}`);
+      Router.push(
+        `/${TEACHERS_ROUTE}/${TEACHERS_SINGULAR}/${(teacher as AnyTeacher)?.id}`
+      );
     } else {
-      editRoom({ teacherId: teacher.id }, Number(formData.roomId));
+      editRoom(
+        { teacherId: `${(teacher as AnyTeacher)?.id}` },
+        Number(formData.roomId)
+      );
     }
   };
 
   const roomSuccessAction = () => {
     submitted.current = false;
     setErrorMessage("");
-    Router.push(`/teachers/teacher/${teacher.id}`);
+    Router.push(
+      `/${TEACHERS_ROUTE}/${TEACHERS_SINGULAR}/${(teacher as AnyTeacher)?.id}`
+    );
   };
 
   useHandleStudentsResponseEffect({
@@ -110,10 +134,10 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, modelName }) => {
     successAction: studentsSuccessAction,
     successToast: Boolean(
       formData.roomId ||
-        (!formData.roomId && (!person || !person.roomId)) ||
+        (!formData.roomId && (!person || !(person as AnyStudent).roomId)) ||
         studentRemoved.current
     ),
-    successMessage: `${student.name} ${
+    successMessage: `${(student as AnyStudent).name} ${
       person ? "updated" : "created"
     } successfully`,
   });
@@ -131,7 +155,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, modelName }) => {
     successAction: roomSuccessAction,
     errorToast: true,
     successToast: true,
-    successMessage: `${teacher.name} ${
+    successMessage: `${(teacher as AnyTeacher).name} ${
       person ? "updated" : "created"
     } successfully`,
   });
@@ -151,12 +175,12 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, modelName }) => {
     submitted.current = true;
     setErrorMessage("");
 
-    if (person && isStudent.current) {
+    if (person && isStudent) {
       editStudent(formData, Number(Router.query.id));
       return;
     }
 
-    if (isStudent.current) {
+    if (isStudent) {
       createStudent(formData);
       return;
     }
@@ -183,8 +207,16 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, modelName }) => {
     const fileReader = new FileReader();
     fileReader.onload = () => {
       if (fileReader.readyState === 2) {
-        sessionStorage.setItem("file", fileReader.result as string);
-        setImagePreview(fileReader.result);
+        if (fileReader.result === null) return;
+
+        let result: string | ArrayBuffer = fileReader.result;
+
+        if (typeof fileReader.result !== "string") {
+          result = arrayBufferToBase64(result as ArrayBuffer);
+        }
+
+        sessionStorage.setItem("file", result as string);
+        setImagePreview(result as string);
       }
     };
     if (!e.target.files) return;
@@ -266,7 +298,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, modelName }) => {
         onChange={(
           e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
         ) => handleOnChange(e)}
-        showJustTeacherless={modelName === "teacher"}
+        showJustTeacherless={!isStudent}
       />
       <ErrorContainer>
         <ErrorMessage>{errorMessage}</ErrorMessage>
@@ -276,7 +308,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, modelName }) => {
         endIcon={<CheckIcon />}
         sx={{ marginBottom: "90px" }}
       >
-        {person ? `Edit ${modelName}` : `Create ${modelName}`}
+        {person ? `Edit ${entityName}` : `Create ${entityName}`}
       </StyledButton>
     </Container>
   );

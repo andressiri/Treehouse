@@ -1,14 +1,15 @@
 import { FC } from "react";
 import { CardDescription, DisplayImage, CardTitle } from "../../Molecules";
 import { Container, InfoContainer } from "./styledComponents";
+import { Entities } from "../../../typings/global";
 
 interface Props {
   name: string;
   id: number;
   teacherName?: string;
-  image: string;
-  description: string;
-  modelName: "room" | "student" | "teacher";
+  image?: string;
+  description?: string;
+  entityName: Entities;
 }
 
 const DisplayCard: FC<Props> = ({
@@ -17,17 +18,17 @@ const DisplayCard: FC<Props> = ({
   teacherName,
   image,
   description,
-  modelName,
+  entityName,
 }) => {
   return (
     <Container>
-      <CardTitle title={name} id={id} modelName={modelName} />
+      <CardTitle title={name} id={id} entityName={entityName} />
       <InfoContainer>
         <DisplayImage imageSrc={image} name={teacherName} />
         <CardDescription
           description={description}
           id={id}
-          modelName={modelName}
+          entityName={entityName}
         />
       </InfoContainer>
     </Container>

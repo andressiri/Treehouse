@@ -38,11 +38,7 @@ const ConfirmModal: FC<Props> = ({
   onClose,
   noAction,
   onSuccess,
-  confirmContext,
 }) => {
-  const ContextOfRooms = useContext(RoomsContext);
-  const ContextOfStudents = useContext(StudentsContext);
-  const ContextOfTeachers = useContext(TeachersContext);
   const {
     isError,
     setIsError,
@@ -50,12 +46,7 @@ const ConfirmModal: FC<Props> = ({
     setIsSuccess,
     setMessage,
     isLoading,
-  } =
-    confirmContext === "RoomsContext"
-      ? ContextOfRooms
-      : confirmContext === "StudentsContext"
-      ? ContextOfStudents
-      : ContextOfTeachers;
+  } = useContext(StudentsContext);
 
   const handleClose = () => onClose();
 

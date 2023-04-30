@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState, useRef } from "react";
+import { FC, useContext, useState, useRef } from "react";
 import { RoomsContext } from "../../../contexts";
 import Router from "next/router";
 import CheckIcon from "@mui/icons-material/Check";
@@ -9,9 +9,11 @@ import {
 } from "../../../services";
 import { StyledButton, StyledTextField } from "../../../components/Atoms";
 import { Container, ErrorContainer, ErrorMessage } from "./styledComponents";
+import { AnyRoom } from "../../../typings/rooms";
+import { ROOMS_ROUTE, ROOMS_SINGULAR } from "../../../config/constants";
 
 interface Props {
-  propRoom?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  propRoom?: AnyRoom;
 }
 
 interface IFormData {
@@ -22,28 +24,20 @@ interface IFormData {
 const EditOrCreateRoomForm: FC<Props> = ({ propRoom }) => {
   const { room, message } = useContext(RoomsContext);
   const [formData, setFormData] = useState<IFormData>({
-    name: propRoom ? propRoom.name : "",
-    description: propRoom ? propRoom.description : "",
+    name: propRoom?.name || "",
+    description: propRoom?.description || "",
   });
   const [errorMessage, setErrorMessage] = useState<string>("");
   const submitted = useRef<boolean>(false);
   const { createRoom } = useCreateRoom();
   const { editRoom } = useEditRoom();
 
-  useEffect(() => {
-    if (propRoom)
-      setFormData({
-        name: propRoom.name,
-        description: propRoom.description,
-      });
-  }, [propRoom]);
-
   const errorAction = () => {
     submitted.current = false;
     setErrorMessage(message);
   };
   const successAction = () => {
-    Router.push(`/rooms/room/${room.id}`);
+    Router.push(`/${ROOMS_ROUTE}/${ROOMS_SINGULAR}/${(room as AnyRoom)?.id}`);
   };
 
   useHandleRoomsResponseEffect({
