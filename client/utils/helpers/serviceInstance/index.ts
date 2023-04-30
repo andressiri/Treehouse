@@ -1,13 +1,11 @@
 import { axiosInstance, sanitizeObject } from "../../../utils/helpers";
-import { IServiceHandlers } from "../../../typings/contexts";
+import { IServiceHandlers, SetServiceState } from "../../../typings/contexts";
 
 interface Props {
   route: string;
   method?: string;
   context: IServiceHandlers;
-  setState?:
-    | React.Dispatch<React.SetStateAction<object>>
-    | React.Dispatch<React.SetStateAction<never[]>>;
+  setState?: SetServiceState;
   formData?: object;
   sanitizeData?: boolean;
 }
