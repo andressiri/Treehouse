@@ -1,6 +1,6 @@
 interface hasName {
   name: string;
-  [x: string | number | symbol]: unknown;
+  [key: string | number | symbol]: unknown;
 }
 
 const sortByName = (a: hasName, b: hasName) => {

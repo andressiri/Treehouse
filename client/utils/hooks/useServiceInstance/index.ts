@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { axiosInstance, sanitizeObject } from "../../../utils/helpers";
+import { axiosInstance, sanitizeRequestData } from "../../../utils/helpers";
 import { SetServiceState } from "../../../typings/contexts";
 import { IHandleResponseOptions } from "../../../typings/services";
 import useHandleResponseEffect from "../useHandleResponseEffect";
 
-interface ExcecuteProps {
+interface ExecuteProps {
   route: string;
   method?: string;
   setState?: SetServiceState;
   formData?: object;
-  sanitizeData?: boolean;
 }
 
 const useServiceInstance = (responseOptions: IHandleResponseOptions) => {
@@ -30,18 +29,17 @@ const useServiceInstance = (responseOptions: IHandleResponseOptions) => {
     },
   });
 
-  const excecuteRequest = async ({
+  const executeRequest = async ({
     route,
     method,
     setState,
     formData,
-    sanitizeData,
-  }: ExcecuteProps) => {
+  }: ExecuteProps) => {
     const notGetRequest = method && method !== "GET";
     setIsLoading(true);
 
     try {
-      const data = sanitizeData ? sanitizeObject({ ...formData }) : formData;
+      const data = formData ? sanitizeRequestData(formData) : undefined;
 
       const response = await axiosInstance(route, data, method || "GET");
 
@@ -57,7 +55,7 @@ const useServiceInstance = (responseOptions: IHandleResponseOptions) => {
   };
 
   return {
-    excecuteRequest,
+    executeRequest,
     isError,
     isSuccess,
     isLoading,
