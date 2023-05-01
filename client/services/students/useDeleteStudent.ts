@@ -1,25 +1,26 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
-import { serviceInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
 import { DELETION, STUDENTS_ROUTE } from "../../config/constants";
 
-const useDeleteStudent = () => {
-  const { setStudent, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(StudentsContext);
+const useDeleteStudent = (responseOptions: IHandleResponseOptions) => {
+  const { setStudent } = useContext(StudentsContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const deleteStudent = useCallback(
     (id: number) => {
-      serviceInstance({
+      executeRequest({
         route: `/${STUDENTS_ROUTE}/${DELETION}/${id}`,
         method: "DELETE",
-        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
         setState: setStudent,
       });
     },
-    [setStudent, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [executeRequest, setStudent]
   );
 
-  return { deleteStudent };
+  return { deleteStudent, isError, isSuccess, isLoading, message };
 };
 
 export default useDeleteStudent;

@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
-import { serviceInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
 import { STUDENTS_ROUTE } from "../../config/constants";
 
 interface IFormData {
@@ -11,25 +12,24 @@ interface IFormData {
   roomId?: string;
 }
 
-const useCreateStudent = () => {
-  const { setStudent, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(StudentsContext);
+const useCreateStudent = (responseOptions: IHandleResponseOptions) => {
+  const { setStudent } = useContext(StudentsContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const createStudent = useCallback(
     (formData: IFormData) => {
-      serviceInstance({
+      executeRequest({
         route: `/${STUDENTS_ROUTE}`,
         method: "POST",
-        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
         setState: setStudent,
         formData,
-        sanitizeData: true,
       });
     },
-    [setStudent, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [executeRequest, setStudent]
   );
 
-  return { createStudent };
+  return { createStudent, isError, isSuccess, isLoading, message };
 };
 
 export default useCreateStudent;

@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
-import { serviceInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
 import {
   STUDENTS_HANDLE_SIBLINGS,
   STUDENTS_ROUTE,
@@ -11,24 +12,24 @@ interface IFormData {
   addToOtherSiblings?: boolean;
 }
 
-const useAddSibling = () => {
-  const { setStudent, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(StudentsContext);
+const useAddSibling = (responseOptions: IHandleResponseOptions) => {
+  const { setStudent } = useContext(StudentsContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const addSibling = useCallback(
     (formData: IFormData, id: number) => {
-      serviceInstance({
+      executeRequest({
         route: `/${STUDENTS_ROUTE}/${STUDENTS_HANDLE_SIBLINGS}/${id}`,
         method: "PUT",
-        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
         setState: setStudent,
         formData,
       });
     },
-    [setStudent, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [executeRequest, setStudent]
   );
 
-  return { addSibling };
+  return { addSibling, isError, isSuccess, isLoading, message };
 };
 
 export default useAddSibling;

@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
-import { serviceInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
 import { EDIT, STUDENTS_ROUTE } from "../../config/constants";
 
 interface IFormData {
@@ -11,25 +12,24 @@ interface IFormData {
   roomId?: string;
 }
 
-const useEditStudent = () => {
-  const { setStudent, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(StudentsContext);
+const useEditStudent = (responseOptions: IHandleResponseOptions) => {
+  const { setStudent } = useContext(StudentsContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const editStudent = useCallback(
     (formData: IFormData, id: number) => {
-      serviceInstance({
+      executeRequest({
         route: `/${STUDENTS_ROUTE}/${EDIT}/${id}`,
         method: "PUT",
-        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
         setState: setStudent,
         formData,
-        sanitizeData: true,
       });
     },
-    [setStudent, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [executeRequest, setStudent]
   );
 
-  return { editStudent };
+  return { editStudent, isError, isSuccess, isLoading, message };
 };
 
 export default useEditStudent;

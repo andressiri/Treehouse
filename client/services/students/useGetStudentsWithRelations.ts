@@ -1,21 +1,24 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
-import { serviceInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
 import { WITH_RELATIONS, STUDENTS_ROUTE } from "../../config/constants";
 
-const useGetStudentsWithRelations = () => {
-  const { setStudents, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(StudentsContext);
+const useGetStudentsWithRelations = (
+  responseOptions: IHandleResponseOptions
+) => {
+  const { setStudentsWithRelations } = useContext(StudentsContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const getStudentsWithRelations = useCallback(() => {
-    serviceInstance({
+    executeRequest({
       route: `/${STUDENTS_ROUTE}/${WITH_RELATIONS}`,
-      context: { setIsError, setIsSuccess, setIsLoading, setMessage },
-      setState: setStudents,
+      setState: setStudentsWithRelations,
     });
-  }, [setStudents, setIsError, setIsSuccess, setIsLoading, setMessage]);
+  }, [executeRequest, setStudentsWithRelations]);
 
-  return { getStudentsWithRelations };
+  return { getStudentsWithRelations, isError, isSuccess, isLoading, message };
 };
 
 export default useGetStudentsWithRelations;

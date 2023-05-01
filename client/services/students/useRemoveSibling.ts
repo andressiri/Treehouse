@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
-import { serviceInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
 import {
   STUDENTS_ROUTE,
   STUDENTS_HANDLE_SIBLINGS,
@@ -11,25 +12,24 @@ interface IFormData {
   addToOtherSiblings?: boolean;
 }
 
-const useRemoveSibling = () => {
-  const { setStudent, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(StudentsContext);
+const useRemoveSibling = (responseOptions: IHandleResponseOptions) => {
+  const { setStudent } = useContext(StudentsContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const removeSibling = useCallback(
     (formData: IFormData, id: number) => {
-      serviceInstance({
+      executeRequest({
         route: `/${STUDENTS_ROUTE}/${STUDENTS_HANDLE_SIBLINGS}/${id}`,
         method: "DELETE",
-        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
         setState: setStudent,
         formData,
-        sanitizeData: true,
       });
     },
-    [setStudent, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [executeRequest, setStudent]
   );
 
-  return { removeSibling };
+  return { removeSibling, isError, isSuccess, isLoading, message };
 };
 
 export default useRemoveSibling;
