@@ -1,24 +1,25 @@
 import { useCallback, useContext } from "react";
 import { RoomsContext } from "../../contexts";
-import { serviceInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
 import { ROOMS_ROUTE, ROOMS_SINGULAR } from "../../config/constants";
 
-const useGetRoomById = () => {
-  const { setRoom, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(RoomsContext);
+const useGetRoomById = (responseOptions: IHandleResponseOptions) => {
+  const { setRoom } = useContext(RoomsContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const getRoomById = useCallback(
     (id: number) => {
-      serviceInstance({
+      executeRequest({
         route: `/${ROOMS_ROUTE}/${ROOMS_SINGULAR}/${id}`,
-        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
         setState: setRoom,
       });
     },
-    [setRoom, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [executeRequest, setRoom]
   );
 
-  return { getRoomById };
+  return { getRoomById, isError, isSuccess, isLoading, message };
 };
 
 export default useGetRoomById;

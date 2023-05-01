@@ -12,20 +12,19 @@ interface IFormData {
 
 const useEditRoom = (responseOptions: IHandleResponseOptions) => {
   const { setRoom } = useContext(RoomsContext);
-  const { excecuteRequest, isError, isSuccess, isLoading, message } =
+  const { executeRequest, isError, isSuccess, isLoading, message } =
     useServiceInstance(responseOptions);
 
   const editRoom = useCallback(
     (formData: IFormData, id: number) => {
-      excecuteRequest({
+      executeRequest({
         route: `/${ROOMS_ROUTE}/${EDIT}/${id}`,
         method: "PUT",
         setState: setRoom,
         formData,
-        sanitizeData: true,
       });
     },
-    [excecuteRequest, setRoom]
+    [executeRequest, setRoom]
   );
 
   return { editRoom, isError, isSuccess, isLoading, message };

@@ -11,20 +11,19 @@ interface IFormData {
 
 const useCreateRoom = (responseOptions: IHandleResponseOptions) => {
   const { setRoom } = useContext(RoomsContext);
-  const { excecuteRequest, isError, isSuccess, isLoading, message } =
+  const { executeRequest, isError, isSuccess, isLoading, message } =
     useServiceInstance(responseOptions);
 
   const createRoom = useCallback(
     (formData: IFormData) => {
-      excecuteRequest({
+      executeRequest({
         route: `/${ROOMS_ROUTE}`,
         method: "POST",
         setState: setRoom,
         formData,
-        sanitizeData: true,
       });
     },
-    [excecuteRequest, setRoom]
+    [executeRequest, setRoom]
   );
 
   return { createRoom, isError, isSuccess, isLoading, message };
