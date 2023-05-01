@@ -12,7 +12,6 @@ import {
   useEditRoom,
   useHandleStudentsResponseEffect,
   useHandleTeachersResponseEffect,
-  useHandleRoomsResponseEffect,
   useRemoveStudentFromRoom,
 } from "../../../services";
 import { arrayBufferToBase64 } from "../../../utils/helpers";
@@ -79,12 +78,12 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
   const ContextOfTeachers = useContext(TeachersContext);
   const { message } = isStudent ? ContextOfStudents : ContextOfTeachers;
   const { genderArray } = getArrays();
+
   const { createStudent } = useCreateStudent();
   const { editStudent } = useEditStudent();
   const { removeStudentFromRoom } = useRemoveStudentFromRoom();
   const { createTeacher } = useCreateTeacher();
   const { editTeacher } = useEditTeacher();
-  const { editRoom } = useEditRoom();
 
   const errorAction = () => {
     submitted.current = false;
@@ -128,6 +127,17 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
     );
   };
 
+  const { editRoom } = useEditRoom({
+    successCondition: submitted.current,
+    errorAction,
+    successAction: roomSuccessAction,
+    errorToast: true,
+    successToast: true,
+    successMessage: `${(teacher as AnyTeacher).name} ${
+      person ? "updated" : "created"
+    } successfully`,
+  });
+
   useHandleStudentsResponseEffect({
     successCondition: submitted.current,
     errorAction,
@@ -147,17 +157,6 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
     errorAction,
     successAction: teachersSuccessAction,
     successToast: Boolean(!formData.roomId),
-  });
-
-  useHandleRoomsResponseEffect({
-    successCondition: submitted.current,
-    errorAction,
-    successAction: roomSuccessAction,
-    errorToast: true,
-    successToast: true,
-    successMessage: `${(teacher as AnyTeacher).name} ${
-      person ? "updated" : "created"
-    } successfully`,
   });
 
   const handleOnChange = (
