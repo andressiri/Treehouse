@@ -1,21 +1,24 @@
 import { useCallback, useContext } from "react";
 import { TeachersContext } from "../../contexts";
-import { serviceInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
 import { WITH_RELATIONS, TEACHERS_ROUTE } from "../../config/constants";
 
-const useGetTeachersWithRelations = () => {
-  const { setTeachers, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(TeachersContext);
+const useGetTeachersWithRelations = (
+  responseOptions: IHandleResponseOptions
+) => {
+  const { setTeachersWithRelations } = useContext(TeachersContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const getTeachersWithRelations = useCallback(() => {
-    serviceInstance({
+    executeRequest({
       route: `/${TEACHERS_ROUTE}/${WITH_RELATIONS}`,
-      context: { setIsError, setIsSuccess, setIsLoading, setMessage },
-      setState: setTeachers,
+      setState: setTeachersWithRelations,
     });
-  }, [setTeachers, setIsError, setIsSuccess, setIsLoading, setMessage]);
+  }, [executeRequest, setTeachersWithRelations]);
 
-  return { getTeachersWithRelations };
+  return { getTeachersWithRelations, isError, isSuccess, isLoading, message };
 };
 
 export default useGetTeachersWithRelations;

@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { TeachersContext } from "../../contexts";
-import { serviceInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
 import { TEACHERS_ROUTE } from "../../config/constants";
 
 interface IFormData {
@@ -10,25 +11,24 @@ interface IFormData {
   description?: string;
 }
 
-const useCreateTeacher = () => {
-  const { setTeacher, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(TeachersContext);
+const useCreateTeacher = (responseOptions: IHandleResponseOptions) => {
+  const { setTeacher } = useContext(TeachersContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const createTeacher = useCallback(
     (formData: IFormData) => {
-      serviceInstance({
+      executeRequest({
         route: `/${TEACHERS_ROUTE}`,
         method: "POST",
-        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
         setState: setTeacher,
         formData,
-        sanitizeData: true,
       });
     },
-    [setTeacher, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [executeRequest, setTeacher]
   );
 
-  return { createTeacher };
+  return { createTeacher, isError, isSuccess, isLoading, message };
 };
 
 export default useCreateTeacher;

@@ -1,24 +1,27 @@
-import { useContext, useEffect } from "react";
-import { TeachersContext } from "../../contexts";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 import useGetTeacherById from "./useGetTeacherById";
+import { IHandleResponseOptions } from "../../typings/services";
 
-const useGetTeacherByIdEffect = () => {
-  const { setIsError, setMessage } = useContext(TeachersContext);
-  const { isReady, query } = useRouter();
-  const { getTeacherById } = useGetTeacherById();
+const useGetTeacherByIdEffect = (responseOptions: IHandleResponseOptions) => {
+  const { isReady, query, push } = useRouter();
+  const getTeacherByIdObj = useGetTeacherById(responseOptions);
+  const { getTeacherById } = getTeacherByIdObj;
 
   useEffect(() => {
     if (!isReady) return;
 
     if (!Number.isInteger(Number(query.id))) {
-      setMessage("That is an invalid id");
-      setIsError(true);
+      toast.error("Invalid teacher id");
+      push("/404");
       return;
     }
 
     getTeacherById(Number(query.id));
-  }, [isReady, query, getTeacherById, setIsError, setMessage]);
+  }, [getTeacherById, isReady, query, push]);
+
+  return getTeacherByIdObj;
 };
 
 export default useGetTeacherByIdEffect;

@@ -1,24 +1,25 @@
 import { useCallback, useContext } from "react";
 import { TeachersContext } from "../../contexts";
-import { serviceInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
 import { TEACHERS_ROUTE, TEACHERS_SINGULAR } from "../../config/constants";
 
-const useGetTeacherById = () => {
-  const { setTeacher, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(TeachersContext);
+const useGetTeacherById = (responseOptions: IHandleResponseOptions) => {
+  const { setTeacher } = useContext(TeachersContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const getTeacherById = useCallback(
     (id: number) => {
-      serviceInstance({
+      executeRequest({
         route: `/${TEACHERS_ROUTE}/${TEACHERS_SINGULAR}/${id}`,
-        context: { setIsError, setIsSuccess, setIsLoading, setMessage },
         setState: setTeacher,
       });
     },
-    [setTeacher, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [executeRequest, setTeacher]
   );
 
-  return { getTeacherById };
+  return { getTeacherById, isError, isSuccess, isLoading, message };
 };
 
 export default useGetTeacherById;
