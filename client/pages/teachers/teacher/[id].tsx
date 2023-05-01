@@ -1,10 +1,7 @@
 import { FC, useContext } from "react";
 import { useRouter } from "next/router";
 import { TeachersContext } from "../../../contexts";
-import {
-  useGetTeacherByIdEffect,
-  useHandleTeachersResponseEffect,
-} from "../../../services";
+import { useGetTeacherByIdWithRelationsEffect } from "../../../services";
 import { Layout, PersonPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
@@ -25,8 +22,7 @@ const TeacherById: FC<Props> = ({ staticTeacher }) => {
   const { teacher } = useContext(TeachersContext);
   const { isReady, query } = useRouter();
 
-  useHandleTeachersResponseEffect({ errorToast: true });
-  useGetTeacherByIdEffect();
+  useGetTeacherByIdWithRelationsEffect({ errorToast: true });
 
   return (
     <Layout>

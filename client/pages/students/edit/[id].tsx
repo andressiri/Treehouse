@@ -1,10 +1,7 @@
 import { FC, useContext } from "react";
 import { useRouter } from "next/router";
 import { StudentsContext } from "../../../contexts";
-import {
-  useGetStudentByIdEffect,
-  useHandleStudentsResponseEffect,
-} from "../../../services";
+import { useGetStudentByIdEffect } from "../../../services";
 import { Layout, EditOrCreatePersonPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
@@ -15,28 +12,27 @@ import {
   STUDENT_ENTITY,
 } from "../../../config/constants";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { AnyStudent } from "../../../typings/students";
+import { IStudent } from "../../../typings/students";
 
 interface Props {
-  staticStudent?: AnyStudent;
+  staticStudent?: IStudent;
 }
 
 const EditStudent: FC<Props> = ({ staticStudent }) => {
   const { student } = useContext(StudentsContext);
   const { isReady, query } = useRouter();
 
-  useHandleStudentsResponseEffect({});
-  useGetStudentByIdEffect();
+  useGetStudentByIdEffect({ errorToast: true });
 
   return (
     <Layout>
       <EditOrCreatePersonPage
         person={
           !isReady ||
-          !(student as AnyStudent)?.id ||
-          (student as AnyStudent).id !== Number(query.id)
+          !(student as IStudent)?.id ||
+          (student as IStudent).id !== Number(query.id)
             ? staticStudent
-            : (student as AnyStudent)
+            : (student as IStudent)
         }
         entityName={STUDENT_ENTITY}
       />

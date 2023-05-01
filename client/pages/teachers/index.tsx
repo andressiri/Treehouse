@@ -1,9 +1,6 @@
 import { FC, useContext } from "react";
 import { TeachersContext } from "../../contexts";
-import {
-  useGetTeachersWithRelationsEffect,
-  useHandleTeachersResponseEffect,
-} from "../../services";
+import { useGetTeachersEffect } from "../../services";
 import { Layout, DisplayPage } from "../../components/Templates";
 import {
   API_ORIGIN,
@@ -14,22 +11,21 @@ import {
   TEACHER_ENTITY,
 } from "../../config/constants";
 import { GetStaticProps } from "next";
-import { AnyTeacherArray } from "../../typings/teachers";
+import { ITeacher } from "../../typings/teachers";
 
 interface Props {
-  staticTeachers: AnyTeacherArray;
+  staticTeachers: ITeacher[];
 }
 
 const Teachers: FC<Props> = ({ staticTeachers }) => {
   const { teachers } = useContext(TeachersContext);
 
-  useHandleTeachersResponseEffect({ errorToast: true });
-  useGetTeachersWithRelationsEffect();
+  useGetTeachersEffect({ errorToast: true });
 
   return (
     <Layout>
       <DisplayPage
-        data={!teachers[0] ? staticTeachers : (teachers as AnyTeacherArray)}
+        data={!teachers[0] ? staticTeachers : (teachers as ITeacher[])}
         entityName={TEACHER_ENTITY}
       />
     </Layout>

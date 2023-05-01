@@ -1,10 +1,7 @@
-import { FC, useContext, useEffect } from "react";
+import { FC, useContext } from "react";
 import { useRouter } from "next/router";
 import { TeachersContext } from "../../../contexts";
-import {
-  useGetTeacherByIdEffect,
-  useHandleTeachersResponseEffect,
-} from "../../../services";
+import { useGetTeacherByIdWithRelationsEffect } from "../../../services";
 import { Layout, EditOrCreatePersonPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
@@ -15,34 +12,28 @@ import {
   TEACHER_ENTITY,
 } from "../../../config/constants";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { AnyTeacher } from "../../../typings/teachers";
+import { ITeacherWithRelations } from "../../../typings/teachers";
 
 interface Props {
-  staticTeacher?: AnyTeacher;
+  staticTeacher?: ITeacherWithRelations;
 }
 
 const EditTeacher: FC<Props> = ({ staticTeacher }) => {
-  const { teacher, isError, setIsError, message } = useContext(TeachersContext);
+  const { teacherWithRelations } = useContext(TeachersContext);
   const { isReady, query } = useRouter();
 
-  useHandleTeachersResponseEffect({});
-  useGetTeacherByIdEffect();
-
-  useEffect(() => {
-    if (isError) {
-      setIsError(false);
-    }
-  }, [isError, setIsError, message]);
+  useGetTeacherByIdWithRelationsEffect({ errorToast: true });
 
   return (
     <Layout>
       <EditOrCreatePersonPage
         person={
           !isReady ||
-          !(teacher as AnyTeacher)?.id ||
-          (teacher as AnyTeacher).id !== Number(query.id)
+          !(teacherWithRelations as ITeacherWithRelations)?.id ||
+          (teacherWithRelations as ITeacherWithRelations).id !==
+            Number(query.id)
             ? staticTeacher
-            : (teacher as AnyTeacher)
+            : (teacherWithRelations as ITeacherWithRelations)
         }
         entityName={TEACHER_ENTITY}
       />

@@ -1,10 +1,7 @@
 import { FC, useContext } from "react";
 import { useRouter } from "next/router";
 import { StudentsContext } from "../../../contexts";
-import {
-  useGetStudentByIdEffect,
-  useHandleStudentsResponseEffect,
-} from "../../../services";
+import { useGetStudentByIdWithRelationsEffect } from "../../../services";
 import { Layout, PersonPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
@@ -13,6 +10,7 @@ import {
   STUDENTS_ROUTE,
   STUDENTS_SINGULAR,
   STUDENT_ENTITY,
+  WITH_RELATIONS,
 } from "../../../config/constants";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { IStudentWithRelations } from "../../../typings/students";
@@ -22,21 +20,21 @@ interface Props {
 }
 
 const StudentById: FC<Props> = ({ staticStudent }) => {
-  const { student } = useContext(StudentsContext);
+  const { studentWithRelations } = useContext(StudentsContext);
   const { isReady, query } = useRouter();
 
-  useHandleStudentsResponseEffect({ errorToast: true });
-  useGetStudentByIdEffect();
+  useGetStudentByIdWithRelationsEffect({ errorToast: true });
 
   return (
     <Layout>
       <PersonPage
         person={
           !isReady ||
-          !(student as IStudentWithRelations)?.id ||
-          (student as IStudentWithRelations).id !== Number(query.id)
+          !(studentWithRelations as IStudentWithRelations)?.id ||
+          (studentWithRelations as IStudentWithRelations).id !==
+            Number(query.id)
             ? staticStudent
-            : (student as IStudentWithRelations)
+            : (studentWithRelations as IStudentWithRelations)
         }
         entityName={STUDENT_ENTITY}
       />
@@ -55,7 +53,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const id = context.params?.id;
 
   const res = await fetch(
-    `${API_ORIGIN}/${API_ROUTE}/${API_VERSION}/${STUDENTS_ROUTE}/${STUDENTS_SINGULAR}/${id}`
+    `${API_ORIGIN}/${API_ROUTE}/${API_VERSION}/${STUDENTS_ROUTE}/${STUDENTS_SINGULAR}/${WITH_RELATIONS}/${id}`
   );
   const staticStudent = await res.json();
 

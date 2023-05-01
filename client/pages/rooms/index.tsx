@@ -1,9 +1,6 @@
 import { FC, useContext } from "react";
 import { RoomsContext } from "../../contexts";
-import {
-  useGetRoomsWithRelationsEffect,
-  useHandleRoomsResponseEffect,
-} from "../../services";
+import { useGetRoomsWithRelationsEffect } from "../../services";
 import { Layout, DisplayPage } from "../../components/Templates";
 import {
   API_ORIGIN,
@@ -14,22 +11,21 @@ import {
   ROOM_ENTITY,
 } from "../../config/constants";
 import { GetStaticProps } from "next";
-import { AnyRoomArray } from "../../typings/rooms";
+import { IRoomWithRelations } from "../../typings/rooms";
 
 interface Props {
-  staticRooms: AnyRoomArray;
+  staticRooms: IRoomWithRelations[];
 }
 
 const Rooms: FC<Props> = ({ staticRooms }) => {
   const { rooms } = useContext(RoomsContext);
 
-  useHandleRoomsResponseEffect({ errorToast: true });
-  useGetRoomsWithRelationsEffect();
+  useGetRoomsWithRelationsEffect({ errorToast: true });
 
   return (
     <Layout>
       <DisplayPage
-        data={!rooms[0] ? staticRooms : (rooms as AnyRoomArray)}
+        data={!rooms[0] ? staticRooms : (rooms as IRoomWithRelations[])}
         entityName={ROOM_ENTITY}
       />
     </Layout>

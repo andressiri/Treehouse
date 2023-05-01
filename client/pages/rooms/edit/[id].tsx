@@ -1,10 +1,7 @@
 import { FC, useContext } from "react";
 import { useRouter } from "next/router";
 import { RoomsContext } from "../../../contexts";
-import {
-  useGetRoomByIdEffect,
-  useHandleRoomsResponseEffect,
-} from "../../../services";
+import { useGetRoomByIdEffect } from "../../../services";
 import { Layout, EditOrCreateRoomPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
@@ -14,28 +11,27 @@ import {
   ROOMS_SINGULAR,
 } from "../../../config/constants";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { AnyRoom } from "../../../typings/rooms";
+import { IRoom } from "../../../typings/rooms";
 
 interface Props {
-  staticRoom?: AnyRoom;
+  staticRoom?: IRoom;
 }
 
 const EditRoom: FC<Props> = ({ staticRoom }) => {
   const { room } = useContext(RoomsContext);
   const { isReady, query } = useRouter();
 
-  useHandleRoomsResponseEffect({});
-  useGetRoomByIdEffect();
+  useGetRoomByIdEffect({ errorToast: true });
 
   return (
     <Layout>
       <EditOrCreateRoomPage
         room={
           !isReady ||
-          !(room as AnyRoom)?.id ||
-          (room as AnyRoom).id !== Number(query.id)
+          !(room as IRoom)?.id ||
+          (room as IRoom).id !== Number(query.id)
             ? staticRoom
-            : (room as AnyRoom)
+            : (room as IRoom)
         }
       />
     </Layout>

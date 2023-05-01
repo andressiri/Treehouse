@@ -1,15 +1,13 @@
 import { FC, useContext } from "react";
 import { useRouter } from "next/router";
 import { RoomsContext } from "../../../contexts";
-import {
-  useGetRoomByIdEffect,
-  useHandleRoomsResponseEffect,
-} from "../../../services";
+import { useGetRoomByIdWithRelationsEffect } from "../../../services";
 import { Layout, RoomPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
   API_ROUTE,
   API_VERSION,
+  WITH_RELATIONS,
   ROOMS_ROUTE,
   ROOMS_SINGULAR,
 } from "../../../config/constants";
@@ -24,8 +22,7 @@ const RoomById: FC<Props> = ({ staticRoom }) => {
   const { room } = useContext(RoomsContext);
   const { isReady, query } = useRouter();
 
-  useHandleRoomsResponseEffect({ errorToast: true });
-  useGetRoomByIdEffect();
+  useGetRoomByIdWithRelationsEffect({ errorToast: true });
 
   return (
     <Layout>
@@ -53,7 +50,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const id = context.params?.id;
 
   const res = await fetch(
-    `${API_ORIGIN}/${API_ROUTE}/${API_VERSION}/${ROOMS_ROUTE}/${ROOMS_SINGULAR}/${id}`
+    `${API_ORIGIN}/${API_ROUTE}/${API_VERSION}/${ROOMS_ROUTE}/${ROOMS_SINGULAR}/${WITH_RELATIONS}/${id}`
   );
   const staticRoom = await res.json();
 
