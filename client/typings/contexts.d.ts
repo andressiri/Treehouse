@@ -11,79 +11,102 @@ export interface IGeneralContext {
   viewportHeight: number;
 }
 
-export interface IServiceContext {
-  isError: boolean;
-  setIsError: React.Dispatch<React.SetStateAction<boolean>>;
-  isSuccess: boolean;
-  setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>;
-  isLoading: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  message: string;
-  setMessage: React.Dispatch<React.SetStateAction<string>>;
-}
+// Rooms
+export type Rooms = IRoom[] | IRoomWithRelations[] | [];
+export type SetRooms = React.Dispatch<React.SetStateAction<IRoom[] | []>>;
 
-interface IServiceHandlers {
-  setIsError: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setMessage: React.Dispatch<React.SetStateAction<string>>;
-}
+export type RoomsWithRelations = IRoomWithRelations[] | [];
+export type SetRoomsWithRelations = React.Dispatch<
+  React.SetStateAction<IRoomWithRelations[] | []>
+>;
 
-export type SetRooms = React.Dispatch<
-  React.SetStateAction<IRoom[] | IRoomWithRelations[] | []>
+export type Room = IRoom | object;
+export type SetRoom = React.Dispatch<React.SetStateAction<IRoom | object>>;
+
+export type RoomWithRelations = IRoomWithRelations | object;
+export type SetRoomWithRelations = React.Dispatch<
+  React.SetStateAction<IRoomWithRelations | object>
 >;
-export type SetRoom = React.Dispatch<
-  React.SetStateAction<IRoom | IRoomWithRelations | object>
->;
-export interface IRoomsContext extends IServiceContext {
-  rooms: IRoom[] | IRoomWithRelations[] | [];
+export interface IRoomsContext {
+  rooms: Rooms;
   setRooms: SetRooms;
-  room: IRoom | IRoomWithRelations | object;
+  roomsWithRelations: RoomsWithRelations;
+  setRoomsWithRelations: SetRoomsWithRelations;
+  room: Room;
   setRoom: SetRoom;
+  roomWithRelations: RoomWithRelations;
+  setRoomWithRelations: SetRoomWithRelations;
 }
 
-export type SetStudents = React.Dispatch<
-  React.SetStateAction<IStudent[] | IStudentWithRelations[] | []>
+// Students
+export type Students = IStudent[] | IStudentWithRelations[] | [];
+export type SetStudents = React.Dispatch<React.SetStateAction<IStudent[] | []>>;
+
+export type StudentsWithRelations = IStudentWithRelations[] | [];
+export type SetStudentsWithRelations = React.Dispatch<
+  React.SetStateAction<IStudentWithRelations[] | []>
 >;
+
+export type Student = IStudent | object;
 export type SetStudent = React.Dispatch<
-  React.SetStateAction<IStudent | IStudentWithRelations | object>
+  React.SetStateAction<IStudent | object>
 >;
-export interface IStudentsContext extends IServiceContext {
-  students: IStudent[] | IStudentWithRelations[] | [];
+
+export type StudentWithRelations = IStudentWithRelations | object;
+export type SetStudentWithRelations = React.Dispatch<
+  React.SetStateAction<IStudentWithRelations | object>
+>;
+export interface IStudentsContext {
+  students: Students;
   setStudents: SetStudents;
-  student: IStudent | IStudentWithRelations | object;
+  studentsWithRelations: StudentsWithRelations;
+  setStudentsWithRelations: SetStudentsWithRelations;
+  student: Student;
   setStudent: SetStudent;
+  studentWithRelations: StudentWithRelations;
+  setStudentWithRelations: SetStudentWithRelations;
 }
 
-export type SetTeachers = React.Dispatch<
-  React.SetStateAction<ITeacher[] | ITeacherWithRelations[] | []>
+// Teachers
+export type Teachers = ITeacher[] | ITeacherWithRelations[] | [];
+export type SetTeachers = React.Dispatch<React.SetStateAction<ITeacher[] | []>>;
+
+export type TeachersWithRelations = ITeacherWithRelations[] | [];
+export type SetTeachersWithRelations = React.Dispatch<
+  React.SetStateAction<ITeacherWithRelations[] | []>
 >;
 
+export type Teacher = ITeacher | object;
 export type SetTeacher = React.Dispatch<
-  React.SetStateAction<ITeacher | ITeacherWithRelations | object>
+  React.SetStateAction<ITeacher | object>
 >;
-export interface ITeachersContext extends IServiceContext {
-  teachers: ITeacher[] | ITeacherWithRelations[] | [];
-  setTeachers: setTeacher;
-  teacher: ITeacher | ITeacherWithRelations | object;
+
+export type TeacherWithRelations = ITeacherWithRelations | object;
+export type SetTeacherWithRelations = React.Dispatch<
+  React.SetStateAction<ITeacherWithRelations | object>
+>;
+export interface ITeachersContext {
+  teachers: Teachers;
+  setTeachers: SetTeachers;
+  teachersWithRelations: TeachersWithRelations;
+  setTeachersWithRelations: SetTeachersWithRelations;
+  teacher: Teacher;
   setTeacher: SetTeacher;
+  teacherWithRelations: TeacherWithRelations;
+  setTeacherWithRelations: SetTeacherWithRelations;
 }
 
+// Entities
 export type SetServiceState =
   | SetRooms
+  | SetRoomsWithRelations
   | SetRoom
+  | SetRoomWithRelations
   | SetStudents
+  | SetStudentsWithRelations
   | SetStudent
+  | SetStudentWithRelations
   | SetTeachers
-  | SetTeacher;
-
-export type ServicesContexts =
-  | IServiceContext
-  | IRoomsContext
-  | IStudentsContext
-  | ITeachersContext;
-
-export type ContextsProviders =
-  | React.Context<IRoomsContext>
-  | React.Context<IStudentsContext>
-  | React.Context<ITeachersContext>;
+  | SetTeachersWithRelations
+  | SetTeacher
+  | SetTeacherWithRelations;
