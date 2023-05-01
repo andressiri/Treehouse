@@ -17,6 +17,7 @@ import {
   getStudent,
   getStudents,
   getStudentsWithRelations,
+  getStudentWithRelations,
   removeFromRoom,
   removeSibling,
 } from "../controllers/students";
@@ -61,6 +62,13 @@ studentsRouter.get(
   checkIntegerId,
   validateRequestFields,
   getStudent
+);
+
+studentsRouter.get(
+  `/${STUDENTS_SINGULAR}/${WITH_RELATIONS}/:${BY_ID}`,
+  checkIntegerId,
+  validateRequestFields,
+  getStudentWithRelations
 );
 
 studentsRouter.put(
