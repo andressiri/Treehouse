@@ -21,8 +21,11 @@ const PersonRoomFallback: FC<Props> = ({
 }) => {
   const [roomSelected, setRoomSelected] = useState("");
   const isStudent = entityName === STUDENT_ENTITY;
-  const { editRoom } = useEditRoom();
   const { editStudent } = useEditStudent();
+  const { editRoom, isLoading } = useEditRoom({
+    errorToast: true,
+    successToast: true,
+  });
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -58,13 +61,13 @@ const PersonRoomFallback: FC<Props> = ({
           showJustTeacherless={!isStudent}
         />
         <StyledButton
-          disabled={!roomSelected}
+          disabled={!roomSelected || isLoading}
           type="submit"
           BGType="secondaryContrastOutlined"
           endIcon={<MeetingRoomIcon />}
           sx={{ width: "250px" }}
         >
-          Add to room
+          {isLoading ? "Adding to room..." : "Add to room"}
         </StyledButton>
       </FormContainer>
     </Container>
