@@ -15,6 +15,7 @@ import {
   getRoom,
   getRooms,
   getRoomsWithRelations,
+  getRoomWithRelations,
   removeTeacher,
 } from "../controllers/rooms";
 import {
@@ -58,6 +59,13 @@ roomsRouter.get(
   checkIntegerId,
   validateRequestFields,
   getRoom
+);
+
+roomsRouter.get(
+  `/${ROOMS_SINGULAR}/${WITH_RELATIONS}/:${BY_ID}`,
+  checkIntegerId,
+  validateRequestFields,
+  getRoomWithRelations
 );
 
 roomsRouter.put(
