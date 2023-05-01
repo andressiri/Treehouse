@@ -14,6 +14,7 @@ import {
   getTeacher,
   getTeachers,
   getTeachersWithRelations,
+  getTeacherWithRelations,
 } from "../controllers/teachers";
 import {
   // authenticateAdmin, // temporary disabled until client has authentication developed
@@ -53,6 +54,13 @@ teachersRouter.get(
   checkIntegerId,
   validateRequestFields,
   getTeacher
+);
+
+teachersRouter.get(
+  `/${TEACHERS_SINGULAR}/${WITH_RELATIONS}/:${BY_ID}`,
+  checkIntegerId,
+  validateRequestFields,
+  getTeacherWithRelations
 );
 
 teachersRouter.put(
