@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDeleteStudent, useDeleteTeacher } from "../../../services";
@@ -25,7 +25,11 @@ import { PersonEntities } from "../../../typings/global";
 import { IRoom } from "../../../typings/rooms";
 import { IStudentWithRelations } from "../../../typings/students";
 import { ITeacherWithRelations } from "../../../typings/teachers";
-import { STUDENT_ENTITY } from "../../../config/constants";
+import {
+  STUDENTS_ROUTE,
+  STUDENT_ENTITY,
+  TEACHERS_ROUTE,
+} from "../../../config/constants";
 
 interface Props {
   person: IStudentWithRelations | ITeacherWithRelations;
@@ -35,8 +39,18 @@ interface Props {
 const PersonPage: FC<Props> = ({ person, entityName }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const isStudent = entityName === STUDENT_ENTITY;
-  const { deleteStudent } = useDeleteStudent();
-  const { deleteTeacher } = useDeleteTeacher();
+  const { push, query } = useRouter();
+
+  const { deleteStudent, isLoading: studentLoading } = useDeleteStudent({
+    successAction: () => push(`/${STUDENTS_ROUTE}`),
+    errorToast: true,
+    successToast: true,
+  });
+  const { deleteTeacher, isLoading: teacherLoading } = useDeleteTeacher({
+    successAction: () => push(`/${TEACHERS_ROUTE}`),
+    errorToast: true,
+    successToast: true,
+  });
 
   return (
     <Container component="section">
@@ -83,7 +97,7 @@ const PersonPage: FC<Props> = ({ person, entityName }) => {
           </StyledButton>
           <StyledButton
             endIcon={<EditIcon />}
-            onClick={() => Router.push(`/${entityName}s/edit/${person.id}`)}
+            onClick={() => push(`/${entityName}s/edit/${person.id}`)}
           >
             {`Edit ${entityName}`}
           </StyledButton>
@@ -92,17 +106,15 @@ const PersonPage: FC<Props> = ({ person, entityName }) => {
           text={`Are you sure you want to delete ${person.name}?`}
           confirmAction={() => {
             if (isStudent) {
-              deleteStudent(Number(Router.query.id));
+              deleteStudent(Number(query.id));
               return;
             }
 
-            deleteTeacher(Number(Router.query.id));
+            deleteTeacher(Number(query.id));
           }}
-          successText={`${person.name} was deleted successfully`}
           open={openConfirm}
           onClose={() => setOpenConfirm(false)}
-          onSuccess={() => Router.push("/")}
-          confirmContext={isStudent ? "StudentsContext" : "TeachersContext"}
+          isLoading={isStudent ? studentLoading : teacherLoading}
         />
       </InnerContainer>
     </Container>

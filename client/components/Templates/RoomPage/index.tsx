@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDeleteRoom } from "../../../services";
@@ -30,7 +30,17 @@ interface Props {
 
 const RoomPage: FC<Props> = ({ room }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
-  const { deleteRoom } = useDeleteRoom();
+  const { push, query } = useRouter();
+
+  const successAction = () => {
+    push(`/${ROOMS_ROUTE}`);
+  };
+
+  const { deleteRoom, isLoading } = useDeleteRoom({
+    successAction,
+    errorToast: true,
+    successToast: true,
+  });
 
   return (
     <Container component="section">
@@ -62,19 +72,17 @@ const RoomPage: FC<Props> = ({ room }) => {
           </StyledButton>
           <StyledButton
             endIcon={<EditIcon />}
-            onClick={() => Router.push(`/${ROOMS_ROUTE}/${EDIT}/${room.id}`)}
+            onClick={() => push(`/${ROOMS_ROUTE}/${EDIT}/${room.id}`)}
           >
             Edit room
           </StyledButton>
         </ActionsContainer>
         <ConfirmModal
           text={`Are you sure you want to delete the ${room.name} room?`}
-          confirmAction={() => deleteRoom(Number(Router.query.id))}
-          successText={`${room.name} was deleted successfully`}
+          confirmAction={() => deleteRoom(Number(query.id))}
           open={openConfirm}
           onClose={() => setOpenConfirm(false)}
-          onSuccess={() => Router.push("/")}
-          confirmContext="RoomsContext"
+          isLoading={isLoading}
         />
       </InnerContainer>
     </Container>
