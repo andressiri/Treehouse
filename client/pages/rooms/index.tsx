@@ -18,14 +18,18 @@ interface Props {
 }
 
 const Rooms: FC<Props> = ({ staticRooms }) => {
-  const { rooms } = useContext(RoomsContext);
+  const { roomsWithRelations } = useContext(RoomsContext);
 
   useGetRoomsWithRelationsEffect({ errorToast: true });
 
   return (
     <Layout>
       <DisplayPage
-        data={!rooms[0] ? staticRooms : (rooms as IRoomWithRelations[])}
+        data={
+          !roomsWithRelations[0]
+            ? staticRooms
+            : (roomsWithRelations as IRoomWithRelations[])
+        }
         entityName={ROOM_ENTITY}
       />
     </Layout>

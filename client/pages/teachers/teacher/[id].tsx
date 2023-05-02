@@ -19,7 +19,7 @@ interface Props {
 }
 
 const TeacherById: FC<Props> = ({ staticTeacher }) => {
-  const { teacher } = useContext(TeachersContext);
+  const { teacherWithRelations } = useContext(TeachersContext);
   const { isReady, query } = useRouter();
 
   useGetTeacherByIdWithRelationsEffect({ errorToast: true });
@@ -29,10 +29,11 @@ const TeacherById: FC<Props> = ({ staticTeacher }) => {
       <PersonPage
         person={
           !isReady ||
-          !(teacher as ITeacherWithRelations)?.id ||
-          (teacher as ITeacherWithRelations).id !== Number(query.id)
+          !(teacherWithRelations as ITeacherWithRelations)?.id ||
+          (teacherWithRelations as ITeacherWithRelations).id !==
+            Number(query.id)
             ? staticTeacher
-            : (teacher as ITeacherWithRelations)
+            : (teacherWithRelations as ITeacherWithRelations)
         }
         entityName={TEACHER_ENTITY}
       />

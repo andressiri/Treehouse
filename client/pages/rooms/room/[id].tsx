@@ -19,7 +19,7 @@ interface Props {
 }
 
 const RoomById: FC<Props> = ({ staticRoom }) => {
-  const { room } = useContext(RoomsContext);
+  const { roomWithRelations } = useContext(RoomsContext);
   const { isReady, query } = useRouter();
 
   useGetRoomByIdWithRelationsEffect({ errorToast: true });
@@ -29,10 +29,10 @@ const RoomById: FC<Props> = ({ staticRoom }) => {
       <RoomPage
         room={
           !isReady ||
-          !(room as IRoomWithRelations)?.id ||
-          (room as IRoomWithRelations).id !== Number(query.id)
+          !(roomWithRelations as IRoomWithRelations)?.id ||
+          (roomWithRelations as IRoomWithRelations).id !== Number(query.id)
             ? staticRoom
-            : (room as IRoomWithRelations)
+            : (roomWithRelations as IRoomWithRelations)
         }
       />
     </Layout>
