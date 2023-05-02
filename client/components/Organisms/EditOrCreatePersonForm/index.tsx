@@ -367,7 +367,9 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
         onChange={(
           e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
         ) => handleOnChange(e)}
-        teacherId={isStudent ? undefined : (person as ITeacherWithRelations).id}
+        teacherId={
+          isStudent ? undefined : (person as ITeacherWithRelations)?.id
+        }
       />
       <ErrorContainer>
         <ErrorMessage>{errorMessage}</ErrorMessage>
