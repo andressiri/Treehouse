@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import { useEditRoom, useEditStudent } from "../../../services";
 import { StyledButton } from "../../../components/Atoms";
@@ -21,11 +21,20 @@ const PersonRoomFallback: FC<Props> = ({
 }) => {
   const [roomSelected, setRoomSelected] = useState("");
   const isStudent = entityName === STUDENT_ENTITY;
-  const { editStudent } = useEditStudent();
-  const { editRoom, isLoading } = useEditRoom({
+  const { asPath, replace } = useRouter();
+
+  const addingResolve = () => replace(asPath, undefined, { scroll: false });
+  const resolveOptions = {
+    errorAction: addingResolve,
+    successAction: addingResolve,
     errorToast: true,
     successToast: true,
-  });
+  };
+
+  const { editStudent, isLoading: studentLoading } =
+    useEditStudent(resolveOptions);
+
+  const { editRoom, isLoading: roomLoading } = useEditRoom(resolveOptions);
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -33,16 +42,16 @@ const PersonRoomFallback: FC<Props> = ({
     setRoomSelected(e.target.value);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLDivElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (!roomSelected || roomSelected === "No room") return;
 
     if (isStudent) {
-      await editStudent({ roomId: roomSelected }, Number(personId));
+      editStudent({ roomId: roomSelected }, Number(personId));
+      return;
     }
 
-    await editRoom({ teacherId: `${personId}` }, Number(roomSelected));
-    Router.replace(Router.asPath);
+    editRoom({ teacherId: `${personId}` }, Number(roomSelected));
   };
 
   return (
@@ -58,16 +67,16 @@ const PersonRoomFallback: FC<Props> = ({
           onChange={(
             e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
           ) => handleOnChange(e)}
-          showJustTeacherless={!isStudent}
+          teacherId={isStudent ? undefined : personId}
         />
         <StyledButton
-          disabled={!roomSelected || isLoading}
+          disabled={!roomSelected || roomLoading || studentLoading}
           type="submit"
           BGType="secondaryContrastOutlined"
           endIcon={<MeetingRoomIcon />}
           sx={{ width: "250px" }}
         >
-          {isLoading ? "Adding to room..." : "Add to room"}
+          {roomLoading || studentLoading ? "Adding to room..." : "Add to room"}
         </StyledButton>
       </FormContainer>
     </Container>

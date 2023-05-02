@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import NoMeetingRoomIcon from "@mui/icons-material/NoMeetingRoom";
 import { FallbackText, StyledButton } from "../../../components/Atoms";
 import { ConfirmModal } from "../../../components/Organisms";
@@ -26,8 +26,21 @@ interface Props {
 const PersonRoom: FC<Props> = ({ room, personId, personName, entityName }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const isStudent = entityName === STUDENT_ENTITY;
-  const { removeStudentFromRoom } = useRemoveStudentFromRoom();
-  const { removeTeacherFromRoom } = useRemoveTeacherFromRoom();
+  const { asPath, replace } = useRouter();
+
+  const removingResolve = () => replace(asPath, undefined, { scroll: false });
+  const resolveOptions = {
+    errorAction: removingResolve,
+    successAction: removingResolve,
+    errorToast: true,
+    successToast: true,
+  };
+
+  const { removeStudentFromRoom, isLoading: studentLoading } =
+    useRemoveStudentFromRoom(resolveOptions);
+
+  const { removeTeacherFromRoom, isLoading: teacherLoading } =
+    useRemoveTeacherFromRoom(resolveOptions);
 
   const handleRemove = () => {
     if (isStudent) {
@@ -57,11 +70,9 @@ const PersonRoom: FC<Props> = ({ room, personId, personName, entityName }) => {
       <ConfirmModal
         text={`Are you sure you want to remove ${personName} from the room?`}
         confirmAction={() => handleRemove()}
-        successText={`${personName} was removed successfully`}
         open={openConfirm}
         onClose={() => setOpenConfirm(false)}
-        onSuccess={() => Router.replace(Router.asPath)}
-        confirmContext="RoomsContext"
+        isLoading={isStudent ? studentLoading : teacherLoading}
       />
     </Container>
   );

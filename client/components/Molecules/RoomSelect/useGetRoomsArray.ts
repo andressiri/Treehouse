@@ -1,23 +1,20 @@
 import { useContext, useMemo } from "react";
 import { RoomsContext } from "../../../contexts";
-import {
-  useGetRoomsWithRelationsEffect,
-  useHandleRoomsResponseEffect,
-} from "../../../services";
+import { useGetRoomsEffect } from "../../../services";
 import { sortByName } from "../../../utils/helpers";
 import { SelectOption } from "../../../typings/global";
 import { AnyRoomArray, IRoom } from "../../../typings/rooms";
 
-const useGetRoomsArray = (showJustTeacherless?: boolean) => {
+const useGetRoomsArray = (teacherId?: number) => {
   const { rooms } = useContext(RoomsContext);
 
-  useHandleRoomsResponseEffect({});
-  useGetRoomsWithRelationsEffect();
+  useGetRoomsEffect({ errorToast: true });
 
   const roomsOptionsArray: SelectOption[] = useMemo(() => {
     const sanitizedArray: SelectOption[] = (rooms as AnyRoomArray)
       .filter((room: IRoom) => {
-        if (showJustTeacherless && room.teacherId) return false;
+        if (teacherId && room.teacherId && room.teacherId !== teacherId)
+          return false;
         return true;
       })
       .map((room: IRoom) => {
@@ -33,7 +30,7 @@ const useGetRoomsArray = (showJustTeacherless?: boolean) => {
     ]);
 
     return arrayWithNoRoomOption;
-  }, [rooms, showJustTeacherless]);
+  }, [rooms, teacherId]);
 
   return roomsOptionsArray;
 };

@@ -1,5 +1,5 @@
-import { FC, useState, useRef } from "react";
-import Router from "next/router";
+import { FC, useState } from "react";
+import { useRouter } from "next/router";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import NoMeetingRoomIcon from "@mui/icons-material/NoMeetingRoom";
@@ -18,16 +18,33 @@ interface Props {
 
 const StudentListItem: FC<Props> = ({ id, name, listOf, studentId }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
-  const siblings = useRef<boolean>(listOf === "siblings");
-  const { removeStudentFromRoom } = useRemoveStudentFromRoom();
-  const { removeSibling } = useRemoveSibling();
+  const { asPath, replace } = useRouter();
+  const isSibling = listOf === "siblings";
 
-  const handleDeleteSibling = (removeFromOtherSiblings: boolean) => {
+  const removingResolve = () => {
+    replace(asPath, undefined, { scroll: false });
+  };
+  const resolveOptions = {
+    errorAction: removingResolve,
+    successAction: removingResolve,
+    errorToast: true,
+    successToast: true,
+  };
+
+  const { removeSibling, isLoading: siblingLoading } =
+    useRemoveSibling(resolveOptions);
+  const { removeStudentFromRoom, isLoading: studentLoading } =
+    useRemoveStudentFromRoom(resolveOptions);
+
+  const handleDeleteSibling = (removeFromOtherSiblings?: boolean) => {
     const formData = removeFromOtherSiblings
       ? { siblingId: `${id}`, removeFromOtherSiblings: true }
       : { siblingId: `${id}` };
+
     removeSibling(formData, Number(studentId));
   };
+
+  const handleRemoveFromAllSiblings = () => handleDeleteSibling(true);
 
   const handleRemoveFromClassroom = () => {
     removeStudentFromRoom(id);
@@ -48,28 +65,22 @@ const StudentListItem: FC<Props> = ({ id, name, listOf, studentId }) => {
           icon={
             listOf === "siblings" ? <PersonRemoveIcon /> : <NoMeetingRoomIcon />
           }
-          tooltipText={siblings.current ? "Remove sibling" : "Remove from room"}
+          tooltipText={isSibling ? "Remove sibling" : "Remove from room"}
           tooltipWidth="120px"
         />
         <ConfirmModal
           text={
-            siblings.current
+            isSibling
               ? "Do you want to remove it from the other siblings too?"
               : `Are you sure you want to remove ${name} from the room`
           }
           confirmAction={
-            siblings.current
-              ? () => handleDeleteSibling(true)
-              : handleRemoveFromClassroom
+            isSibling ? handleRemoveFromAllSiblings : handleRemoveFromClassroom
           }
-          noAction={
-            siblings.current ? () => handleDeleteSibling(false) : undefined
-          }
-          successText={`${name} was removed successfully`}
+          noAction={isSibling ? handleDeleteSibling : undefined}
           open={openConfirm}
           onClose={() => setOpenConfirm(false)}
-          onSuccess={() => Router.replace(Router.asPath)}
-          confirmContext="StudentsContext"
+          isLoading={siblingLoading || studentLoading}
         />
       </ActionsContainer>
     </Container>

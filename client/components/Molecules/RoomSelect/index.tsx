@@ -9,16 +9,11 @@ interface Props {
   onChange: (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void;
-  showJustTeacherless?: boolean;
+  teacherId?: number;
 }
 
-const RoomSelect: FC<Props> = ({
-  value,
-  name,
-  onChange,
-  showJustTeacherless,
-}) => {
-  const roomsArray = useGetRoomsArray(showJustTeacherless);
+const RoomSelect: FC<Props> = ({ value, name, onChange, teacherId }) => {
+  const roomsArray = useGetRoomsArray(teacherId);
 
   return (
     <StyledSelect
