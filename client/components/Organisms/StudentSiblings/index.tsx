@@ -1,32 +1,34 @@
 import { FC, useState } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { MenuItem } from "@mui/material";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { useAddSibling } from "../../../services";
 import { FallbackText, StyledButton, StyledSelect } from "../../Atoms";
 import { ConfirmModal, StudentsList } from "..";
 import { Container, FormContainer, Title } from "./styledComponents";
+import useGetStudentsArray from "./useGetStudentsArrays";
+import { IStudentWithRelations } from "../../../typings/students";
 
 interface Props {
-  students: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  data: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  person: IStudentWithRelations;
 }
 
-const StudentSiblings: FC<Props> = ({ students, data }) => {
+const StudentSiblings: FC<Props> = ({ person }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const [studentSelected, setStudentSelected] = useState<string>("");
-  const { addSibling } = useAddSibling();
+  const { siblingsIds, studentsArray, selectSiblingArray } =
+    useGetStudentsArray(person);
+  const { asPath, replace } = useRouter();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const siblingsIds = data.hasSibling?.map((sibling: any) => {
-    return sibling?.id;
-  });
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const studentsArray = students.filter((student: any) => {
-    if (student.id === data.id || siblingsIds?.includes(student.id))
-      return null;
-    return true;
+  const siblingResolveAction = () => {
+    setOpenConfirm(false);
+    replace(asPath, undefined, { scroll: false });
+  };
+  const { addSibling, isLoading } = useAddSibling({
+    errorAction: siblingResolveAction,
+    successAction: siblingResolveAction,
+    errorToast: true,
+    successToast: true,
   });
 
   const handleOnChange = (
@@ -37,8 +39,8 @@ const StudentSiblings: FC<Props> = ({ students, data }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
-    if (!siblingsIds.length) {
-      addSibling({ siblingId: studentSelected }, data.id);
+    if (!siblingsIds?.length) {
+      addSibling({ siblingId: studentSelected }, person.id);
       setStudentSelected("");
       return;
     }
@@ -49,11 +51,11 @@ const StudentSiblings: FC<Props> = ({ students, data }) => {
   return (
     <Container>
       <Title>Sibling of</Title>
-      {data.hasSibling && data.hasSibling.length ? (
+      {person.hasSibling?.length ? (
         <StudentsList
-          studentsArray={data.hasSibling}
+          studentsArray={person.hasSibling}
           listOf={"siblings"}
-          studentId={data.id}
+          studentId={person.id}
         />
       ) : (
         <FallbackText>There are no siblings registered</FallbackText>
@@ -75,17 +77,11 @@ const StudentSiblings: FC<Props> = ({ students, data }) => {
           }
           variant="outlined"
         >
-          {studentsArray.map(
-            (
-              option: any, // eslint-disable-line @typescript-eslint/no-explicit-any
-              id: number
-            ) => (
-              <MenuItem key={`${option.name}${id}`} value={option.id}>
-                {option.name}
-              </MenuItem>
-            )
-          )}
-          <MenuItem value={""}>Cancel</MenuItem>
+          {selectSiblingArray.map((option, id) => (
+            <MenuItem key={`${option.name}${id}`} value={option.value}>
+              {option.name}
+            </MenuItem>
+          ))}
         </StyledSelect>
         <StyledButton
           disabled={!studentSelected}
@@ -100,21 +96,17 @@ const StudentSiblings: FC<Props> = ({ students, data }) => {
         confirmAction={() => {
           addSibling(
             { siblingId: studentSelected, addToOtherSiblings: true },
-            data.id
+            person.id
           );
           setStudentSelected("");
-          setOpenConfirm(false);
         }}
         noAction={() => {
-          addSibling({ siblingId: studentSelected }, data.id);
+          addSibling({ siblingId: studentSelected }, person.id);
           setStudentSelected("");
-          setOpenConfirm(false);
         }}
-        successText={`Sibling added successfully`}
         open={openConfirm}
         onClose={() => setOpenConfirm(false)}
-        onSuccess={() => Router.push("/")}
-        confirmContext="StudentsContext"
+        isLoading={isLoading}
       />
     </Container>
   );

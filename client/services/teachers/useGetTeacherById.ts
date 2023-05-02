@@ -1,28 +1,25 @@
 import { useCallback, useContext } from "react";
 import { TeachersContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
+import { TEACHERS_ROUTE, TEACHERS_SINGULAR } from "../../config/constants";
 
-const useGetTeacherById = () => {
-  const { setTeacher, setIsError, setIsLoading, setMessage } =
-    useContext(TeachersContext);
+const useGetTeacherById = (responseOptions: IHandleResponseOptions) => {
+  const { setTeacher } = useContext(TeachersContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const getTeacherById = useCallback(
-    async (id: number) => {
-      setIsLoading(true);
-      try {
-        const teacher = await axiosInstance(`/teachers/teacher/${id}`);
-        setIsLoading(false);
-        setTeacher(teacher);
-      } catch (err) {
-        setIsError(true);
-        setMessage(`${err}`);
-        setIsLoading(false);
-      }
+    (id: number) => {
+      executeRequest({
+        route: `/${TEACHERS_ROUTE}/${TEACHERS_SINGULAR}/${id}`,
+        setState: setTeacher,
+      });
     },
-    [setTeacher, setIsError, setIsLoading, setMessage]
+    [executeRequest, setTeacher]
   );
 
-  return { getTeacherById };
+  return { getTeacherById, isError, isSuccess, isLoading, message };
 };
 
 export default useGetTeacherById;

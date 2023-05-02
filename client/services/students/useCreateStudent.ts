@@ -1,6 +1,8 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
+import { STUDENTS_ROUTE } from "../../config/constants";
 
 interface IFormData {
   name: string;
@@ -10,28 +12,24 @@ interface IFormData {
   roomId?: string;
 }
 
-const useCreateStudent = () => {
-  const { setStudent, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(StudentsContext);
+const useCreateStudent = (responseOptions: IHandleResponseOptions) => {
+  const { setStudent } = useContext(StudentsContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const createStudent = useCallback(
-    async (formData: IFormData) => {
-      setIsLoading(true);
-      try {
-        const response = await axiosInstance(`/students`, formData, "POST");
-        setStudent(response.studentData);
-        setIsSuccess(true);
-        setIsLoading(false);
-      } catch (err) {
-        setIsError(true);
-        setMessage(`${err}`);
-        setIsLoading(false);
-      }
+    (formData: IFormData) => {
+      executeRequest({
+        route: `/${STUDENTS_ROUTE}`,
+        method: "POST",
+        setState: setStudent,
+        formData,
+      });
     },
-    [setStudent, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [executeRequest, setStudent]
   );
 
-  return { createStudent };
+  return { createStudent, isError, isSuccess, isLoading, message };
 };
 
 export default useCreateStudent;

@@ -1,37 +1,34 @@
 import { useCallback, useContext } from "react";
 import { TeachersContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
+import { TEACHERS_ROUTE } from "../../config/constants";
 
 interface IFormData {
   name: string;
   age: string;
   gender: string;
   description?: string;
-  roomId?: string;
 }
 
-const useCreateTeacher = () => {
-  const { setTeacher, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(TeachersContext);
+const useCreateTeacher = (responseOptions: IHandleResponseOptions) => {
+  const { setTeacher } = useContext(TeachersContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const createTeacher = useCallback(
-    async (formData: IFormData) => {
-      setIsLoading(true);
-      try {
-        const response = await axiosInstance(`/teachers`, formData, "POST");
-        setTeacher(response.teacherData);
-        setIsSuccess(true);
-        setIsLoading(false);
-      } catch (err) {
-        setIsError(true);
-        setMessage(`${err}`);
-        setIsLoading(false);
-      }
+    (formData: IFormData) => {
+      executeRequest({
+        route: `/${TEACHERS_ROUTE}`,
+        method: "POST",
+        setState: setTeacher,
+        formData,
+      });
     },
-    [setTeacher, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [executeRequest, setTeacher]
   );
 
-  return { createTeacher };
+  return { createTeacher, isError, isSuccess, isLoading, message };
 };
 
 export default useCreateTeacher;

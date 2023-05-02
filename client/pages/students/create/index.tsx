@@ -1,15 +1,11 @@
-import { FC, useContext } from "react";
-import { RoomsContext } from "../../../contexts";
-import { useGetRoomsWithRelationsEffect } from "../../../services";
+import { FC } from "react";
 import { Layout, EditOrCreatePersonPage } from "../../../components/Templates";
+import { STUDENT_ENTITY } from "../../../config/constants";
 
 const CreateStudent: FC = () => {
-  const { rooms } = useContext(RoomsContext);
-  useGetRoomsWithRelationsEffect();
-
   return (
     <Layout>
-      <EditOrCreatePersonPage rooms={rooms} modelName="student" />
+      <EditOrCreatePersonPage entityName={STUDENT_ENTITY} />
     </Layout>
   );
 };

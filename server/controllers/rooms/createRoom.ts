@@ -24,7 +24,7 @@ const createRoom = asyncHandler(async (req, res) => {
 
   res.status(201).json({
     message: `${name} room created`,
-    roomData: createResult.dataValues,
+    data: createResult.dataValues,
   });
 });
 

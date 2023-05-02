@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDeleteStudent, useDeleteTeacher } from "../../../services";
@@ -21,47 +21,68 @@ import {
   Description,
   ActionsContainer,
 } from "./styledComponents";
+import { PersonEntities } from "../../../typings/global";
+import { IRoom } from "../../../typings/rooms";
+import { IStudentWithRelations } from "../../../typings/students";
+import { ITeacherWithRelations } from "../../../typings/teachers";
+import {
+  STUDENTS_ROUTE,
+  STUDENT_ENTITY,
+  TEACHERS_ROUTE,
+} from "../../../config/constants";
 
 interface Props {
-  students?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  rooms: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  data: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  modelName: "student" | "teacher";
+  person: IStudentWithRelations | ITeacherWithRelations;
+  entityName: PersonEntities;
 }
 
-const PersonPage: FC<Props> = ({ students, rooms, data, modelName }) => {
+const PersonPage: FC<Props> = ({ person, entityName }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
-  const { deleteStudent } = useDeleteStudent();
-  const { deleteTeacher } = useDeleteTeacher();
+  const isStudent = entityName === STUDENT_ENTITY;
+  const { push, query } = useRouter();
+
+  const { deleteStudent, isLoading: studentLoading } = useDeleteStudent({
+    successAction: () => push(`/${STUDENTS_ROUTE}`),
+    errorToast: true,
+    successToast: true,
+  });
+  const { deleteTeacher, isLoading: teacherLoading } = useDeleteTeacher({
+    successAction: () => push(`/${TEACHERS_ROUTE}`),
+    errorToast: true,
+    successToast: true,
+  });
 
   return (
     <Container component="section">
       <InnerContainer>
-        <SectionTitle>{data.name}</SectionTitle>
-        <DisplayImage imageSrc={data.picture} />
-        <PersonBasicInfo age={data.age} gender={data.gender} />
-        {data.description ? (
-          <Description>{data.description}</Description>
+        <SectionTitle>{person.name}</SectionTitle>
+        <DisplayImage imageSrc={person.picture} />
+        <PersonBasicInfo age={person.age} gender={person.gender} />
+        {person.description ? (
+          <Description>{person.description}</Description>
         ) : (
-          <FallbackText>{`This ${modelName} has no description`}</FallbackText>
+          <FallbackText>{`This ${entityName} has no description`}</FallbackText>
         )}
-        {data.Room ? (
+        {(person.Room as IRoom)?.id ? (
           <PersonRoom
-            room={data.Room}
-            modelName={modelName}
-            personId={data.id}
-            personName={data.name}
+            room={{
+              id: (person.Room as IRoom).id,
+              name: (person.Room as IRoom).name,
+              description: (person.Room as IRoom).description,
+            }}
+            personId={person.id}
+            personName={person.name}
+            entityName={entityName}
           />
         ) : (
           <PersonRoomFallback
-            rooms={rooms}
-            modelName={modelName}
-            personId={data.id}
-            personName={data.name}
+            personId={person.id}
+            personName={person.name}
+            entityName={entityName}
           />
         )}
-        {modelName === "student" || students ? (
-          <StudentSiblings students={students} data={data} />
+        {isStudent ? (
+          <StudentSiblings person={person as IStudentWithRelations} />
         ) : (
           <></>
         )}
@@ -72,32 +93,28 @@ const PersonPage: FC<Props> = ({ students, rooms, data, modelName }) => {
             endIcon={<WarningAmberIcon />}
             onClick={() => setOpenConfirm(true)}
           >
-            {`Delete ${modelName}`}
+            {`Delete ${entityName}`}
           </StyledButton>
           <StyledButton
             endIcon={<EditIcon />}
-            onClick={() => Router.push(`/${modelName}s/edit/${data.id}`)}
+            onClick={() => push(`/${entityName}s/edit/${person.id}`)}
           >
-            {`Edit ${modelName}`}
+            {`Edit ${entityName}`}
           </StyledButton>
         </ActionsContainer>
         <ConfirmModal
-          text={`Are you sure you want to delete ${data.name}?`}
+          text={`Are you sure you want to delete ${person.name}?`}
           confirmAction={() => {
-            if (modelName === "student") {
-              deleteStudent(Number(Router.query.id));
+            if (isStudent) {
+              deleteStudent(Number(query.id));
               return;
             }
 
-            deleteTeacher(Number(Router.query.id));
+            deleteTeacher(Number(query.id));
           }}
-          successText={`${data.name} was deleted successfully`}
           open={openConfirm}
           onClose={() => setOpenConfirm(false)}
-          onSuccess={() => Router.push("/")}
-          confirmContext={
-            modelName === "student" ? "StudentsContext" : "TeachersContext"
-          }
+          isLoading={isStudent ? studentLoading : teacherLoading}
         />
       </InnerContainer>
     </Container>

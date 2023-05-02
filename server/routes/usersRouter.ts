@@ -1,6 +1,19 @@
 // @route api/v1/users
 import express from "express";
-import { byId, deletion, edit } from "../config/constants";
+import {
+  BY_ID,
+  DELETION,
+  EDIT,
+  USERS_SINGULAR,
+  REGISTER,
+  LOGIN,
+  LOGOUT,
+  MY_INFO,
+  USER_VERIFICATION,
+  BY_CODE,
+  FORGOT_PASSWORD,
+  USER_PASSWORD,
+} from "../config/constants";
 import {
   changePassword,
   deleteUser,
@@ -31,7 +44,7 @@ import {
 const usersRouter = express.Router();
 
 usersRouter.post(
-  "/register",
+  `/${REGISTER}`,
   checkFirstName,
   checkLastName,
   checkEmail,
@@ -41,7 +54,7 @@ usersRouter.post(
 );
 
 usersRouter.post(
-  "/login",
+  `/${LOGIN}`,
   checkEmail,
   checkPassword,
   validateRequestFields,
@@ -51,7 +64,7 @@ usersRouter.post(
 usersRouter.get("/", authenticateUser, authenticateAdmin, getUsers);
 
 usersRouter.get(
-  `/user/${byId}`,
+  `/${USERS_SINGULAR}/:${BY_ID}`,
   authenticateUser,
   authenticateAdmin,
   checkUUID,
@@ -59,21 +72,21 @@ usersRouter.get(
   userInfo
 );
 
-usersRouter.get("/me", authenticateUser, userInfo);
+usersRouter.get(`/${MY_INFO}`, authenticateUser, userInfo);
 
-usersRouter.post("/verification", authenticateUser, verificationCode);
+usersRouter.post(`/${USER_VERIFICATION}`, authenticateUser, verificationCode);
 
 usersRouter.post(
-  "/forgot-password",
+  `/${FORGOT_PASSWORD}`,
   checkEmail,
   validateRequestFields,
   verificationCode
 );
 
-usersRouter.put("/verification/:code", userVerification);
+usersRouter.put(`/${USER_VERIFICATION}/:${BY_CODE}`, userVerification);
 
 usersRouter.put(
-  "/password",
+  `/${USER_PASSWORD}`,
   authenticateUser,
   checkPassword,
   validateRequestFields,
@@ -81,7 +94,7 @@ usersRouter.put(
 );
 
 usersRouter.put(
-  `/${edit}/${byId}`,
+  `/${EDIT}/:${BY_ID}`,
   authenticateUser,
   authenticateSuperAdmin,
   checkUUID,
@@ -90,16 +103,16 @@ usersRouter.put(
   editUser
 );
 
-usersRouter.put(`/${edit}`, authenticateUser, checkUserAttributes, editUser);
+usersRouter.put(`/${EDIT}`, authenticateUser, checkUserAttributes, editUser);
 
 usersRouter.delete(
-  `/${deletion}/${byId}`,
+  `/${DELETION}/:${BY_ID}`,
   authenticateUser,
   checkUUID,
   validateRequestFields,
   deleteUser
 );
 
-usersRouter.delete("/logout", logout);
+usersRouter.delete(`/${LOGOUT}`, logout);
 
 export default usersRouter;

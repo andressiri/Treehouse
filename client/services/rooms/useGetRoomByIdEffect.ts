@@ -1,24 +1,27 @@
-import { useContext, useEffect } from "react";
-import { RoomsContext } from "../../contexts";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import useGetRoomById from "./useGetRoomById";
+import { IHandleResponseOptions } from "../../typings/services";
+import { toast } from "react-toastify";
 
-const useGetRoomByIdEffect = () => {
-  const { setIsError, setMessage } = useContext(RoomsContext);
-  const { isReady, query } = useRouter();
-  const { getRoomById } = useGetRoomById();
+const useGetRoomByIdEffect = (responseOptions: IHandleResponseOptions) => {
+  const { isReady, query, push } = useRouter();
+  const getRoomByIdObj = useGetRoomById(responseOptions);
+  const { getRoomById } = getRoomByIdObj;
 
   useEffect(() => {
     if (!isReady) return;
 
     if (!Number.isInteger(Number(query.id))) {
-      setIsError(true);
-      setMessage("That is an invalid id");
+      toast.error("Invalid room id");
+      push("/404");
       return;
     }
 
     getRoomById(Number(query.id));
-  }, [isReady, query, getRoomById, setIsError, setMessage]);
+  }, [getRoomById, isReady, query, push]);
+
+  return getRoomByIdObj;
 };
 
 export default useGetRoomByIdEffect;

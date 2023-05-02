@@ -1,62 +1,49 @@
 import React, { createContext, FC, useState } from "react";
+import {
+  IContextProviderProps,
+  IStudentsContext,
+  Students,
+  StudentsWithRelations,
+  Student,
+  StudentWithRelations,
+} from "../../typings/contexts";
 
-interface IContext {
-  students: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
-  setStudents: React.Dispatch<React.SetStateAction<never[]>>;
-  student: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  setStudent: React.Dispatch<React.SetStateAction<object>>;
-  isError: boolean;
-  setIsError: React.Dispatch<React.SetStateAction<boolean>>;
-  isSuccess: boolean;
-  setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>;
-  isLoading: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  message: string;
-  setMessage: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export const StudentsContext = createContext<IContext>({
+export const StudentsContext = createContext<IStudentsContext>({
   students: [],
-  setStudents: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  setStudents: () => [],
+  studentsWithRelations: [],
+  setStudentsWithRelations: () => [],
   student: {},
-  setStudent: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  isError: false,
-  setIsError: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  isSuccess: false,
-  setIsSuccess: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  isLoading: false,
-  setIsLoading: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  message: "",
-  setMessage: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  setStudent: () => {
+    return {};
+  },
+  studentWithRelations: {},
+  setStudentWithRelations: () => {
+    return {};
+  },
 });
 
-interface Props {
-  children: React.ReactNode;
-}
-
-export const StudentsContextProvider: FC<Props> = ({ children }) => {
-  const [students, setStudents] = useState([]);
-  const [student, setStudent] = useState({});
-  const [isError, setIsError] = useState<boolean>(false);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+export const StudentsContextProvider: FC<IContextProviderProps> = ({
+  children,
+}) => {
+  const [students, setStudents] = useState<Students>([]);
+  const [studentsWithRelations, setStudentsWithRelations] =
+    useState<StudentsWithRelations>([]);
+  const [student, setStudent] = useState<Student>({});
+  const [studentWithRelations, setStudentWithRelations] =
+    useState<StudentWithRelations>({});
 
   return (
     <StudentsContext.Provider
       value={{
         students,
         setStudents,
+        studentsWithRelations,
+        setStudentsWithRelations,
         student,
         setStudent,
-        isError,
-        setIsError,
-        isSuccess,
-        setIsSuccess,
-        isLoading,
-        setIsLoading,
-        message,
-        setMessage,
+        studentWithRelations,
+        setStudentWithRelations,
       }}
     >
       {children}

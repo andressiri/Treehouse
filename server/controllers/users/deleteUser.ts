@@ -3,6 +3,7 @@
 // @access Logged user or SuperAdmin - Requires previous identity verification
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
+import { BY_ID } from "../../config/constants";
 import { RequestWithUser } from "../../typings/express";
 import { IUser } from "../../typings/models";
 import db from "../../db/models";
@@ -11,7 +12,7 @@ const { User } = db;
 
 const deleteUser = asyncHandler(async (req, res) => {
   const { password } = req.body;
-  const id = req.params.id;
+  const id = req.params[BY_ID];
 
   if (!req.session.verified) {
     res.status(428);

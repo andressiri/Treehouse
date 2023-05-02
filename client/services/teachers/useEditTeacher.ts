@@ -1,40 +1,34 @@
 import { useCallback, useContext } from "react";
 import { TeachersContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
+import { EDIT, TEACHERS_ROUTE } from "../../config/constants";
 
 interface IFormData {
   name: string;
   age: string;
   gender: string;
   description?: string;
-  roomId?: string;
 }
-const useEditTeacher = () => {
-  const { setTeacher, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(TeachersContext);
+
+const useEditTeacher = (responseOptions: IHandleResponseOptions) => {
+  const { setTeacher } = useContext(TeachersContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const editTeacher = useCallback(
-    async (formData: IFormData, id: number) => {
-      setIsLoading(true);
-      try {
-        const response = await axiosInstance(
-          `/teachers/edit/${id}`,
-          formData,
-          "PUT"
-        );
-        setTeacher(response.teacherData);
-        setIsSuccess(true);
-        setIsLoading(false);
-      } catch (err) {
-        setIsError(true);
-        setMessage(`${err}`);
-        setIsLoading(false);
-      }
+    (formData: IFormData, id: number) => {
+      executeRequest({
+        route: `/${TEACHERS_ROUTE}/${EDIT}/${id}`,
+        method: "PUT",
+        setState: setTeacher,
+        formData,
+      });
     },
-    [setTeacher, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [executeRequest, setTeacher]
   );
 
-  return { editTeacher };
+  return { editTeacher, isError, isSuccess, isLoading, message };
 };
 
 export default useEditTeacher;

@@ -34,7 +34,7 @@ const authenticateUser = asyncHandler(
       const user: IUser = await User.findOne({
         raw: true,
         attributes: { exclude: ["password"] },
-        where: { id: (decodedToken as JWToken).id },
+        where: { id: (decodedToken as JWToken)?.id },
       });
 
       // Check if token contained a valid user

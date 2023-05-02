@@ -1,25 +1,24 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
+import { WITH_RELATIONS, STUDENTS_ROUTE } from "../../config/constants";
 
-const useGetStudentsWithRelations = () => {
-  const { setStudents, setIsError, setIsLoading, setMessage } =
-    useContext(StudentsContext);
+const useGetStudentsWithRelations = (
+  responseOptions: IHandleResponseOptions
+) => {
+  const { setStudentsWithRelations } = useContext(StudentsContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
-  const getStudentsWithRelations = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const studentsData = await axiosInstance("/students/all");
-      setStudents(studentsData);
-      setIsLoading(false);
-    } catch (err) {
-      setIsError(true);
-      setMessage(`${err}`);
-      setIsLoading(false);
-    }
-  }, [setStudents, setIsError, setIsLoading, setMessage]);
+  const getStudentsWithRelations = useCallback(() => {
+    executeRequest({
+      route: `/${STUDENTS_ROUTE}/${WITH_RELATIONS}`,
+      setState: setStudentsWithRelations,
+    });
+  }, [executeRequest, setStudentsWithRelations]);
 
-  return { getStudentsWithRelations };
+  return { getStudentsWithRelations, isError, isSuccess, isLoading, message };
 };
 
 export default useGetStudentsWithRelations;

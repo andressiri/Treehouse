@@ -2,9 +2,10 @@ import { FC } from "react";
 import { SectionTitle } from "../../Atoms";
 import { EditOrCreateRoomForm } from "../../Organisms";
 import { Container } from "./styledComponents";
+import { AnyRoom } from "../../../typings/rooms";
 
 interface Props {
-  room?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  room?: AnyRoom;
 }
 
 const EditOrCreateRoomPage: FC<Props> = ({ room }) => {

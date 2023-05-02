@@ -1,38 +1,35 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
+import {
+  STUDENTS_HANDLE_SIBLINGS,
+  STUDENTS_ROUTE,
+} from "../../config/constants";
 
 interface IFormData {
   siblingId: string;
   addToOtherSiblings?: boolean;
 }
 
-const useAddSibling = () => {
-  const { setStudent, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(StudentsContext);
+const useAddSibling = (responseOptions: IHandleResponseOptions) => {
+  const { setStudentWithRelations } = useContext(StudentsContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const addSibling = useCallback(
-    async (formData: IFormData, id: number) => {
-      setIsLoading(true);
-      try {
-        const response = await axiosInstance(
-          `/students/siblings/${id}`,
-          formData,
-          "PUT"
-        );
-        setStudent(response.studentData);
-        setIsSuccess(true);
-        setIsLoading(false);
-      } catch (err) {
-        setIsError(true);
-        setMessage(`${err}`);
-        setIsLoading(false);
-      }
+    (formData: IFormData, id: number) => {
+      executeRequest({
+        route: `/${STUDENTS_ROUTE}/${STUDENTS_HANDLE_SIBLINGS}/${id}`,
+        method: "PUT",
+        setState: setStudentWithRelations,
+        formData,
+      });
     },
-    [setStudent, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [executeRequest, setStudentWithRelations]
   );
 
-  return { addSibling };
+  return { addSibling, isError, isSuccess, isLoading, message };
 };
 
 export default useAddSibling;

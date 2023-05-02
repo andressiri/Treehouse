@@ -33,7 +33,7 @@ const register = asyncHandler(async (req, res) => {
   };
   delete userData.password;
 
-  res.status(201).json({ message: "User registered", userData });
+  res.status(201).json({ message: "User registered", data: userData });
 });
 
 export default register;

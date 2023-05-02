@@ -1,24 +1,27 @@
-import { useContext, useEffect } from "react";
-import { StudentsContext } from "../../contexts";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 import useGetStudentById from "./useGetStudentById";
+import { IHandleResponseOptions } from "../../typings/services";
 
-const useGetStudentByIdEffect = () => {
-  const { setIsError, setMessage } = useContext(StudentsContext);
-  const { isReady, query } = useRouter();
-  const { getStudentById } = useGetStudentById();
+const useGetStudentByIdEffect = (responseOptions: IHandleResponseOptions) => {
+  const { isReady, query, push } = useRouter();
+  const getStudentByIdEffectObj = useGetStudentById(responseOptions);
+  const { getStudentById } = getStudentByIdEffectObj;
 
   useEffect(() => {
     if (!isReady) return;
 
     if (!Number.isInteger(Number(query.id))) {
-      setIsError(true);
-      setMessage("That is an invalid id");
+      toast.error("Invalid student id");
+      push("/404");
       return;
     }
 
     getStudentById(Number(query.id));
-  }, [isReady, query, getStudentById, setIsError, setMessage]);
+  }, [getStudentById, isReady, query, push]);
+
+  return getStudentByIdEffectObj;
 };
 
 export default useGetStudentByIdEffect;

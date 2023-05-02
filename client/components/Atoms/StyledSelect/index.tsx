@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { TextFieldStyled } from "./styledComponents";
+import { InputLabelProps } from "@mui/material";
 
 interface Props {
   disabled?: boolean;
@@ -10,8 +11,8 @@ interface Props {
   variant?: "standard" | "filled" | "outlined";
   multiline?: boolean;
   rows?: number;
-  onChange: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  InputLabelProps?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  onChange: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+  InputLabelProps?: Partial<InputLabelProps>;
   children: JSX.Element | JSX.Element[];
 }
 

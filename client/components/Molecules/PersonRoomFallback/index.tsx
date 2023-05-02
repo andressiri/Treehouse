@@ -1,33 +1,40 @@
 import { FC, useState } from "react";
-import Router from "next/router";
-import { MenuItem } from "@mui/material";
+import { useRouter } from "next/router";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
-import { StyledButton, StyledSelect } from "../../../components/Atoms";
-import { Container, FormContainer, Title } from "./styledComponents";
 import { useEditRoom, useEditStudent } from "../../../services";
+import { StyledButton } from "../../../components/Atoms";
+import { RoomSelect } from "../../../components/Molecules";
+import { Container, FormContainer, Title } from "./styledComponents";
+import { PersonEntities } from "../../../typings/global";
+import { STUDENT_ENTITY } from "../../../config/constants";
 
 interface Props {
-  rooms: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  modelName: "student" | "teacher";
-  personId: string;
+  personId: number;
   personName: string;
+  entityName: PersonEntities;
 }
 
 const PersonRoomFallback: FC<Props> = ({
-  rooms,
-  modelName,
   personId,
   personName,
+  entityName,
 }) => {
   const [roomSelected, setRoomSelected] = useState("");
-  const { editRoom } = useEditRoom();
-  const { editStudent } = useEditStudent();
+  const isStudent = entityName === STUDENT_ENTITY;
+  const { asPath, replace } = useRouter();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const roomsArray = rooms.filter((room: any) => {
-    if (modelName === "teacher" && room.teacherId) return null;
-    return true;
-  });
+  const addingResolve = () => replace(asPath, undefined, { scroll: false });
+  const resolveOptions = {
+    errorAction: addingResolve,
+    successAction: addingResolve,
+    errorToast: true,
+    successToast: true,
+  };
+
+  const { editStudent, isLoading: studentLoading } =
+    useEditStudent(resolveOptions);
+
+  const { editRoom, isLoading: roomLoading } = useEditRoom(resolveOptions);
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -35,16 +42,16 @@ const PersonRoomFallback: FC<Props> = ({
     setRoomSelected(e.target.value);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLDivElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (!roomSelected || roomSelected === "No room") return;
 
-    if (modelName === "student") {
-      await editStudent({ roomId: roomSelected }, Number(personId));
+    if (isStudent) {
+      editStudent({ roomId: roomSelected }, Number(personId));
+      return;
     }
 
-    await editRoom({ teacherId: personId }, Number(roomSelected));
-    Router.replace(Router.asPath);
+    editRoom({ teacherId: `${personId}` }, Number(roomSelected));
   };
 
   return (
@@ -54,37 +61,22 @@ const PersonRoomFallback: FC<Props> = ({
         component="form"
         onSubmit={(e: React.FormEvent<HTMLDivElement>) => handleSubmit(e)}
       >
-        <StyledSelect
-          disabled={!roomsArray.length}
-          select={true}
+        <RoomSelect
           value={roomSelected}
           name="roomSelected"
           onChange={(
             e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
           ) => handleOnChange(e)}
-          label={!roomsArray.length ? "No rooms available" : "Room"}
-          variant="outlined"
-        >
-          {roomsArray.map(
-            (
-              option: any, // eslint-disable-line @typescript-eslint/no-explicit-any
-              id: number
-            ) => (
-              <MenuItem key={`${option.name}${id}`} value={option.id}>
-                {option.name}
-              </MenuItem>
-            )
-          )}
-          <MenuItem value={""}>No room</MenuItem>
-        </StyledSelect>
+          teacherId={isStudent ? undefined : personId}
+        />
         <StyledButton
-          disabled={!roomSelected}
+          disabled={!roomSelected || roomLoading || studentLoading}
           type="submit"
           BGType="secondaryContrastOutlined"
           endIcon={<MeetingRoomIcon />}
           sx={{ width: "250px" }}
         >
-          Add to room
+          {roomLoading || studentLoading ? "Adding to room..." : "Add to room"}
         </StyledButton>
       </FormContainer>
     </Container>

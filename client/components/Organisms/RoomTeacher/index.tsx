@@ -1,9 +1,11 @@
 import { FC } from "react";
 import { PersonBasicInfo, DisplayImage } from "../../../components/Molecules";
 import { Container, InfoContainer, Description } from "./styledComponents";
+import { ITeacher } from "../../../typings/teachers";
 
+type Teacher = Omit<ITeacher, "createAt" | "updatedAt">;
 interface Props {
-  teacher: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  teacher: Teacher;
 }
 
 const RoomTeacher: FC<Props> = ({ teacher }) => {

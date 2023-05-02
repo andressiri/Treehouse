@@ -2,12 +2,13 @@
 // @route DELETE /api/v1/teachers/delete/:id
 // @access Private - Admin only
 import asyncHandler from "express-async-handler";
+import { BY_ID } from "../../config/constants";
 import db from "../../db/models";
 
 const { Room, Teacher, Student } = db;
 
 const deleteTeacher = asyncHandler(async (req, res) => {
-  const id = req.params.id;
+  const id = req.params[BY_ID];
 
   const teacherFound = await Teacher.findOne({
     raw: true,

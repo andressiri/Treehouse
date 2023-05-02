@@ -1,50 +1,75 @@
-import { FC, useContext, useEffect } from "react";
-import { RoomsContext, StudentsContext } from "../../../contexts";
-import Router from "next/router";
-import {
-  useGetRoomsWithRelationsEffect,
-  useGetStudentByIdEffect,
-  useGetStudentsWithRelationsEffect,
-} from "../../../services";
+import { FC, useContext } from "react";
+import { useRouter } from "next/router";
+import { StudentsContext } from "../../../contexts";
+import { useGetStudentByIdWithRelationsEffect } from "../../../services";
 import { Layout, PersonPage } from "../../../components/Templates";
+import {
+  API_ORIGIN,
+  API_ROUTE,
+  API_VERSION,
+  STUDENTS_ROUTE,
+  STUDENTS_SINGULAR,
+  STUDENT_ENTITY,
+  WITH_RELATIONS,
+} from "../../../config/constants";
+import { GetStaticPaths, GetStaticProps } from "next";
+import { IStudentWithRelations } from "../../../typings/students";
 
-const StudentById: FC = () => {
-  const {
-    students,
-    student,
-    isError,
-    setIsError,
-    isSuccess,
-    setIsSuccess,
-    message,
-  } = useContext(StudentsContext);
-  const { rooms } = useContext(RoomsContext);
-  useGetStudentsWithRelationsEffect();
-  useGetStudentByIdEffect();
-  useGetRoomsWithRelationsEffect();
+interface Props {
+  staticStudent: IStudentWithRelations;
+}
 
-  useEffect(() => {
-    if (isSuccess) {
-      // toast message
-      setIsSuccess(false);
-    }
+const StudentById: FC<Props> = ({ staticStudent }) => {
+  const { studentWithRelations } = useContext(StudentsContext);
+  const { isReady, query } = useRouter();
 
-    if (isError) {
-      setIsError(false);
-      Router.push("/");
-    }
-  }, [isError, setIsError, isSuccess, setIsSuccess, message]);
+  useGetStudentByIdWithRelationsEffect({ errorToast: true });
 
   return (
     <Layout>
       <PersonPage
-        students={students}
-        rooms={rooms}
-        data={student}
-        modelName="student"
+        person={
+          !isReady ||
+          !(studentWithRelations as IStudentWithRelations)?.id ||
+          (studentWithRelations as IStudentWithRelations).id !==
+            Number(query.id)
+            ? staticStudent
+            : (studentWithRelations as IStudentWithRelations)
+        }
+        entityName={STUDENT_ENTITY}
       />
     </Layout>
   );
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const id = context.params?.id;
+
+  const res = await fetch(
+    `${API_ORIGIN}/${API_ROUTE}/${API_VERSION}/${STUDENTS_ROUTE}/${STUDENTS_SINGULAR}/${WITH_RELATIONS}/${id}`
+  );
+  const staticStudent = await res.json();
+
+  if (!staticStudent.id)
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+    };
+
+  return {
+    props: {
+      staticStudent,
+    },
+  };
 };
 
 export default StudentById;
