@@ -13,6 +13,7 @@ interface Props {
 
 const CardsDisplay: FC<Props> = ({ displayArray, entityName }) => {
   const isRoom = entityName === ROOM_ENTITY;
+
   return (
     <Container>
       {displayArray.length ? (

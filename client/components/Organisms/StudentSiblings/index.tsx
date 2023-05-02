@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { MenuItem } from "@mui/material";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { useAddSibling } from "../../../services";
@@ -16,9 +16,20 @@ interface Props {
 const StudentSiblings: FC<Props> = ({ person }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const [studentSelected, setStudentSelected] = useState<string>("");
-  const { addSibling } = useAddSibling();
   const { siblingsIds, studentsArray, selectSiblingArray } =
     useGetStudentsArray(person);
+  const { asPath, replace } = useRouter();
+
+  const siblingResolveAction = () => {
+    setOpenConfirm(false);
+    replace(asPath, undefined, { scroll: false });
+  };
+  const { addSibling, isLoading } = useAddSibling({
+    errorAction: siblingResolveAction,
+    successAction: siblingResolveAction,
+    errorToast: true,
+    successToast: true,
+  });
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -88,18 +99,14 @@ const StudentSiblings: FC<Props> = ({ person }) => {
             person.id
           );
           setStudentSelected("");
-          setOpenConfirm(false);
         }}
         noAction={() => {
           addSibling({ siblingId: studentSelected }, person.id);
           setStudentSelected("");
-          setOpenConfirm(false);
         }}
-        successText={`Sibling added successfully`}
         open={openConfirm}
         onClose={() => setOpenConfirm(false)}
-        onSuccess={() => Router.push("/")}
-        confirmContext="StudentsContext"
+        isLoading={isLoading}
       />
     </Container>
   );

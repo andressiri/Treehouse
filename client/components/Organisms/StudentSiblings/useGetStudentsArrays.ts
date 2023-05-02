@@ -1,27 +1,22 @@
 import { useContext } from "react";
 import { StudentsContext } from "../../../contexts";
-import {
-  useGetStudentsWithRelationsEffect,
-  useHandleStudentsResponseEffect,
-} from "../../../services";
-import {
-  AnyStudentArray,
-  IStudentWithRelations,
-} from "../../../typings/students";
+import { useGetStudentsWithRelationsEffect } from "../../../services";
+import { IStudentWithRelations } from "../../../typings/students";
 import { SelectOption } from "../../../typings/global";
 import { sortByName } from "../../../utils/helpers";
 
 const useGetStudentsArrays = (person: IStudentWithRelations) => {
-  const { students } = useContext(StudentsContext);
+  const { studentsWithRelations } = useContext(StudentsContext);
 
-  useHandleStudentsResponseEffect({});
-  useGetStudentsWithRelationsEffect();
+  useGetStudentsWithRelationsEffect({ errorToast: true });
 
   const siblingsIds = person.hasSibling?.map((sibling) => {
     return sibling?.id;
   });
 
-  const studentsArray = (students as AnyStudentArray).filter((student) => {
+  const studentsArray = (
+    studentsWithRelations as IStudentWithRelations[]
+  ).filter((student) => {
     if (student.id === person.id || siblingsIds?.includes(student.id))
       return null;
     return true;

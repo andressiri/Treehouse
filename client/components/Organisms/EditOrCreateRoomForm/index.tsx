@@ -1,6 +1,6 @@
-import { FC, useContext, useState, useRef } from "react";
+import { FC, useContext, useState } from "react";
 import { RoomsContext } from "../../../contexts";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import CheckIcon from "@mui/icons-material/Check";
 import { useCreateRoom, useEditRoom } from "../../../services";
 import { StyledButton, StyledTextField } from "../../../components/Atoms";
@@ -24,26 +24,23 @@ const EditOrCreateRoomForm: FC<Props> = ({ propRoom }) => {
     description: propRoom?.description || "",
   });
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const submitted = useRef<boolean>(false);
+  const { push, query } = useRouter();
 
   const errorAction = (message: string) => {
-    submitted.current = false;
     setErrorMessage(message);
   };
 
   const successAction = () => {
-    Router.push(`/${ROOMS_ROUTE}/${ROOMS_SINGULAR}/${(room as AnyRoom)?.id}`);
+    push(`/${ROOMS_ROUTE}/${ROOMS_SINGULAR}/${(room as AnyRoom)?.id}`);
   };
 
   const { editRoom, message: editMessage } = useEditRoom({
-    successCondition: submitted.current,
     errorAction: () => errorAction(editMessage),
     successAction,
     successToast: true,
   });
 
   const { createRoom, message: createMessage } = useCreateRoom({
-    successCondition: submitted.current,
     errorAction: () => errorAction(createMessage),
     successAction,
     successToast: true,
@@ -61,11 +58,10 @@ const EditOrCreateRoomForm: FC<Props> = ({ propRoom }) => {
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    submitted.current = true;
     setErrorMessage("");
 
     if (propRoom) {
-      editRoom(formData, Number(Router.query.id));
+      editRoom(formData, Number(query.id));
       return;
     }
 

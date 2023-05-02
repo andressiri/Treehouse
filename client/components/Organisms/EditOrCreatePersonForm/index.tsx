@@ -1,6 +1,6 @@
 import { FC, useContext, useRef, useState } from "react";
 import { StudentsContext, TeachersContext } from "../../../contexts";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import CheckIcon from "@mui/icons-material/Check";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { MenuItem } from "@mui/material";
@@ -10,9 +10,8 @@ import {
   useCreateTeacher,
   useEditTeacher,
   useEditRoom,
-  useHandleStudentsResponseEffect,
-  useHandleTeachersResponseEffect,
   useRemoveStudentFromRoom,
+  useRemoveTeacherFromRoom,
 } from "../../../services";
 import { arrayBufferToBase64 } from "../../../utils/helpers";
 import {
@@ -31,8 +30,8 @@ import {
 } from "./styledComponents";
 import getArrays from "./getArrays";
 import { PersonEntities } from "../../../typings/global";
-import { AnyTeacher } from "../../../typings/teachers";
-import { AnyStudent } from "../../../typings/students";
+import { ITeacher, ITeacherWithRelations } from "../../../typings/teachers";
+import { IStudent } from "../../../typings/students";
 import {
   STUDENTS_ROUTE,
   STUDENTS_SINGULAR,
@@ -40,9 +39,10 @@ import {
   TEACHERS_SINGULAR,
   STUDENT_ENTITY,
 } from "../../../config/constants";
+import { IRoom } from "../../../typings/rooms";
 
 interface Props {
-  person?: AnyStudent | AnyTeacher;
+  person?: IStudent | ITeacherWithRelations;
   entityName: PersonEntities;
 }
 
@@ -60,8 +60,10 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
     age: person?.age ? `${person.age}` : "",
     gender: person?.gender || "",
     description: person?.description || "",
-    roomId: (person as AnyStudent)?.roomId
-      ? `${(person as AnyStudent)?.roomId}`
+    roomId: (person as IStudent)?.roomId
+      ? `${(person as IStudent)?.roomId}`
+      : ((person as ITeacherWithRelations)?.Room as IRoom)?.id
+      ? `${((person as ITeacherWithRelations)?.Room as IRoom)?.id}`
       : "",
   });
   const [imagePreview, setImagePreview] = useState<string | undefined>(
@@ -73,88 +75,156 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
   const studentRemoved = useRef<boolean>(false);
   const inputFile = useRef<HTMLInputElement>(null);
   const { student } = useContext(StudentsContext);
-  const { teacher } = useContext(TeachersContext);
-  const ContextOfStudents = useContext(StudentsContext);
-  const ContextOfTeachers = useContext(TeachersContext);
-  const { message } = isStudent ? ContextOfStudents : ContextOfTeachers;
+  const { teacher, teacherWithRelations } = useContext(TeachersContext);
   const { genderArray } = getArrays();
+  const { push, query } = useRouter();
 
-  const { createStudent } = useCreateStudent();
-  const { editStudent } = useEditStudent();
-  const { removeStudentFromRoom } = useRemoveStudentFromRoom();
-  const { createTeacher } = useCreateTeacher();
-  const { editTeacher } = useEditTeacher();
-
-  const errorAction = () => {
+  const errorAction = (message: string) => {
     submitted.current = false;
     studentRemoved.current = false;
     setErrorMessage(message);
   };
 
-  const studentsSuccessAction = () => {
-    if (
-      formData.roomId ||
-      (!formData.roomId && (!person || !(person as AnyStudent).roomId)) ||
-      studentRemoved.current
-    ) {
-      Router.push(
-        `/${STUDENTS_ROUTE}/${STUDENTS_SINGULAR}/${(student as AnyStudent)?.id}`
-      );
-    } else {
-      studentRemoved.current = true;
-      removeStudentFromRoom((student as AnyStudent)?.id);
-    }
-  };
-
-  const teachersSuccessAction = () => {
-    if (!formData.roomId) {
-      Router.push(
-        `/${TEACHERS_ROUTE}/${TEACHERS_SINGULAR}/${(teacher as AnyTeacher)?.id}`
-      );
-    } else {
-      editRoom(
-        { teacherId: `${(teacher as AnyTeacher)?.id}` },
-        Number(formData.roomId)
-      );
-    }
-  };
-
-  const roomSuccessAction = () => {
+  const removeStudentSuccessAction = () => {
     submitted.current = false;
     setErrorMessage("");
-    Router.push(
-      `/${TEACHERS_ROUTE}/${TEACHERS_SINGULAR}/${(teacher as AnyTeacher)?.id}`
+    push(
+      `/${STUDENTS_ROUTE}/${STUDENTS_SINGULAR}/${(student as IStudent)?.id}`
     );
   };
 
-  const { editRoom } = useEditRoom({
+  const teacherRoomSuccessAction = () => {
+    submitted.current = false;
+    setErrorMessage("");
+    push(
+      `/${TEACHERS_ROUTE}/${TEACHERS_SINGULAR}/${(teacher as ITeacher)?.id}`
+    );
+  };
+
+  const teacherRemoveFromRoomSuccessAction = () => {
+    if (
+      formData.roomId &&
+      ((person as ITeacherWithRelations)?.Room as IRoom)?.id !==
+        Number(formData.roomId)
+    ) {
+      editRoom(
+        { teacherId: `${(teacher as ITeacher)?.id}` },
+        Number(formData.roomId)
+      );
+    } else {
+      teacherRoomSuccessAction();
+    }
+  };
+
+  const { removeStudentFromRoom, message: removeStudentMessage } =
+    useRemoveStudentFromRoom({
+      successCondition: submitted.current,
+      errorAction: () => errorAction(removeStudentMessage),
+      successAction: removeStudentSuccessAction,
+      successToast: true,
+      successMessage: `${(student as IStudent).name} ${
+        person ? "updated" : "created"
+      } successfully`,
+    });
+
+  const { editRoom, message: editRoomMessage } = useEditRoom({
     successCondition: submitted.current,
-    errorAction,
-    successAction: roomSuccessAction,
-    errorToast: true,
+    errorAction: () => errorAction(editRoomMessage),
+    successAction: teacherRoomSuccessAction,
     successToast: true,
-    successMessage: `${(teacher as AnyTeacher).name} ${
+    successMessage: `${(teacherWithRelations as ITeacherWithRelations).name} ${
       person ? "updated" : "created"
     } successfully`,
   });
 
-  useHandleStudentsResponseEffect({
+  const { removeTeacherFromRoom, message: removeTeacherMessage } =
+    useRemoveTeacherFromRoom({
+      successCondition: submitted.current,
+      successAction: teacherRemoveFromRoomSuccessAction,
+      errorAction: () => errorAction(removeTeacherMessage),
+      successToast: !(
+        ((person as ITeacherWithRelations)?.Room as IRoom)?.id !==
+        Number(formData.roomId)
+      ),
+      successMessage: `${
+        (teacherWithRelations as ITeacherWithRelations).name
+      } ${person ? "updated" : "created"} successfully`,
+    });
+
+  const teachersSuccessAction = () => {
+    if (!formData.roomId) {
+      if (!person || !((person as ITeacherWithRelations)?.Room as IRoom)?.id) {
+        push(
+          `/${TEACHERS_ROUTE}/${TEACHERS_SINGULAR}/${(teacher as ITeacher)?.id}`
+        );
+      } else {
+        removeTeacherFromRoom(
+          ((person as ITeacherWithRelations)?.Room as IRoom)?.id
+        );
+      }
+    } else {
+      if (
+        ((person as ITeacherWithRelations)?.Room as IRoom)?.id &&
+        ((person as ITeacherWithRelations)?.Room as IRoom)?.id !==
+          Number(formData.roomId)
+      ) {
+        removeTeacherFromRoom(
+          ((person as ITeacherWithRelations)?.Room as IRoom)?.id
+        );
+      } else {
+        editRoom(
+          { teacherId: `${(teacher as ITeacher)?.id}` },
+          Number(formData.roomId)
+        );
+      }
+    }
+  };
+
+  const studentsSuccessAction = () => {
+    if (
+      formData.roomId ||
+      (!formData.roomId && (!person || !(person as IStudent).roomId)) ||
+      studentRemoved.current
+    ) {
+      push(
+        `/${STUDENTS_ROUTE}/${STUDENTS_SINGULAR}/${(student as IStudent)?.id}`
+      );
+    } else {
+      studentRemoved.current = true;
+      removeStudentFromRoom((student as IStudent)?.id);
+    }
+  };
+
+  const { createStudent, message: createStudentMessage } = useCreateStudent({
     successCondition: submitted.current,
-    errorAction,
+    successAction: studentsSuccessAction,
+    errorAction: () => errorAction(createStudentMessage),
+    successToast: true,
+  });
+
+  const { editStudent, message: editStudentMessage } = useEditStudent({
+    successCondition: submitted.current,
+    errorAction: () => errorAction(editStudentMessage),
     successAction: studentsSuccessAction,
     successToast: Boolean(
       formData.roomId ||
-        (!formData.roomId && (!person || !(person as AnyStudent).roomId)) ||
-        studentRemoved.current
+        (!formData.roomId && (!person || !(person as IStudent).roomId))
     ),
-    successMessage: `${(student as AnyStudent).name} ${
+    successMessage: `${(student as IStudent).name} ${
       person ? "updated" : "created"
     } successfully`,
   });
 
-  useHandleTeachersResponseEffect({
+  const { createTeacher, message: createTeacherMessage } = useCreateTeacher({
     successCondition: submitted.current,
-    errorAction,
+    errorAction: () => errorAction(createTeacherMessage),
+    successAction: teachersSuccessAction,
+    successToast: Boolean(!formData.roomId),
+  });
+
+  const { editTeacher, message: editTeacherMessage } = useEditTeacher({
+    successCondition: submitted.current,
+    errorAction: () => errorAction(editTeacherMessage),
     successAction: teachersSuccessAction,
     successToast: Boolean(!formData.roomId),
   });
@@ -175,7 +245,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
     setErrorMessage("");
 
     if (person && isStudent) {
-      editStudent(formData, Number(Router.query.id));
+      editStudent(formData, Number(query.id));
       return;
     }
 
@@ -192,7 +262,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
     };
 
     if (person) {
-      editTeacher(teacherData, Number(Router.query.id));
+      editTeacher(teacherData, Number(query.id));
       return;
     }
 
@@ -297,7 +367,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
         onChange={(
           e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
         ) => handleOnChange(e)}
-        showJustTeacherless={!isStudent}
+        teacherId={isStudent ? undefined : (person as ITeacherWithRelations).id}
       />
       <ErrorContainer>
         <ErrorMessage>{errorMessage}</ErrorMessage>
