@@ -13,7 +13,7 @@ interface IFormData {
 }
 
 const useRemoveSibling = (responseOptions: IHandleResponseOptions) => {
-  const { setStudent } = useContext(StudentsContext);
+  const { setStudentWithRelations } = useContext(StudentsContext);
   const { executeRequest, isError, isSuccess, isLoading, message } =
     useServiceInstance(responseOptions);
 
@@ -22,11 +22,11 @@ const useRemoveSibling = (responseOptions: IHandleResponseOptions) => {
       executeRequest({
         route: `/${STUDENTS_ROUTE}/${STUDENTS_HANDLE_SIBLINGS}/${id}`,
         method: "DELETE",
-        setState: setStudent,
+        setState: setStudentWithRelations,
         formData,
       });
     },
-    [executeRequest, setStudent]
+    [executeRequest, setStudentWithRelations]
   );
 
   return { removeSibling, isError, isSuccess, isLoading, message };

@@ -13,7 +13,7 @@ interface IFormData {
 }
 
 const useAddSibling = (responseOptions: IHandleResponseOptions) => {
-  const { setStudent } = useContext(StudentsContext);
+  const { setStudentWithRelations } = useContext(StudentsContext);
   const { executeRequest, isError, isSuccess, isLoading, message } =
     useServiceInstance(responseOptions);
 
@@ -22,11 +22,11 @@ const useAddSibling = (responseOptions: IHandleResponseOptions) => {
       executeRequest({
         route: `/${STUDENTS_ROUTE}/${STUDENTS_HANDLE_SIBLINGS}/${id}`,
         method: "PUT",
-        setState: setStudent,
+        setState: setStudentWithRelations,
         formData,
       });
     },
-    [executeRequest, setStudent]
+    [executeRequest, setStudentWithRelations]
   );
 
   return { addSibling, isError, isSuccess, isLoading, message };
