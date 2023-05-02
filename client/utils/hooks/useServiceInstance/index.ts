@@ -1,13 +1,14 @@
-import { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { axiosInstance, sanitizeRequestData } from "../../../utils/helpers";
-import { SetServiceState } from "../../../typings/contexts";
+import { EntitiesState /* SetServiceState */ } from "../../../typings/contexts";
 import { IHandleResponseOptions } from "../../../typings/services";
 import useHandleResponseEffect from "../useHandleResponseEffect";
 
 interface ExecuteProps {
   route: string;
   method?: string;
-  setState?: SetServiceState;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setState?: React.Dispatch<React.SetStateAction<any>>; // Using SetServiceState would result in the error TS2590: Expression produces a union type that is too complex to represent.
   formData?: object;
 }
 
@@ -29,30 +30,34 @@ const useServiceInstance = (responseOptions: IHandleResponseOptions) => {
     },
   });
 
-  const executeRequest = async ({
-    route,
-    method,
-    setState,
-    formData,
-  }: ExecuteProps) => {
-    const notGetRequest = method && method !== "GET";
-    setIsLoading(true);
+  const executeRequest = useCallback(
+    async ({ route, method, setState, formData }: ExecuteProps) => {
+      const notGetRequest = method && method !== "GET";
+      setIsLoading(true);
 
-    try {
-      const data = formData ? sanitizeRequestData(formData) : undefined;
+      try {
+        const data = formData ? sanitizeRequestData(formData) : undefined;
 
-      const response = await axiosInstance(route, data, method || "GET");
+        const response = await axiosInstance(route, data, method || "GET");
 
-      if (setState) setState(notGetRequest ? response.data : response);
-      if (notGetRequest) setMessage(response.message);
-      setIsSuccess(true);
-    } catch (err) {
-      setMessage(`${err}`);
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        if (setState) {
+          const dataToSet: EntitiesState = notGetRequest
+            ? response.data
+            : response;
+          setState(dataToSet);
+        }
+
+        if (notGetRequest) setMessage(response.message);
+        setIsSuccess(true);
+      } catch (err) {
+        setMessage(`${err}`);
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [setIsLoading]
+  );
 
   return {
     executeRequest,

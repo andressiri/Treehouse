@@ -97,6 +97,20 @@ export interface ITeachersContext {
 }
 
 // Entities
+export type EntitiesState =
+  | Rooms
+  | RoomsWithRelations
+  | Room
+  | RoomWithRelations
+  | Students
+  | StudentsWithRelations
+  | Student
+  | StudentWithRelations
+  | Teachers
+  | TeachersWithRelations
+  | Teacher
+  | TeacherWithRelations;
+
 export type SetServiceState =
   | SetRooms
   | SetRoomsWithRelations
