@@ -2,26 +2,24 @@ import { FC } from "react";
 import { SectionTitle } from "../../Atoms";
 import { EditOrCreatePersonForm } from "../../Organisms";
 import { Container } from "./styledComponents";
+import { PersonEntities } from "../../../typings/global";
+import { AnyStudent } from "../../../typings/students";
+import { AnyTeacher } from "../../../typings/teachers";
 
 interface Props {
-  rooms: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  person?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  modelName: "student" | "teacher";
+  person?: AnyStudent | AnyTeacher;
+  entityName: PersonEntities;
 }
 
-const EditOrCreatePersonPage: FC<Props> = ({ rooms, person, modelName }) => {
+const EditOrCreatePersonPage: FC<Props> = ({ person, entityName }) => {
   return (
     <Container>
       <SectionTitle>
         {person
-          ? `Edit ${person.name} ${modelName}`
-          : `Create a brand new ${modelName}`}
+          ? `Edit ${person.name} ${entityName}`
+          : `Create a brand new ${entityName}`}
       </SectionTitle>
-      <EditOrCreatePersonForm
-        rooms={rooms}
-        person={person}
-        modelName={modelName}
-      />
+      <EditOrCreatePersonForm person={person} entityName={entityName} />
     </Container>
   );
 };

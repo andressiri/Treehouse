@@ -1,6 +1,8 @@
 import { useCallback, useContext } from "react";
 import { RoomsContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
+import { EDIT, ROOMS_ROUTE } from "../../config/constants";
 
 interface IFormData {
   name?: string;
@@ -8,32 +10,24 @@ interface IFormData {
   teacherId?: string;
 }
 
-const useEditRoom = () => {
-  const { setRoom, setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(RoomsContext);
+const useEditRoom = (responseOptions: IHandleResponseOptions) => {
+  const { setRoom } = useContext(RoomsContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const editRoom = useCallback(
-    async (formData: IFormData, id: number) => {
-      setIsLoading(true);
-      try {
-        const response = await axiosInstance(
-          `/rooms/edit/${id}`,
-          formData,
-          "PUT"
-        );
-        setRoom(response.roomData);
-        setIsSuccess(true);
-        setIsLoading(false);
-      } catch (err) {
-        setIsError(true);
-        setMessage(`${err}`);
-        setIsLoading(false);
-      }
+    (formData: IFormData, id: number) => {
+      executeRequest({
+        route: `/${ROOMS_ROUTE}/${EDIT}/${id}`,
+        method: "PUT",
+        setState: setRoom,
+        formData,
+      });
     },
-    [setRoom, setIsError, setIsSuccess, setIsLoading, setMessage]
+    [executeRequest, setRoom]
   );
 
-  return { editRoom };
+  return { editRoom, isError, isSuccess, isLoading, message };
 };
 
 export default useEditRoom;

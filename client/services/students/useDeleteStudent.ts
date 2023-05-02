@@ -1,28 +1,26 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
+import { DELETION, STUDENTS_ROUTE } from "../../config/constants";
 
-const useDeleteStudent = () => {
-  const { setIsError, setIsSuccess, setIsLoading, setMessage } =
-    useContext(StudentsContext);
+const useDeleteStudent = (responseOptions: IHandleResponseOptions) => {
+  const { setStudent } = useContext(StudentsContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const deleteStudent = useCallback(
-    async (id: number) => {
-      setIsLoading(true);
-      try {
-        await axiosInstance(`/students/delete/${id}`, {}, "DELETE");
-        setIsSuccess(true);
-        setIsLoading(false);
-      } catch (err) {
-        setIsError(true);
-        setMessage(`${err}`);
-        setIsLoading(false);
-      }
+    (id: number) => {
+      executeRequest({
+        route: `/${STUDENTS_ROUTE}/${DELETION}/${id}`,
+        method: "DELETE",
+        setState: setStudent,
+      });
     },
-    [setIsError, setIsSuccess, setIsLoading, setMessage]
+    [executeRequest, setStudent]
   );
 
-  return { deleteStudent };
+  return { deleteStudent, isError, isSuccess, isLoading, message };
 };
 
 export default useDeleteStudent;

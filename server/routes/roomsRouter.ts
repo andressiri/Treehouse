@@ -1,6 +1,13 @@
 // @route api/v1/rooms
 import express from "express";
-import { byId, withRelations, edit, deletion } from "../config/constants";
+import {
+  BY_ID,
+  WITH_RELATIONS,
+  EDIT,
+  DELETION,
+  ROOMS_SINGULAR,
+  ROOMS_HANDLE_TEACHER,
+} from "../config/constants";
 import {
   createRoom,
   deleteRoom,
@@ -8,6 +15,7 @@ import {
   getRoom,
   getRooms,
   getRoomsWithRelations,
+  getRoomWithRelations,
   removeTeacher,
 } from "../controllers/rooms";
 import {
@@ -44,17 +52,24 @@ roomsRouter.post(
 
 roomsRouter.get("/", getRooms);
 
-roomsRouter.get(`/${withRelations}`, getRoomsWithRelations);
+roomsRouter.get(`/${WITH_RELATIONS}`, getRoomsWithRelations);
 
 roomsRouter.get(
-  `/room/${byId}`,
+  `/${ROOMS_SINGULAR}/:${BY_ID}`,
   checkIntegerId,
   validateRequestFields,
   getRoom
 );
 
+roomsRouter.get(
+  `/${ROOMS_SINGULAR}/${WITH_RELATIONS}/:${BY_ID}`,
+  checkIntegerId,
+  validateRequestFields,
+  getRoomWithRelations
+);
+
 roomsRouter.put(
-  `/${edit}/${byId}`,
+  `/${EDIT}/:${BY_ID}`,
   // authenticateUser,
   // authenticateAdmin,
   checkIntegerId,
@@ -68,7 +83,7 @@ roomsRouter.put(
 );
 
 roomsRouter.delete(
-  `/teacher/${byId}`,
+  `/${ROOMS_HANDLE_TEACHER}/:${BY_ID}`,
   // authenticateUser,
   // authenticateAdmin,
   checkIntegerId,
@@ -77,7 +92,7 @@ roomsRouter.delete(
 );
 
 roomsRouter.delete(
-  `/${deletion}/${byId}`,
+  `/${DELETION}/:${BY_ID}`,
   // authenticateUser,
   // authenticateAdmin,
   checkIntegerId,

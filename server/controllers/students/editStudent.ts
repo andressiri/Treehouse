@@ -2,6 +2,7 @@
 // @route PUT /api/v1/students/edit/:id
 // @access Private - Admin only
 import asyncHandler from "express-async-handler";
+import { BY_ID } from "../../config/constants";
 import { checkInvalidFields, uploadFile } from "../../helpers";
 import { UploadedFile } from "express-fileupload";
 import db from "../../db/models";
@@ -9,7 +10,7 @@ import db from "../../db/models";
 const { Room, Student } = db;
 
 const editStudent = asyncHandler(async (req, res) => {
-  const id = req.params.id;
+  const id = req.params[BY_ID];
   const validFields = [
     "name",
     "age",
@@ -65,9 +66,10 @@ const editStudent = asyncHandler(async (req, res) => {
 
   const studentData = { ...updateResult[1][0].dataValues };
 
-  res
-    .status(200)
-    .json({ message: `${studentData.name} student updated`, studentData });
+  res.status(200).json({
+    message: `${studentData.name} student updated`,
+    data: studentData,
+  });
 });
 
 export default editStudent;

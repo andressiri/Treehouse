@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDeleteRoom } from "../../../services";
@@ -20,14 +20,27 @@ import {
   StudentsTitle,
   ActionsContainer,
 } from "./styledComponents";
+import { IRoomWithRelations } from "../../../typings/rooms";
+import { ITeacher } from "../../../typings/teachers";
+import { EDIT, ROOMS_ROUTE } from "../../../config/constants";
 
 interface Props {
-  room: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  room: IRoomWithRelations;
 }
 
 const RoomPage: FC<Props> = ({ room }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
-  const { deleteRoom } = useDeleteRoom();
+  const { push, query } = useRouter();
+
+  const successAction = () => {
+    push(`/${ROOMS_ROUTE}`);
+  };
+
+  const { deleteRoom, isLoading } = useDeleteRoom({
+    successAction,
+    errorToast: true,
+    successToast: true,
+  });
 
   return (
     <Container component="section">
@@ -38,7 +51,11 @@ const RoomPage: FC<Props> = ({ room }) => {
         ) : (
           <FallbackText>This room has no description</FallbackText>
         )}
-        {room.Teacher ? <RoomTeacher teacher={room.Teacher} /> : <></>}
+        {(room.Teacher as ITeacher)?.id ? (
+          <RoomTeacher teacher={room.Teacher as ITeacher} />
+        ) : (
+          <></>
+        )}
         <StudentsTitle>This are its students</StudentsTitle>
         {room.Students && room.Students.length ? (
           <StudentsList studentsArray={room.Students} />
@@ -55,19 +72,17 @@ const RoomPage: FC<Props> = ({ room }) => {
           </StyledButton>
           <StyledButton
             endIcon={<EditIcon />}
-            onClick={() => Router.push(`/rooms/edit/${room.id}`)}
+            onClick={() => push(`/${ROOMS_ROUTE}/${EDIT}/${room.id}`)}
           >
             Edit room
           </StyledButton>
         </ActionsContainer>
         <ConfirmModal
           text={`Are you sure you want to delete the ${room.name} room?`}
-          confirmAction={() => deleteRoom(Number(Router.query.id))}
-          successText={`${room.name} was deleted successfully`}
+          confirmAction={() => deleteRoom(Number(query.id))}
           open={openConfirm}
           onClose={() => setOpenConfirm(false)}
-          onSuccess={() => Router.push("/")}
-          confirmContext="RoomsContext"
+          isLoading={isLoading}
         />
       </InnerContainer>
     </Container>

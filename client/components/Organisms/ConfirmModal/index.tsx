@@ -1,9 +1,4 @@
-import { FC, useContext } from "react";
-import {
-  RoomsContext,
-  StudentsContext,
-  TeachersContext,
-} from "../../../contexts";
+import { FC } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import CheckIcon from "@mui/icons-material/Check";
@@ -19,58 +14,22 @@ import {
 
 interface Props {
   text: string;
-  confirmAction: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  errorText?: string;
-  successText: string;
+  confirmAction: () => void;
   open: boolean;
-  onClose: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  noAction?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  onSuccess: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  confirmContext: "RoomsContext" | "StudentsContext" | "TeachersContext";
+  onClose: () => void;
+  noAction?: () => void;
+  isLoading: boolean;
 }
 
 const ConfirmModal: FC<Props> = ({
   text,
   confirmAction,
-  errorText = "Oops! Something went wrong, please try again.",
-  successText,
   open,
   onClose,
   noAction,
-  onSuccess,
-  confirmContext,
+  isLoading,
 }) => {
-  const ContextOfRooms = useContext(RoomsContext);
-  const ContextOfStudents = useContext(StudentsContext);
-  const ContextOfTeachers = useContext(TeachersContext);
-  const {
-    isError,
-    setIsError,
-    isSuccess,
-    setIsSuccess,
-    setMessage,
-    isLoading,
-  } =
-    confirmContext === "RoomsContext"
-      ? ContextOfRooms
-      : confirmContext === "StudentsContext"
-      ? ContextOfStudents
-      : ContextOfTeachers;
-
   const handleClose = () => onClose();
-
-  const handleError = () => {
-    setIsError(false);
-    setMessage("");
-    onClose();
-  };
-
-  const handleSuccess = () => {
-    setIsSuccess(false);
-    setMessage("");
-    onClose();
-    onSuccess();
-  };
 
   return (
     <StyledBackdrop open={open}>
@@ -81,44 +40,24 @@ const ConfirmModal: FC<Props> = ({
             <CloseIcon />
           </StyledIconButton>
         </CloseContainer>
-        <Text>
-          {!isError && !isSuccess ? text : isError ? errorText : successText}
-        </Text>
-        {!isError && !isSuccess ? (
-          <ButtonsContainer>
-            <StyledButton
-              BGType="primaryOutlined"
-              sx={{ width: "160px" }}
-              endIcon={<NotInterestedIcon />}
-              onClick={noAction || handleClose}
-            >
-              {noAction ? "No" : "Cancel"}
-            </StyledButton>
-            <StyledButton
-              sx={{ width: "160px" }}
-              endIcon={<CheckIcon />}
-              onClick={confirmAction}
-            >
-              {noAction ? "Yes" : "Confirm"}
-            </StyledButton>
-          </ButtonsContainer>
-        ) : isError ? (
+        <Text>{text}</Text>
+        <ButtonsContainer>
+          <StyledButton
+            BGType="primaryOutlined"
+            sx={{ width: "160px" }}
+            endIcon={<NotInterestedIcon />}
+            onClick={noAction || handleClose}
+          >
+            {noAction ? "No" : "Cancel"}
+          </StyledButton>
           <StyledButton
             sx={{ width: "160px" }}
             endIcon={<CheckIcon />}
-            onClick={handleError}
+            onClick={confirmAction}
           >
-            Close
+            {noAction ? "Yes" : "Confirm"}
           </StyledButton>
-        ) : (
-          <StyledButton
-            sx={{ width: "160px" }}
-            endIcon={<CheckIcon />}
-            onClick={handleSuccess}
-          >
-            Close
-          </StyledButton>
-        )}
+        </ButtonsContainer>
       </InnerContainer>
     </StyledBackdrop>
   );

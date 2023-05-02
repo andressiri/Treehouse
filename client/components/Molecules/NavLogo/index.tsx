@@ -3,16 +3,20 @@ import TreehouseLogo from "../../../assets/logos/TreehouseLogo";
 import { Container, LogoContainer, Name } from "./styledComponents";
 import Link from "next/link";
 
-const NavLogo: FC = () => {
+interface Props {
+  color?: string;
+}
+
+const NavLogo: FC<Props> = ({ color }) => {
   return (
-    <Container>
+    <Container colour={color}>
       <Link href="/">
         <LogoContainer>
           <TreehouseLogo />
         </LogoContainer>
       </Link>
       <Link href="/">
-        <Name>TreeHouse</Name>
+        <Name colour={color}>TreeHouse</Name>
       </Link>
     </Container>
   );

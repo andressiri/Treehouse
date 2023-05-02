@@ -1,62 +1,50 @@
 import React, { createContext, FC, useState } from "react";
+import {
+  IContextProviderProps,
+  IRoomsContext,
+  Rooms,
+  RoomsWithRelations,
+  Room,
+  RoomWithRelations,
+} from "../../typings/contexts";
 
-interface IContext {
-  rooms: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
-  setRooms: React.Dispatch<React.SetStateAction<never[]>>;
-  room: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  setRoom: React.Dispatch<React.SetStateAction<object>>;
-  isError: boolean;
-  setIsError: React.Dispatch<React.SetStateAction<boolean>>;
-  isSuccess: boolean;
-  setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>;
-  isLoading: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  message: string;
-  setMessage: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export const RoomsContext = createContext<IContext>({
+export const RoomsContext = createContext<IRoomsContext>({
   rooms: [],
-  setRooms: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  setRooms: () => [],
+  roomsWithRelations: [],
+  setRoomsWithRelations: () => [],
   room: {},
-  setRoom: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  isError: false,
-  setIsError: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  isSuccess: false,
-  setIsSuccess: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  isLoading: false,
-  setIsLoading: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  message: "",
-  setMessage: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  setRoom: () => {
+    return {};
+  },
+  roomWithRelations: {},
+  setRoomWithRelations: () => {
+    return {};
+  },
 });
 
-interface Props {
-  children: React.ReactNode;
-}
-
-export const RoomsContextProvider: FC<Props> = ({ children }) => {
-  const [rooms, setRooms] = useState([]);
-  const [room, setRoom] = useState({});
-  const [isError, setIsError] = useState<boolean>(false);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+export const RoomsContextProvider: FC<IContextProviderProps> = ({
+  children,
+}) => {
+  const [rooms, setRooms] = useState<Rooms>([]);
+  const [roomsWithRelations, setRoomsWithRelations] =
+    useState<RoomsWithRelations>([]);
+  const [room, setRoom] = useState<Room>({});
+  const [roomWithRelations, setRoomWithRelations] = useState<RoomWithRelations>(
+    {}
+  );
 
   return (
     <RoomsContext.Provider
       value={{
         rooms,
         setRooms,
+        roomsWithRelations,
+        setRoomsWithRelations,
         room,
         setRoom,
-        isError,
-        setIsError,
-        isSuccess,
-        setIsSuccess,
-        isLoading,
-        setIsLoading,
-        message,
-        setMessage,
+        roomWithRelations,
+        setRoomWithRelations,
       }}
     >
       {children}

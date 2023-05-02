@@ -2,12 +2,13 @@
 // @route PUT /api/v1/students/siblings/:id
 // @access Private - Admin only
 import asyncHandler from "express-async-handler";
+import { BY_ID } from "../../config/constants";
 import db from "../../db/models";
 
 const { Room, Teacher, Student, Sibling } = db;
 
 const addSibling = asyncHandler(async (req, res) => {
-  const id = req.params.id;
+  const id = req.params[BY_ID];
   const { siblingId, addToOtherSiblings } = req.body;
 
   if (id === siblingId) {
@@ -71,7 +72,7 @@ const addSibling = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json({ messge: `${studentData.name} sibling added`, studentData });
+    .json({ message: `${studentData.name} sibling added`, data: studentData });
 });
 
 export default addSibling;

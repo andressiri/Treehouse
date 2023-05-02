@@ -44,7 +44,7 @@ const createStudent = asyncHandler(async (req, res) => {
 
   res.status(201).json({
     message: `${name} student created`,
-    studentData: createResult.dataValues,
+    data: createResult.dataValues,
   });
 });
 

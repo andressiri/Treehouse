@@ -1,17 +1,17 @@
 import { FC } from "react";
 import { StudentListItem } from "../../../components/Molecules";
 import { Container } from "./styledComponents";
+import { AnyStudentArray } from "../../../typings/students";
 
 interface Props {
-  studentsArray: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
+  studentsArray: AnyStudentArray;
   listOf?: "siblings" | "students";
-  studentId?: string;
+  studentId?: number;
 }
 const StudentsList: FC<Props> = ({ studentsArray, listOf, studentId }) => {
   return (
     <Container>
-      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-      {studentsArray.map((student: any, id: number) => {
+      {studentsArray.map((student, id) => {
         return (
           <StudentListItem
             id={student.id}

@@ -8,14 +8,15 @@ import {
   StyledLink,
   StyledIconButton,
 } from "./styledComponents";
+import { Entities } from "../../../typings/global";
 
 interface Props {
   title: string;
   id: number;
-  modelName: "room" | "student" | "teacher";
+  entityName: Entities;
 }
 
-const CardTitle: FC<Props> = ({ title, id, modelName }) => {
+const CardTitle: FC<Props> = ({ title, id, entityName }) => {
   const [tooltip, setTooltip] = useState<boolean>(false);
 
   return (
@@ -23,7 +24,7 @@ const CardTitle: FC<Props> = ({ title, id, modelName }) => {
       <Title>{title}</Title>
       <ButtonContainer>
         <StyledLink
-          href={`/${modelName}s/${modelName}/${id}`}
+          href={`/${entityName}s/${entityName}/${id}`}
           onMouseEnter={() => setTooltip(true)}
           onMouseLeave={() => setTooltip(false)}
         >
@@ -34,7 +35,7 @@ const CardTitle: FC<Props> = ({ title, id, modelName }) => {
               width="90px"
               left="-70px"
             >
-              {`Go to ${modelName}`}
+              {`Go to ${entityName}`}
             </Tooltip>
           ) : (
             <></>

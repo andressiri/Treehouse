@@ -3,8 +3,7 @@ interface SelectArray {
   label: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getArrays = (rooms: any, modelName: "student" | "teacher") => {
+const getArrays = () => {
   const genderArray: SelectArray[] = [
     {
       value: "female",
@@ -36,13 +35,7 @@ const getArrays = (rooms: any, modelName: "student" | "teacher") => {
     },
   ];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const roomsArray = rooms.filter((room: any) => {
-    if (modelName === "teacher" && room.teacherId) return null;
-    return true;
-  });
-
-  return { genderArray, roomsArray };
+  return { genderArray };
 };
 
 export default getArrays;

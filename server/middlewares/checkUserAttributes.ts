@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { BY_ID } from "../config/constants";
 
 const checkUserAttributes = (
   req: Request,
@@ -12,7 +13,7 @@ const checkUserAttributes = (
     roleId: "role",
   };
 
-  const arrayOfValidAttributes: string[] = req.params.id
+  const arrayOfValidAttributes: string[] = req.params[BY_ID]
     ? ["firstName", "lastName", "verified", "roleId"]
     : ["firstName", "lastName"];
 

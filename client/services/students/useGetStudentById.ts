@@ -1,28 +1,25 @@
 import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
+import { STUDENTS_ROUTE, STUDENTS_SINGULAR } from "../../config/constants";
 
-const useGetStudentById = () => {
-  const { setStudent, setIsError, setIsLoading, setMessage } =
-    useContext(StudentsContext);
+const useGetStudentById = (responseOptions: IHandleResponseOptions) => {
+  const { setStudent } = useContext(StudentsContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
   const getStudentById = useCallback(
-    async (id: number) => {
-      setIsLoading(true);
-      try {
-        const student = await axiosInstance(`/students/student/${id}`);
-        setIsLoading(false);
-        setStudent(student);
-      } catch (err) {
-        setIsError(true);
-        setMessage(`${err}`);
-        setIsLoading(false);
-      }
+    (id: number) => {
+      executeRequest({
+        route: `/${STUDENTS_ROUTE}/${STUDENTS_SINGULAR}/${id}`,
+        setState: setStudent,
+      });
     },
-    [setStudent, setIsError, setIsLoading, setMessage]
+    [executeRequest, setStudent]
   );
 
-  return { getStudentById };
+  return { getStudentById, isError, isSuccess, isLoading, message };
 };
 
 export default useGetStudentById;

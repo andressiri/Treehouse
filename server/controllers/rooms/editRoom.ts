@@ -2,6 +2,7 @@
 // @route PUT /api/v1/rooms/edit/:id
 // @access Private - Admin only
 import asyncHandler from "express-async-handler";
+import { BY_ID } from "../../config/constants";
 import { checkInvalidFields, uploadFile } from "../../helpers";
 import { UploadedFile } from "express-fileupload";
 import db from "../../db/models";
@@ -9,7 +10,7 @@ import db from "../../db/models";
 const { Room, Student } = db;
 
 const editRoom = asyncHandler(async (req, res) => {
-  const id = req.params.id;
+  const id = req.params[BY_ID];
   const validFields = [
     "name",
     "capacity",
@@ -51,11 +52,13 @@ const editRoom = asyncHandler(async (req, res) => {
         teacherId: req.body.teacherId,
       },
       {
-        where: { roomId: req.params.id },
+        where: { roomId: req.params[BY_ID] },
       }
     );
 
-  res.status(200).json({ message: `${roomData.name} room updated`, roomData });
+  res
+    .status(200)
+    .json({ message: `${roomData.name} room updated`, data: roomData });
 });
 
 export default editRoom;

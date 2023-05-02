@@ -1,25 +1,22 @@
 import { useCallback, useContext } from "react";
 import { RoomsContext } from "../../contexts";
-import { axiosInstance } from "../../utils/helpers";
+import { useServiceInstance } from "../../utils/hooks";
+import { IHandleResponseOptions } from "../../typings/services";
+import { ROOMS_ROUTE, WITH_RELATIONS } from "../../config/constants";
 
-const useGetRoomsWithRelations = () => {
-  const { setRooms, setIsError, setIsLoading, setMessage } =
-    useContext(RoomsContext);
+const useGetRoomsWithRelations = (responseOptions: IHandleResponseOptions) => {
+  const { setRoomsWithRelations } = useContext(RoomsContext);
+  const { executeRequest, isError, isSuccess, isLoading, message } =
+    useServiceInstance(responseOptions);
 
-  const getRoomsWithRelations = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const roomsData = await axiosInstance("/rooms/all");
-      setRooms(roomsData);
-      setIsLoading(false);
-    } catch (err) {
-      setIsError(true);
-      setMessage(`${err}`);
-      setIsLoading(false);
-    }
-  }, [setRooms, setIsError, setIsLoading, setMessage]);
+  const getRoomsWithRelations = useCallback(() => {
+    executeRequest({
+      route: `/${ROOMS_ROUTE}/${WITH_RELATIONS}`,
+      setState: setRoomsWithRelations,
+    });
+  }, [executeRequest, setRoomsWithRelations]);
 
-  return { getRoomsWithRelations };
+  return { getRoomsWithRelations, isError, isSuccess, isLoading, message };
 };
 
 export default useGetRoomsWithRelations;

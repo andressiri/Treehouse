@@ -1,6 +1,6 @@
-import { FC, useContext, useEffect, useRef, useState } from "react";
+import { FC, useContext, useRef, useState } from "react";
 import { StudentsContext, TeachersContext } from "../../../contexts";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import CheckIcon from "@mui/icons-material/Check";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { MenuItem } from "@mui/material";
@@ -10,13 +10,16 @@ import {
   useCreateTeacher,
   useEditTeacher,
   useEditRoom,
+  useRemoveStudentFromRoom,
+  useRemoveTeacherFromRoom,
 } from "../../../services";
+import { arrayBufferToBase64 } from "../../../utils/helpers";
 import {
   StyledButton,
   StyledSelect,
   StyledTextField,
 } from "../../../components/Atoms";
-import { DisplayImage } from "../../../components/Molecules";
+import { DisplayImage, RoomSelect } from "../../../components/Molecules";
 import {
   Container,
   ImageContainer,
@@ -26,11 +29,21 @@ import {
   ErrorMessage,
 } from "./styledComponents";
 import getArrays from "./getArrays";
+import { PersonEntities } from "../../../typings/global";
+import { ITeacher, ITeacherWithRelations } from "../../../typings/teachers";
+import { IStudent } from "../../../typings/students";
+import {
+  STUDENTS_ROUTE,
+  STUDENTS_SINGULAR,
+  TEACHERS_ROUTE,
+  TEACHERS_SINGULAR,
+  STUDENT_ENTITY,
+} from "../../../config/constants";
+import { IRoom } from "../../../typings/rooms";
 
 interface Props {
-  rooms: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  person?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  modelName: "student" | "teacher";
+  person?: IStudent | ITeacherWithRelations;
+  entityName: PersonEntities;
 }
 
 interface IFormData {
@@ -41,84 +54,180 @@ interface IFormData {
   roomId: string;
 }
 
-const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
-  const inputFile = useRef<HTMLInputElement>(null);
-  const [imagePreview, setImagePreview] = useState(person?.picture);
-  const { genderArray, roomsArray } = getArrays(rooms, modelName);
-  const isStudent = useRef<boolean>(modelName === "student");
-  const ContextOfStudents = useContext(StudentsContext);
-  const { student } = useContext(StudentsContext);
-  const ContextOfTeachers = useContext(TeachersContext);
-  const { teacher } = useContext(TeachersContext);
-  const { isSuccess, setIsSuccess, message, setMessage } = isStudent.current
-    ? ContextOfStudents
-    : ContextOfTeachers;
-
-  const [formData, setFormData] = useState<IFormData>(
-    !person
-      ? {
-          name: "",
-          age: "",
-          gender: "",
-          description: "",
-          roomId: "",
-        }
-      : {
-          name: isStudent.current ? student.name : teacher.name,
-          age: isStudent.current ? student.age : teacher.age,
-          gender: isStudent.current ? student.gender : teacher.gender,
-          description: isStudent.current
-            ? student.description
-            : teacher.description,
-          roomId: isStudent.current ? student.roomId : teacher.roomId,
-        }
+const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
+  const [formData, setFormData] = useState<IFormData>({
+    name: person?.name || "",
+    age: person?.age ? `${person.age}` : "",
+    gender: person?.gender || "",
+    description: person?.description || "",
+    roomId: (person as IStudent)?.roomId
+      ? `${(person as IStudent)?.roomId}`
+      : ((person as ITeacherWithRelations)?.Room as IRoom)?.id
+      ? `${((person as ITeacherWithRelations)?.Room as IRoom)?.id}`
+      : "",
+  });
+  const [imagePreview, setImagePreview] = useState<string | undefined>(
+    person?.picture
   );
-  const { createStudent } = useCreateStudent();
-  const { editStudent } = useEditStudent();
-  const { createTeacher } = useCreateTeacher();
-  const { editTeacher } = useEditTeacher();
-  const { editRoom } = useEditRoom();
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const isStudent = entityName === STUDENT_ENTITY;
+  const submitted = useRef<boolean>(false);
+  const studentRemoved = useRef<boolean>(false);
+  const inputFile = useRef<HTMLInputElement>(null);
+  const { student } = useContext(StudentsContext);
+  const { teacher, teacherWithRelations } = useContext(TeachersContext);
+  const { genderArray } = getArrays();
+  const { push, query } = useRouter();
 
-  useEffect(() => {
-    if (person)
-      setFormData({
-        name: isStudent.current ? student.name : teacher.name,
-        age: isStudent.current ? student.age : teacher.age,
-        gender: isStudent.current ? student.gender : teacher.gender,
-        description: isStudent.current
-          ? student.description
-          : teacher.description,
-        roomId: isStudent.current ? student.roomId : teacher.Room.id,
-      });
-    setImagePreview(isStudent.current ? student.picture : teacher.picture);
-  }, [student, teacher, person]);
+  const errorAction = (message: string) => {
+    submitted.current = false;
+    studentRemoved.current = false;
+    setErrorMessage(message);
+  };
 
-  useEffect(() => {
-    if (isSuccess) {
-      setIsSuccess(false);
-      setMessage("");
-      if (modelName === "teacher")
-        editRoom({ teacherId: teacher.id }, Number(formData.roomId));
-      Router.push(
-        `/${modelName}s/${modelName}/${
-          isStudent.current ? student.id : teacher.id
-        }`
+  const removeStudentSuccessAction = () => {
+    submitted.current = false;
+    setErrorMessage("");
+    push(
+      `/${STUDENTS_ROUTE}/${STUDENTS_SINGULAR}/${(student as IStudent)?.id}`
+    );
+  };
+
+  const teacherRoomSuccessAction = () => {
+    submitted.current = false;
+    setErrorMessage("");
+    push(
+      `/${TEACHERS_ROUTE}/${TEACHERS_SINGULAR}/${(teacher as ITeacher)?.id}`
+    );
+  };
+
+  const teacherRemoveFromRoomSuccessAction = () => {
+    if (
+      formData.roomId &&
+      ((person as ITeacherWithRelations)?.Room as IRoom)?.id !==
+        Number(formData.roomId)
+    ) {
+      editRoom(
+        { teacherId: `${(teacher as ITeacher)?.id}` },
+        Number(formData.roomId)
       );
+    } else {
+      teacherRoomSuccessAction();
     }
+  };
 
-    return () => {
-      setMessage("");
-    };
-  }, [
-    student,
-    teacher,
-    isSuccess,
-    setIsSuccess,
-    setMessage,
-    modelName,
-    editRoom,
-    formData,
-  ]);
+  const { removeStudentFromRoom, message: removeStudentMessage } =
+    useRemoveStudentFromRoom({
+      successCondition: submitted.current,
+      errorAction: () => errorAction(removeStudentMessage),
+      successAction: removeStudentSuccessAction,
+      successToast: true,
+      successMessage: `${(student as IStudent).name} ${
+        person ? "updated" : "created"
+      } successfully`,
+    });
+
+  const { editRoom, message: editRoomMessage } = useEditRoom({
+    successCondition: submitted.current,
+    errorAction: () => errorAction(editRoomMessage),
+    successAction: teacherRoomSuccessAction,
+    successToast: true,
+    successMessage: `${(teacherWithRelations as ITeacherWithRelations).name} ${
+      person ? "updated" : "created"
+    } successfully`,
+  });
+
+  const { removeTeacherFromRoom, message: removeTeacherMessage } =
+    useRemoveTeacherFromRoom({
+      successCondition: submitted.current,
+      successAction: teacherRemoveFromRoomSuccessAction,
+      errorAction: () => errorAction(removeTeacherMessage),
+      successToast: !(
+        ((person as ITeacherWithRelations)?.Room as IRoom)?.id !==
+        Number(formData.roomId)
+      ),
+      successMessage: `${
+        (teacherWithRelations as ITeacherWithRelations).name
+      } ${person ? "updated" : "created"} successfully`,
+    });
+
+  const teachersSuccessAction = () => {
+    if (!formData.roomId) {
+      if (!person || !((person as ITeacherWithRelations)?.Room as IRoom)?.id) {
+        push(
+          `/${TEACHERS_ROUTE}/${TEACHERS_SINGULAR}/${(teacher as ITeacher)?.id}`
+        );
+      } else {
+        removeTeacherFromRoom(
+          ((person as ITeacherWithRelations)?.Room as IRoom)?.id
+        );
+      }
+    } else {
+      if (
+        ((person as ITeacherWithRelations)?.Room as IRoom)?.id &&
+        ((person as ITeacherWithRelations)?.Room as IRoom)?.id !==
+          Number(formData.roomId)
+      ) {
+        removeTeacherFromRoom(
+          ((person as ITeacherWithRelations)?.Room as IRoom)?.id
+        );
+      } else {
+        editRoom(
+          { teacherId: `${(teacher as ITeacher)?.id}` },
+          Number(formData.roomId)
+        );
+      }
+    }
+  };
+
+  const studentsSuccessAction = () => {
+    if (
+      formData.roomId ||
+      (!formData.roomId && (!person || !(person as IStudent).roomId)) ||
+      studentRemoved.current
+    ) {
+      push(
+        `/${STUDENTS_ROUTE}/${STUDENTS_SINGULAR}/${(student as IStudent)?.id}`
+      );
+    } else {
+      studentRemoved.current = true;
+      removeStudentFromRoom((student as IStudent)?.id);
+    }
+  };
+
+  const { createStudent, message: createStudentMessage } = useCreateStudent({
+    successCondition: submitted.current,
+    successAction: studentsSuccessAction,
+    errorAction: () => errorAction(createStudentMessage),
+    successToast: true,
+  });
+
+  const { editStudent, message: editStudentMessage } = useEditStudent({
+    successCondition: submitted.current,
+    errorAction: () => errorAction(editStudentMessage),
+    successAction: studentsSuccessAction,
+    successToast: Boolean(
+      formData.roomId ||
+        (!formData.roomId && (!person || !(person as IStudent).roomId))
+    ),
+    successMessage: `${(student as IStudent).name} ${
+      person ? "updated" : "created"
+    } successfully`,
+  });
+
+  const { createTeacher, message: createTeacherMessage } = useCreateTeacher({
+    successCondition: submitted.current,
+    errorAction: () => errorAction(createTeacherMessage),
+    successAction: teachersSuccessAction,
+    successToast: Boolean(!formData.roomId),
+  });
+
+  const { editTeacher, message: editTeacherMessage } = useEditTeacher({
+    successCondition: submitted.current,
+    errorAction: () => errorAction(editTeacherMessage),
+    successAction: teachersSuccessAction,
+    successToast: Boolean(!formData.roomId),
+  });
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -131,22 +240,33 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
-    if (person && isStudent.current) {
-      editStudent(formData, Number(Router.query.id));
+
+    submitted.current = true;
+    setErrorMessage("");
+
+    if (person && isStudent) {
+      editStudent(formData, Number(query.id));
       return;
     }
 
-    if (isStudent.current) {
+    if (isStudent) {
       createStudent(formData);
       return;
     }
 
+    const teacherData = {
+      name: formData.name,
+      age: formData.age,
+      gender: formData.gender,
+      description: formData.description,
+    };
+
     if (person) {
-      editTeacher(formData, Number(Router.query.id));
+      editTeacher(teacherData, Number(query.id));
       return;
     }
 
-    createTeacher(formData);
+    createTeacher(teacherData);
   };
 
   const handleUploadImage = () =>
@@ -156,8 +276,16 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
     const fileReader = new FileReader();
     fileReader.onload = () => {
       if (fileReader.readyState === 2) {
-        sessionStorage.setItem("file", fileReader.result as string);
-        setImagePreview(fileReader.result);
+        if (fileReader.result === null) return;
+
+        let result: string | ArrayBuffer = fileReader.result;
+
+        if (typeof fileReader.result !== "string") {
+          result = arrayBufferToBase64(result as ArrayBuffer);
+        }
+
+        sessionStorage.setItem("file", result as string);
+        setImagePreview(result as string);
       }
     };
     if (!e.target.files) return;
@@ -233,39 +361,25 @@ const EditOrCreatePersonForm: FC<Props> = ({ rooms, person, modelName }) => {
         rows={4}
         InputLabelProps={formData.description ? { shrink: true } : {}}
       />
-      <StyledSelect
-        disabled={!roomsArray.length}
-        select={true}
+      <RoomSelect
         value={formData.roomId}
         name="roomId"
         onChange={(
           e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
         ) => handleOnChange(e)}
-        label={!roomsArray.length ? "No rooms available" : "Room"}
-        variant="outlined"
-        InputLabelProps={formData.roomId ? { shrink: true } : {}}
-      >
-        {roomsArray.map(
-          (
-            option: any, // eslint-disable-line @typescript-eslint/no-explicit-any
-            id: number
-          ) => (
-            <MenuItem key={`${option.name}${id}`} value={option.id}>
-              {option.name}
-            </MenuItem>
-          )
-        )}
-        <MenuItem value={""}>No room</MenuItem>
-      </StyledSelect>
+        teacherId={
+          isStudent ? undefined : (person as ITeacherWithRelations)?.id
+        }
+      />
       <ErrorContainer>
-        {message ? <ErrorMessage>{message}</ErrorMessage> : <></>}
+        <ErrorMessage>{errorMessage}</ErrorMessage>
       </ErrorContainer>
       <StyledButton
         type="submit"
         endIcon={<CheckIcon />}
         sx={{ marginBottom: "90px" }}
       >
-        {person ? `Edit ${modelName}` : `Create ${modelName}`}
+        {person ? `Edit ${entityName}` : `Create ${entityName}`}
       </StyledButton>
     </Container>
   );

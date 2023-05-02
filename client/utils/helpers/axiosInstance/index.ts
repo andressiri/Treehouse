@@ -31,7 +31,9 @@ const axiosInstance = async (endpoint: string, data = {}, method = "GET") => {
   try {
     const response = await axios({
       method,
-      url: `${API_ORIGIN}${API_ROUTE}${API_VERSION}${endpoint}`,
+      url: `${API_ORIGIN}/${API_ROUTE}/${API_VERSION}${
+        !endpoint ? "" : !endpoint.startsWith("/") ? `/${endpoint}` : endpoint
+      }`,
       data: formData,
       headers: {
         // authorization: `Bearer ${token}`,

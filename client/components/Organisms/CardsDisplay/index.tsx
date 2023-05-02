@@ -2,42 +2,46 @@ import { FC } from "react";
 import { FallbackText } from "../../Atoms";
 import { DisplayCard } from "..";
 import { Container } from "./styledComponents";
+import { Entities } from "../../../typings/global";
+import { CardsDisplayArrayObject } from "../../../typings/cards";
+import { ROOM_ENTITY } from "../../../config/constants";
 
 interface Props {
-  displayArray: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  modelName: "room" | "student" | "teacher";
+  displayArray: CardsDisplayArrayObject[];
+  entityName: Entities;
 }
 
-const CardsDisplay: FC<Props> = ({ displayArray, modelName }) => {
+const CardsDisplay: FC<Props> = ({ displayArray, entityName }) => {
+  const isRoom = entityName === ROOM_ENTITY;
+
   return (
     <Container>
       {displayArray.length ? (
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-        displayArray.map((obj: any, id: number) => {
+        displayArray.map((obj, id) => {
           return (
             <DisplayCard
               name={obj.name}
               id={obj.id}
               teacherName={
-                obj.Teacher?.name && modelName === "room"
+                obj.Teacher?.name && isRoom
                   ? obj.Teacher.name
-                  : modelName === "room"
+                  : isRoom
                   ? "No teacher"
-                  : null
+                  : undefined
               }
               image={
-                modelName === "room" && obj.Teacher?.picture
+                isRoom && obj.Teacher?.picture
                   ? obj.Teacher.picture
                   : obj.picture
               }
               description={obj.description}
-              modelName={modelName}
+              entityName={entityName}
               key={`${obj.id}${obj.name}${id}`}
             />
           );
         })
       ) : (
-        <FallbackText>{`There are no ${modelName}s to show`}</FallbackText>
+        <FallbackText>{`There are no ${entityName}s to show`}</FallbackText>
       )}
     </Container>
   );

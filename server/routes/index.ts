@@ -1,10 +1,10 @@
 // @route /api/v1
 import express from "express";
 import {
-  usersRoute,
-  roomsRoute,
-  teachersRoute,
-  studentsRoute,
+  USERS_ROUTE,
+  ROOMS_ROUTE,
+  TEACHERS_ROUTE,
+  STUDENTS_ROUTE,
 } from "../config/constants";
 import usersRouter from "./usersRouter";
 import roomsRouter from "./roomsRouter";
@@ -13,12 +13,12 @@ import studentsRouter from "./studentsRouter";
 
 const router = express.Router();
 
-router.use(`/${usersRoute}`, usersRouter);
+router.use(`/${USERS_ROUTE}`, usersRouter);
 
-router.use(`/${roomsRoute}`, roomsRouter);
+router.use(`/${ROOMS_ROUTE}`, roomsRouter);
 
-router.use(`/${teachersRoute}`, teachersRouter);
+router.use(`/${TEACHERS_ROUTE}`, teachersRouter);
 
-router.use(`/${studentsRoute}`, studentsRouter);
+router.use(`/${STUDENTS_ROUTE}`, studentsRouter);
 
 export default router;

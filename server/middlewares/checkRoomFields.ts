@@ -1,4 +1,5 @@
 import asyncHandler from "express-async-handler";
+import { BY_ID } from "../config/constants";
 import db from "../db/models";
 
 const { Room, Teacher } = db;
@@ -15,7 +16,7 @@ const validateRoomFields = asyncHandler(async (req, res, next) => {
 
     if (
       roomNameTaken &&
-      (!req.params.id || roomNameTaken.id !== Number(req.params.id))
+      (!req.params[BY_ID] || roomNameTaken.id !== Number(req.params[BY_ID]))
     ) {
       res.status(409);
       throw new Error(`There is already a room with the name '${name}'`);

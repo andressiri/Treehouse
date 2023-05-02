@@ -1,13 +1,15 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { RoomsContext } from "../../../contexts";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import CheckIcon from "@mui/icons-material/Check";
 import { useCreateRoom, useEditRoom } from "../../../services";
 import { StyledButton, StyledTextField } from "../../../components/Atoms";
 import { Container, ErrorContainer, ErrorMessage } from "./styledComponents";
+import { AnyRoom } from "../../../typings/rooms";
+import { ROOMS_ROUTE, ROOMS_SINGULAR } from "../../../config/constants";
 
 interface Props {
-  propRoom?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  propRoom?: AnyRoom;
 }
 
 interface IFormData {
@@ -16,34 +18,33 @@ interface IFormData {
 }
 
 const EditOrCreateRoomForm: FC<Props> = ({ propRoom }) => {
-  const { room, isSuccess, setIsSuccess, message, setMessage } =
-    useContext(RoomsContext);
+  const { room } = useContext(RoomsContext);
   const [formData, setFormData] = useState<IFormData>({
-    name: propRoom ? room.name : "",
-    description: propRoom ? room.description : "",
+    name: propRoom?.name || "",
+    description: propRoom?.description || "",
   });
-  const { createRoom } = useCreateRoom();
-  const { editRoom } = useEditRoom();
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const { push, query } = useRouter();
 
-  useEffect(() => {
-    if (propRoom)
-      setFormData({
-        name: room.name,
-        description: room.description,
-      });
-  }, [room, propRoom]);
+  const errorAction = (message: string) => {
+    setErrorMessage(message);
+  };
 
-  useEffect(() => {
-    if (isSuccess) {
-      setIsSuccess(false);
-      setMessage("");
-      Router.push(`/rooms/room/${room.id}`);
-    }
+  const successAction = () => {
+    push(`/${ROOMS_ROUTE}/${ROOMS_SINGULAR}/${(room as AnyRoom)?.id}`);
+  };
 
-    return () => {
-      setMessage("");
-    };
-  }, [room, isSuccess, setIsSuccess, setMessage]);
+  const { editRoom, message: editMessage } = useEditRoom({
+    errorAction: () => errorAction(editMessage),
+    successAction,
+    successToast: true,
+  });
+
+  const { createRoom, message: createMessage } = useCreateRoom({
+    errorAction: () => errorAction(createMessage),
+    successAction,
+    successToast: true,
+  });
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -56,8 +57,11 @@ const EditOrCreateRoomForm: FC<Props> = ({ propRoom }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
+
+    setErrorMessage("");
+
     if (propRoom) {
-      editRoom(formData, Number(Router.query.id));
+      editRoom(formData, Number(query.id));
       return;
     }
 
@@ -92,7 +96,7 @@ const EditOrCreateRoomForm: FC<Props> = ({ propRoom }) => {
         InputLabelProps={formData.description ? { shrink: true } : {}}
       />
       <ErrorContainer>
-        {message ? <ErrorMessage>{message}</ErrorMessage> : <></>}
+        <ErrorMessage>{errorMessage}</ErrorMessage>
       </ErrorContainer>
       <StyledButton type="submit" endIcon={<CheckIcon />}>
         {propRoom ? "Edit room" : "Create room"}

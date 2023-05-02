@@ -2,12 +2,13 @@
 // @route DELETE /api/v1/students/siblings/:id
 // @access Private - Admin only
 import asyncHandler from "express-async-handler";
+import { BY_ID } from "../../config/constants";
 import db from "../../db/models";
 
 const { Room, Teacher, Student, Sibling } = db;
 
 const removeSibling = asyncHandler(async (req, res) => {
-  const id = req.params.id;
+  const id = req.params[BY_ID];
   const { siblingId, removeFromOtherSiblings } = req.body;
 
   if (id === siblingId) {
@@ -69,9 +70,10 @@ const removeSibling = asyncHandler(async (req, res) => {
     ],
   });
 
-  res
-    .status(200)
-    .json({ messge: `${studentData.name} sibling removed`, studentData });
+  res.status(200).json({
+    message: `${studentData.name} sibling removed`,
+    data: studentData,
+  });
 });
 
 export default removeSibling;
