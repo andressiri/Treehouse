@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { Layout, EditOrCreateRoomPage } from "../../../components/Templates";
+import { Layout, CreateRoomPage } from "../../../components/Templates";
 
 const CreateRoom: FC = () => {
   return (
     <Layout>
-      <EditOrCreateRoomPage />
+      <CreateRoomPage />
     </Layout>
   );
 };

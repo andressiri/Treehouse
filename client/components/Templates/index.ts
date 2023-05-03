@@ -1,3 +1,4 @@
+export { default as CreateRoomPage } from "./CreateRoomPage";
 export { default as DisplayPage } from "./DisplayPage";
 export { default as EditOrCreatePersonPage } from "./EditOrCreatePersonPage";
 export { default as EditOrCreateRoomPage } from "./EditOrCreateRoomPage";
