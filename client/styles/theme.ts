@@ -21,6 +21,8 @@ export const theme: ThemeOptions = createTheme({
   custom: {
     buttons: {
       height: "56px",
+      disabledBackground: "rgba(130, 130, 130, 1)",
+      disabledColor: "rgba(0, 0, 0, 0.26)",
       fontSizeMd: "18px",
     },
     radius: {
