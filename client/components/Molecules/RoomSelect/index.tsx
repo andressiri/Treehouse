@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { MenuItem } from "@mui/material";
-import { StyledSelect } from "../../../components/Atoms";
+import { StyledTextField } from "../../../components/Atoms";
 import useGetRoomsArray from "./useGetRoomsArray";
 
 interface Props {
@@ -16,7 +16,7 @@ const RoomSelect: FC<Props> = ({ value, name, onChange, teacherId }) => {
   const roomsArray = useGetRoomsArray(teacherId);
 
   return (
-    <StyledSelect
+    <StyledTextField
       disabled={roomsArray.length < 2}
       select={true}
       value={value}
@@ -31,7 +31,7 @@ const RoomSelect: FC<Props> = ({ value, name, onChange, teacherId }) => {
           {option.name}
         </MenuItem>
       ))}
-    </StyledSelect>
+    </StyledTextField>
   );
 };
 

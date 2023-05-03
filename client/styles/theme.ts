@@ -20,6 +20,7 @@ export const theme: ThemeOptions = createTheme({
   },
   custom: {
     buttons: {
+      height: "56px",
       fontSizeMd: "18px",
     },
     radius: {

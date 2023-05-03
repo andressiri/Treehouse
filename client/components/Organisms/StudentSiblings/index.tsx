@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { MenuItem } from "@mui/material";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { useAddSibling } from "../../../services";
-import { FallbackText, StyledButton, StyledSelect } from "../../Atoms";
+import { FallbackText, StyledButton, StyledTextField } from "../../Atoms";
 import { ConfirmModal, StudentsList } from "..";
 import { Container, FormContainer, Title } from "./styledComponents";
 import useGetStudentsArray from "./useGetStudentsArrays";
@@ -64,7 +64,7 @@ const StudentSiblings: FC<Props> = ({ person }) => {
         component="form"
         onSubmit={(e: React.FormEvent<HTMLDivElement>) => handleSubmit(e)}
       >
-        <StyledSelect
+        <StyledTextField
           disabled={!studentsArray.length}
           select={true}
           value={studentSelected}
@@ -82,7 +82,7 @@ const StudentSiblings: FC<Props> = ({ person }) => {
               {option.name}
             </MenuItem>
           ))}
-        </StyledSelect>
+        </StyledTextField>
         <StyledButton
           disabled={!studentSelected}
           type="submit"

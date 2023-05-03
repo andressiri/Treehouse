@@ -14,11 +14,7 @@ import {
   useRemoveTeacherFromRoom,
 } from "../../../services";
 import { arrayBufferToBase64 } from "../../../utils/helpers";
-import {
-  StyledButton,
-  StyledSelect,
-  StyledTextField,
-} from "../../../components/Atoms";
+import { StyledButton, StyledTextField } from "../../../components/Atoms";
 import { DisplayImage, RoomSelect } from "../../../components/Molecules";
 import {
   Container,
@@ -318,7 +314,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
         onChange={(
           e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
         ) => handleOnChange(e)}
-        label="Name*"
+        label="Name *"
         variant="outlined"
         InputLabelProps={formData.name ? { shrink: true } : {}}
       />
@@ -328,18 +324,18 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
         onChange={(
           e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
         ) => handleOnChange(e)}
-        label="Age*"
+        label="Age *"
         variant="outlined"
         InputLabelProps={formData.age ? { shrink: true } : {}}
       />
-      <StyledSelect
+      <StyledTextField
         select={true}
         value={formData.gender}
         name="gender"
         onChange={(
           e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
         ) => handleOnChange(e)}
-        label="Gender*"
+        label="Gender *"
         variant="outlined"
         InputLabelProps={formData.gender ? { shrink: true } : {}}
       >
@@ -348,7 +344,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
             {option.label}
           </MenuItem>
         ))}
-      </StyledSelect>
+      </StyledTextField>
       <StyledTextField
         value={formData.description}
         name="description"
