@@ -2,7 +2,7 @@ import { FC, useContext } from "react";
 import { useRouter } from "next/router";
 import { RoomsContext } from "../../../contexts";
 import { useGetRoomByIdEffect } from "../../../services";
-import { Layout, EditOrCreateRoomPage } from "../../../components/Templates";
+import { Layout, EditRoomPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
   API_ROUTE,
@@ -14,7 +14,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { IRoom } from "../../../typings/rooms";
 
 interface Props {
-  staticRoom?: IRoom;
+  staticRoom: IRoom;
 }
 
 const EditRoom: FC<Props> = ({ staticRoom }) => {
@@ -25,7 +25,7 @@ const EditRoom: FC<Props> = ({ staticRoom }) => {
 
   return (
     <Layout>
-      <EditOrCreateRoomPage
+      <EditRoomPage
         room={
           !isReady ||
           !(room as IRoom)?.id ||
