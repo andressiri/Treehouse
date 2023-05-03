@@ -11,6 +11,14 @@ export const Container = styled(Box)(() => ({
   alignItems: "center",
 }));
 
+export const ActionsContainer = styled(Box)(() => ({
+  width: "100%",
+  display: "flex",
+  gap: "50px",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
 export const ErrorContainer = styled(Box)(() => ({
   width: "100%",
   height: "56px",

@@ -32,7 +32,9 @@ export interface IRoomFormProps {
   handleOnChange: (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void;
+  checkChanges: () => boolean;
   handleSubmit: (e: React.FormEvent<HTMLDivElement>) => void;
+  handleCancel: () => void;
   errorMessage: string;
   buttonText: string;
 }

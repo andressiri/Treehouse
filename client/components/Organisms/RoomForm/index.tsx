@@ -1,16 +1,29 @@
-import { FC } from "react";
+import { FC, useState } from "react";
+import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import CheckIcon from "@mui/icons-material/Check";
 import { StyledButton, StyledTextField } from "../../Atoms";
-import { Container, ErrorContainer, ErrorMessage } from "./styledComponents";
+import { ConfirmModal } from "../../Organisms";
+import {
+  Container,
+  ActionsContainer,
+  ErrorContainer,
+  ErrorMessage,
+} from "./styledComponents";
 import { IRoomFormProps } from "../../../typings/rooms";
 
 const RoomForm: FC<IRoomFormProps> = ({
   formData,
   handleOnChange,
+  checkChanges,
   handleSubmit,
+  handleCancel,
   errorMessage,
   buttonText,
 }) => {
+  const [openConfirm, setOpenConfirm] = useState(false);
+
+  const openConfirmModal = () => setOpenConfirm(true);
+
   return (
     <Container
       component="form"
@@ -41,9 +54,26 @@ const RoomForm: FC<IRoomFormProps> = ({
       <ErrorContainer>
         <ErrorMessage>{errorMessage}</ErrorMessage>
       </ErrorContainer>
-      <StyledButton type="submit" endIcon={<CheckIcon />}>
-        {buttonText}
-      </StyledButton>
+      <ActionsContainer>
+        <StyledButton
+          BGType="secondaryContrastOutlined"
+          endIcon={<NotInterestedIcon />}
+          onClick={() => {
+            checkChanges() ? openConfirmModal() : handleCancel();
+          }}
+        >
+          Cancel
+        </StyledButton>
+        <StyledButton type="submit" endIcon={<CheckIcon />}>
+          {buttonText}
+        </StyledButton>
+      </ActionsContainer>
+      <ConfirmModal
+        text={`All your changes will be lost, are you sure you want to cancel?`}
+        confirmAction={handleCancel}
+        open={openConfirm}
+        onClose={() => setOpenConfirm(false)}
+      />
     </Container>
   );
 };

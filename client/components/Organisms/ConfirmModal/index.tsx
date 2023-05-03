@@ -18,7 +18,7 @@ interface Props {
   open: boolean;
   onClose: () => void;
   noAction?: () => void;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 const ConfirmModal: FC<Props> = ({
