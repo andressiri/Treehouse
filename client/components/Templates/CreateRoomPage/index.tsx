@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { SectionTitle } from "../../Atoms";
-import { RoomForm } from "../../Organisms";
+import { BasicFormConstructor } from "../../Organisms";
 import { Container } from "./styledComponents";
 import useGetFormProps from "./useGetFormProps";
 
@@ -10,7 +10,7 @@ const CreateRoomPage: FC = () => {
   return (
     <Container>
       <SectionTitle>Create a brand new room</SectionTitle>
-      <RoomForm {...formProps} />
+      <BasicFormConstructor {...formProps} />
     </Container>
   );
 };
