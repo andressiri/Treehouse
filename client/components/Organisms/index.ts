@@ -1,3 +1,4 @@
+export { default as BasicFormConstructor } from "./BasicFormConstructor";
 export { default as CardsDisplay } from "./CardsDisplay";
 export { default as ConfirmModal } from "./ConfirmModal";
 export { default as DisplayCard } from "./DisplayCard";
