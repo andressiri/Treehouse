@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { SectionTitle } from "../../Atoms";
-import { RoomForm } from "../../Organisms";
+import { BasicFormConstructor } from "../../Organisms";
 import { Container } from "./styledComponents";
 import useGetFormProps from "./useGetFormProps";
 import { IRoom } from "../../../typings/rooms";
@@ -15,7 +15,7 @@ const EditRoomPage: FC<Props> = ({ room }) => {
   return (
     <Container>
       <SectionTitle>{`Edit ${room.name} room`}</SectionTitle>
-      <RoomForm {...formProps} />
+      <BasicFormConstructor {...formProps} />
     </Container>
   );
 };

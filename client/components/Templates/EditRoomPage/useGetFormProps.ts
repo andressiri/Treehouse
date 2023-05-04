@@ -1,22 +1,31 @@
 import { useRouter } from "next/router";
 import { useEditRoom } from "../../../services";
 import {
+  useGetRoomFormFieldsSpecifics,
   useGetRoomFormRequestHandlers,
   useGetRoomFormState,
 } from "../../../utils/hooks";
-import { IRoom, IRoomFormProps } from "../../../typings/rooms";
+import { IRoom } from "../../../typings/rooms";
+import { IFormProps } from "../../../typings/forms";
 import { ROOMS_ROUTE, ROOMS_SINGULAR } from "../../../config/constants";
 
-const useGetFormProps = (room: IRoom): IRoomFormProps => {
+const useGetFormProps = (room: IRoom): IFormProps => {
   const buttonText = "Edit room";
+  const requiredFieldsArray = ["name"];
   const { push, query } = useRouter();
 
-  const { formData, handleOnChange } = useGetRoomFormState({ room });
+  const { formData, handleOnChange, formVisited, handleVisited } =
+    useGetRoomFormState({ room });
+
+  const formFieldsSpecificsArray = useGetRoomFormFieldsSpecifics(
+    formData,
+    formVisited
+  );
 
   const { errorAction, successAction, errorMessage, setErrorMessage } =
     useGetRoomFormRequestHandlers();
 
-  const { editRoom, message } = useEditRoom({
+  const { editRoom, isLoading, message } = useEditRoom({
     errorAction: () => errorAction(message),
     successAction,
     successToast: true,
@@ -31,6 +40,8 @@ const useGetFormProps = (room: IRoom): IRoomFormProps => {
         delete obj[key as keyof typeof obj];
       } else {
         emptyObj = false;
+        if (!obj[key as keyof typeof obj] && !requiredFieldsArray.includes(key))
+          (obj[key as keyof typeof obj] as string | undefined) = undefined;
         if (shouldBreak) break;
       }
     }
@@ -53,16 +64,26 @@ const useGetFormProps = (room: IRoom): IRoomFormProps => {
     }
   };
 
+  const disableSubmit =
+    isLoading ||
+    !formData.name ||
+    (formData.description?.length && formData.description?.length > 4999) ||
+    !checkChanges();
+
   const handleCancel = () =>
     push(`/${ROOMS_ROUTE}/${ROOMS_SINGULAR}/${room.id}`);
 
   return {
     formData,
+    formVisited,
+    formFieldsSpecificsArray,
+    handleVisited,
     handleOnChange,
     checkChanges,
     handleSubmit,
     handleCancel,
     errorMessage,
+    disableSubmit,
     buttonText,
   };
 };

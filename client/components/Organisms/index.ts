@@ -5,7 +5,6 @@ export { default as DisplayCard } from "./DisplayCard";
 export { default as EditOrCreatePersonForm } from "./EditOrCreatePersonForm";
 export { default as Header } from "./Header";
 export { default as MobileDrawer } from "./MobileDrawer";
-export { default as RoomForm } from "./RoomForm";
 export { default as RoomTeacher } from "./RoomTeacher";
 export { default as Sidebar } from "./Sidebar";
 export { default as SidebarContent } from "./SidebarContent";
