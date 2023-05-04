@@ -1,3 +1,4 @@
+export { default as useGetRoomFormFieldsSpecifics } from "./useGetRoomFormFieldsSpecifics";
 export { default as useGetRoomFormRequestHandlers } from "./useGetRoomFormRequestHandlers";
 export { default as useGetRoomFormState } from "./useGetRoomFormState";
 export { default as useHandleResponseEffect } from "./useHandleResponseEffect";
