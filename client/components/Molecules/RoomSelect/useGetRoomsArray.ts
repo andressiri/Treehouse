@@ -2,10 +2,15 @@ import { useContext, useMemo } from "react";
 import { RoomsContext } from "../../../contexts";
 import { useGetRoomsEffect } from "../../../services";
 import { sortByName } from "../../../utils/helpers";
-import { SelectOption } from "../../../typings/global";
+import { SelectOption } from "../../../typings/forms";
 import { AnyRoomArray, IRoom } from "../../../typings/rooms";
 
-const useGetRoomsArray = (teacherId?: number) => {
+interface Props {
+  showTeacherless?: boolean;
+  teacherId?: number;
+}
+
+const useGetRoomsArray = ({ showTeacherless, teacherId }: Props) => {
   const { rooms } = useContext(RoomsContext);
 
   useGetRoomsEffect({ errorToast: true });
@@ -13,7 +18,12 @@ const useGetRoomsArray = (teacherId?: number) => {
   const roomsOptionsArray: SelectOption[] = useMemo(() => {
     const sanitizedArray: SelectOption[] = (rooms as AnyRoomArray)
       .filter((room: IRoom) => {
-        if (teacherId && room.teacherId && room.teacherId !== teacherId)
+        if (
+          (showTeacherless &&
+            room.teacherId &&
+            (teacherId ? room.teacherId !== teacherId : true)) ||
+          (teacherId && room.teacherId && room.teacherId !== teacherId)
+        )
           return false;
         return true;
       })
@@ -30,7 +40,7 @@ const useGetRoomsArray = (teacherId?: number) => {
     ]);
 
     return arrayWithNoRoomOption;
-  }, [rooms, teacherId]);
+  }, [rooms, showTeacherless, teacherId]);
 
   return roomsOptionsArray;
 };

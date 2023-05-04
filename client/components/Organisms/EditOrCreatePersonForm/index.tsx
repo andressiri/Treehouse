@@ -366,6 +366,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
         teacherId={
           isStudent ? undefined : (person as ITeacherWithRelations)?.id
         }
+        showTeacherless={!isStudent}
       />
       <ErrorContainer>
         <ErrorMessage>{errorMessage}</ErrorMessage>

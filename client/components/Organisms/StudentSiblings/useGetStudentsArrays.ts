@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { StudentsContext } from "../../../contexts";
 import { useGetStudentsWithRelationsEffect } from "../../../services";
 import { IStudentWithRelations } from "../../../typings/students";
-import { SelectOption } from "../../../typings/global";
+import { SelectOption } from "../../../typings/forms";
 import { sortByName } from "../../../utils/helpers";
 
 const useGetStudentsArrays = (person: IStudentWithRelations) => {

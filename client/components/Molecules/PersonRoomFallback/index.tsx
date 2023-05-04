@@ -68,6 +68,7 @@ const PersonRoomFallback: FC<Props> = ({
             e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
           ) => handleOnChange(e)}
           teacherId={isStudent ? undefined : personId}
+          showTeacherless={!isStudent}
         />
         <StyledButton
           disabled={!roomSelected || roomLoading || studentLoading}

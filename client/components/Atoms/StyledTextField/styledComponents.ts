@@ -12,7 +12,7 @@ export const TextFieldStyled = styled(TextField, {
   ({ theme, isError, rowsNumber, conditionalHelperText }) => ({
     width: "100%",
     minHeight: conditionalHelperText
-      ? `calc(${theme.custom.buttons.height} + 25px + ${
+      ? `calc(${theme.custom.buttons.height} + 27px + ${
           rowsNumber - 1
         } * ${lineHeight}px - ${rowsNumber > 1 ? 4 : 0}px)`
       : theme.custom.buttons.height,
@@ -66,6 +66,9 @@ export const TextFieldStyled = styled(TextField, {
     "& .MuiOutlinedInput-notchedOutline": {
       border: `1px solid ${theme.palette.secondary.contrastText}`,
       borderRadius: theme.custom.radius.medium,
+    },
+    "& .MuiFormHelperText-root": {
+      fontSize: "14px",
     },
   })
 );

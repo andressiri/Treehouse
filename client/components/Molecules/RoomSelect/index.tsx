@@ -9,11 +9,18 @@ interface Props {
   onChange: (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void;
+  showTeacherless?: boolean;
   teacherId?: number;
 }
 
-const RoomSelect: FC<Props> = ({ value, name, onChange, teacherId }) => {
-  const roomsArray = useGetRoomsArray(teacherId);
+const RoomSelect: FC<Props> = ({
+  value,
+  name,
+  onChange,
+  showTeacherless,
+  teacherId,
+}) => {
+  const roomsArray = useGetRoomsArray({ showTeacherless, teacherId });
 
   return (
     <StyledTextField

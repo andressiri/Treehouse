@@ -24,17 +24,10 @@ export type AnyRoomArray = IRoom[] | IRoomWithRelations[];
 
 export interface IRoomFormData {
   name: string;
-  description: string;
+  description?: string;
 }
 
-export interface IRoomFormProps {
-  formData: IRoomFormData;
-  handleOnChange: (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => void;
-  checkChanges: () => boolean;
-  handleSubmit: (e: React.FormEvent<HTMLDivElement>) => void;
-  handleCancel: () => void;
-  errorMessage: string;
-  buttonText: string;
+export interface IRoomFormVisited {
+  name: boolean;
+  description: boolean;
 }
