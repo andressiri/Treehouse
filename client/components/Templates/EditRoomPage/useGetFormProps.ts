@@ -1,71 +1,77 @@
 import { useRouter } from "next/router";
-import { useEditRoom } from "../../../services";
+import { useEditRoom, useRemoveTeacherFromRoom } from "../../../services";
+import { sanitizeFormChanges } from "../../../utils/helpers";
 import {
   useGetRoomFormFieldsSpecifics,
   useGetRoomFormRequestHandlers,
   useGetRoomFormState,
 } from "../../../utils/hooks";
-import { IRoom } from "../../../typings/rooms";
+import { IRoom, IRoomFormData } from "../../../typings/rooms";
 import { IFormProps } from "../../../typings/forms";
 import { ROOMS_ROUTE, ROOMS_SINGULAR } from "../../../config/constants";
 
 const useGetFormProps = (room: IRoom): IFormProps => {
   const buttonText = "Edit room";
-  const requiredFieldsArray = ["name"];
   const { push, query } = useRouter();
-
+  const roomIdNumber = Number(query.id);
   const { formData, handleOnChange, formVisited, handleVisited } =
     useGetRoomFormState({ room });
-
-  const formFieldsSpecificsArray = useGetRoomFormFieldsSpecifics(
-    formData,
-    formVisited
-  );
-
   const { errorAction, successAction, errorMessage, setErrorMessage } =
     useGetRoomFormRequestHandlers();
 
-  const { editRoom, isLoading, message } = useEditRoom({
-    errorAction: () => errorAction(message),
+  const formFieldsSpecificsArray = useGetRoomFormFieldsSpecifics(
+    formData,
+    formVisited,
+    roomIdNumber
+  );
+
+  const {
+    removeTeacherFromRoom,
+    isLoading: removeLoading,
+    message: removeMessage,
+  } = useRemoveTeacherFromRoom({
+    errorAction: () => errorAction(removeMessage),
     successAction,
+    successMessage: "Room edited successfully",
     successToast: true,
   });
 
-  const sanitizeData = (shouldBreak?: boolean) => {
-    const obj = { ...formData };
-    let emptyObj = true;
+  const {
+    editRoom,
+    isLoading: editLoading,
+    message: editMessage,
+  } = useEditRoom({
+    errorAction: () => {
+      !formData.teacherId && room.teacherId
+        ? removeTeacherFromRoom(roomIdNumber)
+        : errorAction(editMessage);
+    },
+    successAction: () => {
+      !formData.teacherId && room.teacherId
+        ? removeTeacherFromRoom(roomIdNumber)
+        : successAction();
+    },
+    successToast: !(!formData.teacherId && room.teacherId),
+  });
 
-    for (const key in obj) {
-      if (obj[key as keyof typeof obj] === room[key as keyof typeof room]) {
-        delete obj[key as keyof typeof obj];
-      } else {
-        emptyObj = false;
-        if (!obj[key as keyof typeof obj] && !requiredFieldsArray.includes(key))
-          (obj[key as keyof typeof obj] as string | undefined) = undefined;
-        if (shouldBreak) break;
-      }
-    }
-
-    return !emptyObj ? obj : false;
-  };
-
-  const checkChanges = () => Boolean(sanitizeData(true));
+  const checkChanges = () => Boolean(sanitizeFormChanges(formData, room, true));
 
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    const data = sanitizeData();
+    const data = sanitizeFormChanges(formData, room);
 
     if (data) {
       setErrorMessage("");
-      editRoom(data, Number(query.id));
+      editRoom(data as Partial<IRoomFormData>, roomIdNumber);
     } else {
       setErrorMessage("There are no changes to submit");
     }
   };
 
   const disableSubmit =
-    isLoading ||
+    editLoading ||
+    removeLoading ||
     !formData.name ||
     (formData.description?.length && formData.description?.length > 4999) ||
     !checkChanges();

@@ -21,7 +21,8 @@ const useGetRoomFormState = ({ room }: Props) => {
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       setFormData({
         ...formData,
-        [e.target.name]: e.target.value,
+        [e.target.name]:
+          typeof e.target.value === "string" ? e.target.value : "",
       });
     },
     [formData]
