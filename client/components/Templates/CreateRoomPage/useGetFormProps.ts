@@ -37,6 +37,7 @@ const useGetFormProps = (): IFormProps => {
         break;
       }
     }
+
     return bool;
   };
 

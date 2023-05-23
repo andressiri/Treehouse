@@ -5,14 +5,16 @@ interface Props {
   room?: IRoom;
 }
 
-const useGetRoomFormProps = ({ room }: Props) => {
+const useGetRoomFormState = ({ room }: Props) => {
   const [formData, setFormData] = useState<IRoomFormData>({
     name: room?.name || "",
     description: room?.description || "",
+    teacherId: room?.teacherId ? `${room.teacherId}` : "",
   });
   const [formVisited, setFormVisited] = useState<IRoomFormVisited>({
     name: false,
     description: false,
+    teacherId: false,
   });
 
   const handleOnChange = useCallback(
@@ -47,4 +49,4 @@ const useGetRoomFormProps = ({ room }: Props) => {
   };
 };
 
-export default useGetRoomFormProps;
+export default useGetRoomFormState;

@@ -25,9 +25,11 @@ export type AnyRoomArray = IRoom[] | IRoomWithRelations[];
 export interface IRoomFormData {
   name: string;
   description?: string;
+  teacherId?: string;
 }
 
 export interface IRoomFormVisited {
   name: boolean;
-  description: boolean;
+  description?: boolean;
+  teacherId?: boolean;
 }

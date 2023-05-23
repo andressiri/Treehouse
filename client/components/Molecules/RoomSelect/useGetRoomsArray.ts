@@ -36,7 +36,7 @@ const useGetRoomsArray = ({ showTeacherless, teacherId }: Props) => {
       .sort(sortByName);
 
     const arrayWithNoRoomOption = sanitizedArray.concat([
-      { value: "", name: "No room" },
+      { value: undefined, name: "No room" },
     ]);
 
     return arrayWithNoRoomOption;

@@ -1,7 +1,7 @@
 import { IRoomFormData, IRoomFormVisited } from "./rooms";
 
 export interface SelectOption {
-  value: string;
+  value?: string;
   name: string;
 }
 

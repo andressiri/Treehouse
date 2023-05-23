@@ -22,15 +22,16 @@ const useGetStudentsArrays = (person: IStudentWithRelations) => {
     return true;
   });
 
-  const selectSiblingArray: SelectOption[] = studentsArray
-    .map((student) => {
-      return {
-        value: `${student.id}`,
-        name: student.name,
-      };
-    })
-    .sort(sortByName)
-    .concat([{ value: "", name: "Cancel" }]);
+  const selectSiblingArray: SelectOption[] = (
+    studentsArray
+      .map((student) => {
+        return {
+          value: `${student.id}`,
+          name: student.name,
+        };
+      })
+      .sort(sortByName) as SelectOption[]
+  ).concat([{ value: undefined, name: "Cancel" }]);
 
   return { siblingsIds, studentsArray, selectSiblingArray };
 };

@@ -15,6 +15,7 @@ const FormField: FC<FormFieldProps> = ({
   multiline = false,
   rows = 1,
   helperText,
+  children,
 }) => {
   return (
     <StyledTextField
@@ -40,7 +41,9 @@ const FormField: FC<FormFieldProps> = ({
       multiline={multiline}
       rows={rows}
       helperText={helperText}
-    />
+    >
+      {children}
+    </StyledTextField>
   );
 };
 
