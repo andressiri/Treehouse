@@ -3,44 +3,53 @@ import { StyledTextField } from "../../../components/Atoms";
 import { FormFieldProps } from "../../../typings/forms";
 
 const FormField: FC<FormFieldProps> = ({
+  type = "text",
+  required = false,
+  disabled = false,
+  select = false,
+  multiline = false,
+  rows = 1,
+  error,
+  helperText = "",
+  conditionalHelperText = true,
+  onChange,
+  children,
   field,
   formData,
   formVisited,
   handleVisited,
-  handleOnChange,
-  required = false,
-  disabled = false,
-  select = false,
-  error,
-  multiline = false,
-  rows = 1,
-  helperText,
-  children,
 }) => {
   return (
     <StyledTextField
+      type={type}
+      required={required}
       disabled={disabled}
       select={select}
+      multiline={multiline}
       error={
         error ||
-        (formVisited[field as keyof typeof formVisited] &&
+        ((formVisited
+          ? formVisited[field as keyof typeof formVisited]
+          : true) &&
           !formData[field as keyof typeof formData] &&
           required)
       }
-      onBlur={(e) => handleVisited(e)}
-      value={formData[field as keyof typeof formData] as string | undefined}
-      name={field}
+      rows={rows}
+      helperText={helperText}
+      conditionalHelperText={conditionalHelperText}
       onChange={(
         e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-      ) => handleOnChange(e)}
+      ) => onChange(e)}
+      onBlur={(e) => {
+        if (handleVisited) handleVisited(e);
+      }}
+      value={formData[field as keyof typeof formData] as string | undefined}
+      name={field}
       label={`${Array.from(field)[0].toUpperCase()}${field.slice(1)}`} // charAt function may cause problems at server side
       variant="outlined"
       InputLabelProps={
         formData[field as keyof typeof formData] ? { shrink: true } : {}
       }
-      multiline={multiline}
-      rows={rows}
-      helperText={helperText}
     >
       {children}
     </StyledTextField>

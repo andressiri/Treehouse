@@ -1,3 +1,4 @@
+import { InputLabelProps } from "@mui/material";
 import { IRoomFormData, IRoomFormVisited } from "./rooms";
 
 export interface SelectOption {
@@ -5,20 +6,46 @@ export interface SelectOption {
   name: string;
 }
 
+export interface SharedTextFieldProps {
+  type?: React.HTMLInputTypeAttribute;
+  required?: boolean;
+  disabled?: boolean;
+  select?: boolean;
+  multiline?: boolean;
+  rows?: number;
+  error?: boolean;
+  helperText?: string;
+  conditionalHelperText?: boolean;
+  onChange:
+    | React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>
+    | ((e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void);
+  children?: JSX.Element | JSX.Element[];
+}
+
+export interface TextFieldProps extends SharedTextFieldProps {
+  onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  value?: string;
+  name: string;
+  label: string;
+  variant?: "standard" | "filled" | "outlined";
+  InputLabelProps?: Partial<InputLabelProps>;
+}
+
+interface IFormFieldSpecifics extends Omit<SharedTextFieldProps, "onChange"> {
+  field: string;
+}
+
 export type formFieldsData = IRoomFormData;
 
 export type formFieldsVisited = IRoomFormVisited;
 
-interface IFormFieldSpecifics {
+export interface FormFieldProps extends SharedTextFieldProps {
   field: string;
-  required?: boolean;
-  disabled?: boolean;
-  select?: boolean;
-  error?: boolean;
-  multiline?: boolean;
-  rows?: number;
-  helperText: string;
-  children?: JSX.Element | JSX.Element[];
+  formData: formFieldsData;
+  formVisited?: formFieldsVisited;
+  handleVisited?: (
+    e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => void;
 }
 
 export interface IFormProps {
@@ -37,24 +64,4 @@ export interface IFormProps {
   errorMessage: string;
   disableSubmit: boolean;
   buttonText: string;
-}
-
-interface FormFieldProps {
-  field: string;
-  formData: formFieldsData;
-  formVisited: formFieldsVisited;
-  handleVisited: (
-    e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => void;
-  handleOnChange: (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => void;
-  required?: boolean;
-  disabled?: boolean;
-  select?: boolean;
-  error?: boolean;
-  multiline?: boolean;
-  rows?: number;
-  helperText: string;
-  children?: JSX.Element | JSX.Element[];
 }

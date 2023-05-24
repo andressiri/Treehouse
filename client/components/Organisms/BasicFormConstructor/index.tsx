@@ -37,20 +37,22 @@ const BasicFormConstructor: FC<IFormProps> = ({
       {formFieldsSpecificsArray.map((field: IFormFieldSpecifics, id) => {
         return (
           <FormField
+            type={field.type}
+            required={field.required}
+            disabled={field.disabled}
+            select={field.select}
+            multiline={field.multiline}
+            rows={field.rows}
+            error={field.error}
+            helperText={field.helperText}
+            conditionalHelperText={field.conditionalHelperText}
+            onChange={(
+              e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+            ) => handleOnChange(e)}
             field={field.field}
             formData={formData}
             formVisited={formVisited}
             handleVisited={handleVisited}
-            handleOnChange={(
-              e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-            ) => handleOnChange(e)}
-            required={field.required}
-            disabled={field.disabled}
-            select={field.select}
-            error={field.error}
-            multiline={field.multiline}
-            rows={field.rows}
-            helperText={field.helperText}
             key={`${buttonText}${field.field}${id}`}
           >
             {field.children}
