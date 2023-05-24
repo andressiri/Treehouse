@@ -33,6 +33,7 @@ export interface TextFieldProps extends SharedTextFieldProps {
 
 interface IFormFieldSpecifics extends Omit<SharedTextFieldProps, "onChange"> {
   field: string;
+  label?: string;
 }
 
 export type formFieldsData = IRoomFormData;
@@ -41,6 +42,7 @@ export type formFieldsVisited = IRoomFormVisited;
 
 export interface FormFieldProps extends SharedTextFieldProps {
   field: string;
+  label?: string;
   formData: formFieldsData;
   formVisited?: formFieldsVisited;
   handleVisited?: (

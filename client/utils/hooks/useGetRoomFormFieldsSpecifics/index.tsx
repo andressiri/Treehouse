@@ -40,6 +40,7 @@ const useGetRoomFormFieldsSpecifics = (
     },
     {
       field: "teacherId",
+      label: "Teacher",
       disabled: teachersSelectOptions.length < 2,
       select: true,
       error: false,

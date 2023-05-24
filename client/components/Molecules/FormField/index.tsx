@@ -15,6 +15,7 @@ const FormField: FC<FormFieldProps> = ({
   onChange,
   children,
   field,
+  label,
   formData,
   formVisited,
   handleVisited,
@@ -45,7 +46,7 @@ const FormField: FC<FormFieldProps> = ({
       }}
       value={formData[field as keyof typeof formData] as string | undefined}
       name={field}
-      label={`${Array.from(field)[0].toUpperCase()}${field.slice(1)}`} // charAt function may cause problems at server side
+      label={label || `${Array.from(field)[0].toUpperCase()}${field.slice(1)}`} // charAt function may cause problems at server side
       variant="outlined"
       InputLabelProps={
         formData[field as keyof typeof formData] ? { shrink: true } : {}

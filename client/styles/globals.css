@@ -28,6 +28,15 @@ nav {
   font-family: "Nunito Sans", sans-serif;
 }
 
+* {
+  caret-color: transparent;
+}
+
+input:focus,
+textarea:focus {
+  caret-color: currentColor;
+}
+
 a {
   color: currentColor;
   text-decoration: none;
