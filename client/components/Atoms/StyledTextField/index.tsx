@@ -12,6 +12,7 @@ const StyledTextField: FC<TextFieldProps> = ({
   error,
   helperText = "",
   conditionalHelperText = true,
+  InputProps = { inputProps: { maxLength: "255" } },
   onChange,
   children,
   onBlur,
@@ -34,6 +35,7 @@ const StyledTextField: FC<TextFieldProps> = ({
       isError={error}
       helperText={helperText}
       conditionalHelperText={conditionalHelperText}
+      InputProps={InputProps}
       onChange={onChange}
       onBlur={onBlur}
       value={value}

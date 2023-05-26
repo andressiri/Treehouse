@@ -1,5 +1,9 @@
 import { useCallback, useState } from "react";
-import { IRoom, IRoomFormData, IRoomFormVisited } from "../../../typings/rooms";
+import {
+  IRoom,
+  IRoomFormData,
+  IRoomFormVisited,
+} from "../../../../typings/rooms";
 
 interface Props {
   room?: IRoom;
@@ -8,11 +12,13 @@ interface Props {
 const useGetRoomFormState = ({ room }: Props) => {
   const [formData, setFormData] = useState<IRoomFormData>({
     name: room?.name || "",
+    capacity: room?.capacity ? `${room.capacity}` : "",
     description: room?.description || "",
     teacherId: room?.teacherId ? `${room.teacherId}` : "",
   });
   const [formVisited, setFormVisited] = useState<IRoomFormVisited>({
     name: false,
+    capacity: false,
     description: false,
     teacherId: false,
   });

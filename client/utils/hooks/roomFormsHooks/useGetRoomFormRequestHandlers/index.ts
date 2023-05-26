@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
-import { RoomsContext } from "../../../contexts";
+import { RoomsContext } from "../../../../contexts";
 import { useRouter } from "next/router";
-import { IRoom } from "../../../typings/rooms";
-import { ROOMS_ROUTE, ROOMS_SINGULAR } from "../../../config/constants";
+import { IRoom } from "../../../../typings/rooms";
+import { ROOMS_ROUTE, ROOMS_SINGULAR } from "../../../../config/constants";
 
 const useGetRoomFormRequestHandlers = () => {
   const { room } = useContext(RoomsContext);

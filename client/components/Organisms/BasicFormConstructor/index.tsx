@@ -46,10 +46,12 @@ const BasicFormConstructor: FC<IFormProps> = ({
             error={field.error}
             helperText={field.helperText}
             conditionalHelperText={field.conditionalHelperText}
+            InputProps={field.InputProps}
             onChange={(
               e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
             ) => handleOnChange(e)}
             field={field.field}
+            label={field.label}
             formData={formData}
             formVisited={formVisited}
             handleVisited={handleVisited}

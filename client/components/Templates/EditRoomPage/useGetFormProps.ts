@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEditRoom, useRemoveTeacherFromRoom } from "../../../services";
 import { sanitizeFormChanges } from "../../../utils/helpers";
 import {
+  useGetRoomFormDisableSubmit,
   useGetRoomFormFieldsSpecifics,
   useGetRoomFormRequestHandlers,
   useGetRoomFormState,
@@ -69,12 +70,11 @@ const useGetFormProps = (room: IRoom): IFormProps => {
     }
   };
 
-  const disableSubmit =
-    editLoading ||
-    removeLoading ||
-    !formData.name ||
-    (formData.description?.length && formData.description?.length > 4999) ||
-    !checkChanges();
+  const disableSubmit = useGetRoomFormDisableSubmit(
+    formData,
+    checkChanges,
+    editLoading || removeLoading
+  );
 
   const handleCancel = () =>
     push(`/${ROOMS_ROUTE}/${ROOMS_SINGULAR}/${room.id}`);

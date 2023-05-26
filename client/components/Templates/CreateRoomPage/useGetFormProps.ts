@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useCreateRoom } from "../../../services";
 import {
+  useGetRoomFormDisableSubmit,
   useGetRoomFormFieldsSpecifics,
   useGetRoomFormRequestHandlers,
   useGetRoomFormState,
@@ -52,11 +53,11 @@ const useGetFormProps = (): IFormProps => {
     }
   };
 
-  const disableSubmit =
-    isLoading ||
-    !formData.name ||
-    (formData.description?.length && formData.description?.length > 4999) ||
-    !checkChanges();
+  const disableSubmit = useGetRoomFormDisableSubmit(
+    formData,
+    checkChanges,
+    isLoading
+  );
 
   const handleCancel = () => push(`/${ROOMS_ROUTE}`);
 

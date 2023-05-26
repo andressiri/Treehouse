@@ -27,7 +27,7 @@ import {
 import {
   checkIntegerId,
   checkName,
-  // checkRoomCapacity, // temporary disabled until client has this field developed
+  checkRoomCapacity,
   checkRoomCapacityIsInt,
   checkRoomDescriptionLength,
   checkPublicIsBool,
@@ -41,7 +41,7 @@ roomsRouter.post(
   // authenticateUser,
   // authenticateAdmin,
   checkName,
-  // checkRoomCapacity,
+  checkRoomCapacity,
   checkRoomDescriptionLength,
   checkPublicIsBool,
   checkTeacherIdIsInt,

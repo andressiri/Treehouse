@@ -12,6 +12,7 @@ const FormField: FC<FormFieldProps> = ({
   error,
   helperText = "",
   conditionalHelperText = true,
+  InputProps,
   onChange,
   children,
   field,
@@ -27,6 +28,7 @@ const FormField: FC<FormFieldProps> = ({
       disabled={disabled}
       select={select}
       multiline={multiline}
+      rows={rows}
       error={
         error ||
         ((formVisited
@@ -35,9 +37,9 @@ const FormField: FC<FormFieldProps> = ({
           !formData[field as keyof typeof formData] &&
           required)
       }
-      rows={rows}
       helperText={helperText}
       conditionalHelperText={conditionalHelperText}
+      InputProps={InputProps}
       onChange={(
         e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
       ) => onChange(e)}

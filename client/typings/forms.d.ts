@@ -1,4 +1,4 @@
-import { InputLabelProps } from "@mui/material";
+import { InputLabelProps, InputProps } from "@mui/material";
 import { IRoomFormData, IRoomFormVisited } from "./rooms";
 
 export interface SelectOption {
@@ -19,6 +19,7 @@ export interface SharedTextFieldProps {
   onChange:
     | React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>
     | ((e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void);
+  InputProps?: Partial<InputProps>;
   children?: JSX.Element | JSX.Element[];
 }
 
