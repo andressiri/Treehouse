@@ -1,5 +1,9 @@
 import { FC } from "react";
-import { CardDescription, DisplayImage, CardTitle } from "../../Molecules";
+import {
+  CardDescription,
+  DisplayPersonImage,
+  CardTitle,
+} from "../../Molecules";
 import { Container, InfoContainer } from "./styledComponents";
 import { Entities } from "../../../typings/global";
 
@@ -24,7 +28,7 @@ const DisplayCard: FC<Props> = ({
     <Container>
       <CardTitle title={name} id={id} entityName={entityName} />
       <InfoContainer>
-        <DisplayImage imageSrc={image} name={teacherName} />
+        <DisplayPersonImage imageSrc={image} name={teacherName} />
         <CardDescription
           description={description}
           id={id}

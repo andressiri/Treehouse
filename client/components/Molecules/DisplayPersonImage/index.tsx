@@ -1,23 +1,23 @@
 import { FC } from "react";
-import emptyImage from "../../../assets/emptyImage.png";
+import emptyImage from "../../../assets/emptyPersonImage.png";
 import { Container, StyledImage, Name } from "./styledComponents";
 
 interface Props {
   imageSrc?: string;
   name?: string;
 }
-const RoomCardTeacher: FC<Props> = ({ imageSrc, name }) => {
+const DisplayPersonImage: FC<Props> = ({ imageSrc, name }) => {
   return (
     <Container>
       <StyledImage
         src={imageSrc || emptyImage}
-        alt="Teacher image"
-        width={150}
-        height={150}
+        alt="Person image"
+        width={180}
+        height={180}
       />
       {name ? <Name>{name}</Name> : <></>}
     </Container>
   );
 };
 
-export default RoomCardTeacher;
+export default DisplayPersonImage;

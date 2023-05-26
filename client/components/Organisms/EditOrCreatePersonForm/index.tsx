@@ -15,7 +15,7 @@ import {
 } from "../../../services";
 import { arrayBufferToBase64 } from "../../../utils/helpers";
 import { StyledButton, StyledTextField } from "../../../components/Atoms";
-import { DisplayImage, RoomSelect } from "../../../components/Molecules";
+import { DisplayPersonImage, RoomSelect } from "../../../components/Molecules";
 import {
   Container,
   ImageContainer,
@@ -303,7 +303,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
           }
           type="file"
         />
-        <DisplayImage imageSrc={imagePreview} />
+        <DisplayPersonImage imageSrc={imagePreview} />
         <StyledIconButton>
           <CloudUploadIcon />
         </StyledIconButton>
