@@ -20,9 +20,10 @@ const useEditTeacher = (responseOptions: IHandleResponseOptions) => {
     (formData: IFormData, id: number) => {
       executeRequest({
         route: `/${TEACHERS_ROUTE}/${EDIT}/${id}`,
+        data: formData,
         method: "PUT",
         setState: setTeacher,
-        formData,
+        type: "withImage",
       });
     },
     [executeRequest, setTeacher]

@@ -1,3 +1,29 @@
+export type RequestMethod =
+  | "GET"
+  | "HEAD"
+  | "POST"
+  | "PUT"
+  | "DELETE"
+  | "CONNECT"
+  | "OPTIONS"
+  | "TRACE"
+  | "PATCH";
+
+type RequestType = "basic" | "withAuth" | "withImage" | "withAuthAndImage";
+
+export interface RequestHelpersProps {
+  route: string;
+  baseUrl?: string;
+  data?: object;
+  method?: RequestMethod;
+  contentType?: string;
+  headers?: object;
+}
+
+export interface RequestWithAuthProps extends RequestHelpersProps {
+  type?: RequestType;
+}
+
 export interface IServiceState {
   isError: boolean;
   setIsError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,9 +57,14 @@ export interface IHandleResponseOptions {
   successToast?: boolean;
   successMessage?: string;
 }
-
 export interface IHandleResponseProps extends IHandleResponseOptions {
   serviceState: IHandleResponseServiceState;
+}
+
+interface ExecuteProps extends RequestHelpersProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setState?: React.Dispatch<React.SetStateAction<any>>; // Using SetServiceState would result in the error TS2590: Expression produces a union type that is too complex to represent.
+  type?: RequestType;
 }
 
 export type ServiceStateKey =

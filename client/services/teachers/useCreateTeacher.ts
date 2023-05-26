@@ -20,9 +20,10 @@ const useCreateTeacher = (responseOptions: IHandleResponseOptions) => {
     (formData: IFormData) => {
       executeRequest({
         route: `/${TEACHERS_ROUTE}`,
+        data: formData,
         method: "POST",
         setState: setTeacher,
-        formData,
+        type: "withImage",
       });
     },
     [executeRequest, setTeacher]

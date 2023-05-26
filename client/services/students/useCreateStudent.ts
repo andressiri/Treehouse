@@ -21,9 +21,10 @@ const useCreateStudent = (responseOptions: IHandleResponseOptions) => {
     (formData: IFormData) => {
       executeRequest({
         route: `/${STUDENTS_ROUTE}`,
+        data: formData,
         method: "POST",
         setState: setStudent,
-        formData,
+        type: "withImage",
       });
     },
     [executeRequest, setStudent]

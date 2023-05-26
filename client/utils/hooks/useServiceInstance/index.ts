@@ -1,16 +1,16 @@
-import React, { useCallback, useState } from "react";
-import { axiosInstance, sanitizeRequestData } from "../../../utils/helpers";
+import { useCallback, useState } from "react";
+import {
+  makeRequest,
+  requestWithAuth,
+  requestWithImage,
+  sanitizeRequestData,
+} from "../../../utils/helpers";
 import { EntitiesState /* SetServiceState */ } from "../../../typings/contexts";
-import { IHandleResponseOptions } from "../../../typings/services";
+import {
+  ExecuteProps,
+  IHandleResponseOptions,
+} from "../../../typings/services";
 import useHandleResponseEffect from "../useHandleResponseEffect";
-
-interface ExecuteProps {
-  route: string;
-  method?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setState?: React.Dispatch<React.SetStateAction<any>>; // Using SetServiceState would result in the error TS2590: Expression produces a union type that is too complex to represent.
-  formData?: object;
-}
 
 const useServiceInstance = (responseOptions: IHandleResponseOptions) => {
   const [isError, setIsError] = useState(false);
@@ -31,14 +31,37 @@ const useServiceInstance = (responseOptions: IHandleResponseOptions) => {
   });
 
   const executeRequest = useCallback(
-    async ({ route, method, setState, formData }: ExecuteProps) => {
+    async ({
+      route,
+      baseUrl,
+      data,
+      method,
+      contentType,
+      headers,
+      setState,
+      type = "basic",
+    }: ExecuteProps) => {
       const notGetRequest = method && method !== "GET";
       setIsLoading(true);
 
       try {
-        const data = formData ? sanitizeRequestData(formData) : undefined;
+        const dataToSend = data ? sanitizeRequestData(data) : undefined;
 
-        const response = await axiosInstance(route, data, method || "GET");
+        const requestObj = {
+          route,
+          baseUrl,
+          data: dataToSend,
+          method,
+          contentType,
+          headers,
+        };
+
+        const response =
+          type === "basic"
+            ? await makeRequest(requestObj)
+            : type === "withAuth" || type === "withAuthAndImage"
+            ? await requestWithAuth({ ...requestObj, type })
+            : await requestWithImage(requestObj);
 
         if (setState) {
           const dataToSet: EntitiesState = notGetRequest

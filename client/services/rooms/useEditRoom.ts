@@ -16,9 +16,9 @@ const useEditRoom = (responseOptions: IHandleResponseOptions) => {
     (formData: IFormData, id: number) => {
       executeRequest({
         route: `/${ROOMS_ROUTE}/${EDIT}/${id}`,
+        data: formData,
         method: "PUT",
         setState: setRoom,
-        formData,
       });
     },
     [executeRequest, setRoom]

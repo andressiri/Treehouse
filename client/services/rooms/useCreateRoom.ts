@@ -14,9 +14,9 @@ const useCreateRoom = (responseOptions: IHandleResponseOptions) => {
     (formData: IRoomFormData) => {
       executeRequest({
         route: `/${ROOMS_ROUTE}`,
+        data: formData,
         method: "POST",
         setState: setRoom,
-        formData,
       });
     },
     [executeRequest, setRoom]

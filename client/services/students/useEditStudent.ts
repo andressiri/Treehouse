@@ -21,9 +21,10 @@ const useEditStudent = (responseOptions: IHandleResponseOptions) => {
     (formData: IFormData, id: number) => {
       executeRequest({
         route: `/${STUDENTS_ROUTE}/${EDIT}/${id}`,
+        data: formData,
         method: "PUT",
         setState: setStudent,
-        formData,
+        type: "withImage",
       });
     },
     [executeRequest, setStudent]

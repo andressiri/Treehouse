@@ -21,9 +21,9 @@ const useAddSibling = (responseOptions: IHandleResponseOptions) => {
     (formData: IFormData, id: number) => {
       executeRequest({
         route: `/${STUDENTS_ROUTE}/${STUDENTS_HANDLE_SIBLINGS}/${id}`,
+        data: formData,
         method: "PUT",
         setState: setStudentWithRelations,
-        formData,
       });
     },
     [executeRequest, setStudentWithRelations]
