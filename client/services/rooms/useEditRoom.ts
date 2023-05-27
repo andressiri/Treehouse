@@ -19,6 +19,7 @@ const useEditRoom = (responseOptions: IHandleResponseOptions) => {
         data: formData,
         method: "PUT",
         setState: setRoom,
+        type: "withImage",
       });
     },
     [executeRequest, setRoom]

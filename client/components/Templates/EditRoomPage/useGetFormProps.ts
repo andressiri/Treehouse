@@ -8,15 +8,27 @@ import {
   useGetRoomFormState,
 } from "../../../utils/hooks";
 import { IRoom, IRoomFormData } from "../../../typings/rooms";
-import { IFormProps } from "../../../typings/forms";
+import { IFormProps, ImageUploadProps } from "../../../typings/forms";
 import { ROOMS_ROUTE, ROOMS_SINGULAR } from "../../../config/constants";
 
-const useGetFormProps = (room: IRoom): IFormProps => {
+interface ReturnObject {
+  imageProps: ImageUploadProps;
+  formProps: IFormProps;
+}
+
+const useGetFormProps = (room: IRoom): ReturnObject => {
   const buttonText = "Edit room";
   const { push, query } = useRouter();
   const roomIdNumber = Number(query.id);
-  const { formData, handleOnChange, formVisited, handleVisited } =
-    useGetRoomFormState({ room });
+  const {
+    imageWasUploaded,
+    notifyImageWasUploaded,
+    notifyImageWasCanceled,
+    formData,
+    handleOnChange,
+    formVisited,
+    handleVisited,
+  } = useGetRoomFormState({ room });
   const { errorAction, successAction, errorMessage, setErrorMessage } =
     useGetRoomFormRequestHandlers();
 
@@ -71,6 +83,7 @@ const useGetFormProps = (room: IRoom): IFormProps => {
   };
 
   const disableSubmit = useGetRoomFormDisableSubmit(
+    imageWasUploaded,
     formData,
     checkChanges,
     editLoading || removeLoading
@@ -80,17 +93,25 @@ const useGetFormProps = (room: IRoom): IFormProps => {
     push(`/${ROOMS_ROUTE}/${ROOMS_SINGULAR}/${room.id}`);
 
   return {
-    formData,
-    formVisited,
-    formFieldsSpecificsArray,
-    handleVisited,
-    handleOnChange,
-    checkChanges,
-    handleSubmit,
-    handleCancel,
-    errorMessage,
-    disableSubmit,
-    buttonText,
+    imageProps: {
+      image: room.image,
+      entity: "room",
+      notifyImageWasUploaded,
+      notifyImageWasCanceled,
+    },
+    formProps: {
+      formData,
+      formVisited,
+      formFieldsSpecificsArray,
+      handleVisited,
+      handleOnChange,
+      checkChanges,
+      handleSubmit,
+      handleCancel,
+      errorMessage,
+      disableSubmit,
+      buttonText,
+    },
   };
 };
 
