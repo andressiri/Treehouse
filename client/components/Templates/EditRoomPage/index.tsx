@@ -5,7 +5,7 @@ import {
   Container,
   ImageContainer,
 } from "../../../styles/sharedStyledComponents/roomForms";
-import useGetFormProps from "./useGetFormProps";
+import useGetComponentsProps from "./useGetComponentsProps";
 import { IRoom } from "../../../typings/rooms";
 import { ImageUpload } from "../../Molecules";
 
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const EditRoomPage: FC<Props> = ({ room }) => {
-  const { imageProps, formProps } = useGetFormProps(room);
+  const { imageProps, formProps } = useGetComponentsProps(room);
 
   return (
     <Container>

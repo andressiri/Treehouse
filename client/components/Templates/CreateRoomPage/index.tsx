@@ -6,10 +6,10 @@ import {
   Container,
   ImageContainer,
 } from "../../../styles/sharedStyledComponents/roomForms";
-import useGetFormProps from "./useGetFormProps";
+import useGetComponentsProps from "./useGetComponentsProps";
 
 const CreateRoomPage: FC = () => {
-  const { imageProps, formProps } = useGetFormProps();
+  const { imageProps, formProps } = useGetComponentsProps();
 
   return (
     <Container>

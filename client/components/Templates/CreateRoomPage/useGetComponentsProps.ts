@@ -14,7 +14,7 @@ interface ReturnObject {
   formProps: IFormProps;
 }
 
-const useGetFormProps = (): ReturnObject => {
+const useGetComponentsProps = (): ReturnObject => {
   const buttonText = "Create room";
   const { push } = useRouter();
 
@@ -96,4 +96,4 @@ const useGetFormProps = (): ReturnObject => {
   };
 };
 
-export default useGetFormProps;
+export default useGetComponentsProps;
