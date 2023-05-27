@@ -10,6 +10,7 @@ interface Props {
 }
 
 const useGetRoomFormState = ({ room }: Props) => {
+  const [imageWasUploaded, setImageWasUploaded] = useState(false);
   const [formData, setFormData] = useState<IRoomFormData>({
     name: room?.name || "",
     capacity: room?.capacity ? `${room.capacity}` : "",
@@ -22,6 +23,10 @@ const useGetRoomFormState = ({ room }: Props) => {
     description: false,
     teacherId: false,
   });
+
+  const notifyImageWasUploaded = () => setImageWasUploaded(true);
+
+  const notifyImageWasCanceled = () => setImageWasUploaded(false);
 
   const handleOnChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -47,6 +52,9 @@ const useGetRoomFormState = ({ room }: Props) => {
   );
 
   return {
+    imageWasUploaded,
+    notifyImageWasUploaded,
+    notifyImageWasCanceled,
     formData,
     setFormData,
     handleOnChange,

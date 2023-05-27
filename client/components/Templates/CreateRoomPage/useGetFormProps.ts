@@ -6,15 +6,27 @@ import {
   useGetRoomFormRequestHandlers,
   useGetRoomFormState,
 } from "../../../utils/hooks";
-import { IFormProps } from "../../../typings/forms";
+import { IFormProps, ImageUploadProps } from "../../../typings/forms";
 import { ROOMS_ROUTE } from "../../../config/constants";
 
-const useGetFormProps = (): IFormProps => {
+interface ReturnObject {
+  imageProps: ImageUploadProps;
+  formProps: IFormProps;
+}
+
+const useGetFormProps = (): ReturnObject => {
   const buttonText = "Create room";
   const { push } = useRouter();
 
-  const { formData, handleOnChange, formVisited, handleVisited } =
-    useGetRoomFormState({});
+  const {
+    imageWasUploaded,
+    notifyImageWasUploaded,
+    notifyImageWasCanceled,
+    formData,
+    handleOnChange,
+    formVisited,
+    handleVisited,
+  } = useGetRoomFormState({});
 
   const formFieldsSpecificsArray = useGetRoomFormFieldsSpecifics(
     formData,
@@ -54,6 +66,7 @@ const useGetFormProps = (): IFormProps => {
   };
 
   const disableSubmit = useGetRoomFormDisableSubmit(
+    imageWasUploaded,
     formData,
     checkChanges,
     isLoading
@@ -62,17 +75,24 @@ const useGetFormProps = (): IFormProps => {
   const handleCancel = () => push(`/${ROOMS_ROUTE}`);
 
   return {
-    formData,
-    formVisited,
-    formFieldsSpecificsArray,
-    handleVisited,
-    handleOnChange,
-    checkChanges,
-    handleSubmit,
-    handleCancel,
-    errorMessage,
-    disableSubmit,
-    buttonText,
+    imageProps: {
+      entity: "room",
+      notifyImageWasUploaded,
+      notifyImageWasCanceled,
+    },
+    formProps: {
+      formData,
+      formVisited,
+      formFieldsSpecificsArray,
+      handleVisited,
+      handleOnChange,
+      checkChanges,
+      handleSubmit,
+      handleCancel,
+      errorMessage,
+      disableSubmit,
+      buttonText,
+    },
   };
 };
 

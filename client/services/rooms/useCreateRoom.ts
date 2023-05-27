@@ -17,6 +17,7 @@ const useCreateRoom = (responseOptions: IHandleResponseOptions) => {
         data: formData,
         method: "POST",
         setState: setRoom,
+        type: "withImage",
       });
     },
     [executeRequest, setRoom]
