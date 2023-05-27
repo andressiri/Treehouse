@@ -118,7 +118,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
       errorAction: () => errorAction(removeStudentMessage),
       successAction: removeStudentSuccessAction,
       successToast: true,
-      successMessage: `${(student as IStudent).name} ${
+      successMessage: `${(student as IStudent)?.name} ${
         person ? "updated" : "created"
       } successfully`,
     });
@@ -206,7 +206,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
       formData.roomId ||
         (!formData.roomId && (!person || !(person as IStudent).roomId))
     ),
-    successMessage: `${(student as IStudent).name} ${
+    successMessage: `${(student as IStudent)?.name} ${
       person ? "updated" : "created"
     } successfully`,
   });
@@ -280,7 +280,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
           result = arrayBufferToBase64(result as ArrayBuffer);
         }
 
-        sessionStorage.setItem("file", result as string);
+        sessionStorage.setItem("pictureForRequest", result as string);
         setImagePreview(result as string);
       }
     };

@@ -16,7 +16,7 @@ export const theme: ThemeOptions = createTheme({
     },
   },
   typography: {
-    fontFamily: "'Kanit', sans-serif",
+    fontFamily: "'Nunito Sans', sans-serif",
   },
   custom: {
     buttons: {
