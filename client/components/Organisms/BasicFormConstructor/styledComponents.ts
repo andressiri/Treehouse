@@ -22,7 +22,7 @@ export const ActionsContainer = styled(Box)(() => ({
 export const ErrorContainer = styled(Box)(() => ({
   width: "100%",
   height: "56px",
-  margin: "-10px auto",
+  margin: "-20px auto",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",

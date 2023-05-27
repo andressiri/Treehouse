@@ -1,5 +1,7 @@
 import { FC } from "react";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import ClearIcon from "@mui/icons-material/Clear";
 import {
   DisplayPersonImage,
   DisplayRoomImage,
@@ -7,26 +9,37 @@ import {
 import {
   ImageContainer,
   StyledFileInput,
-  StyledIconButton,
+  PersonImageContainer,
+  StyledDeleteButton,
+  StyledUploadButton,
 } from "./styledComponents";
 import useGetImageUploadControllers from "./useGetImageUploadControllers";
+import { ImageUploadProps } from "../../../typings/forms";
 
-interface Props {
-  image?: string;
-  entity?: "person" | "room";
-}
-
-const ImageUpload: FC<Props> = ({ image, entity = "person" }) => {
+const ImageUpload: FC<ImageUploadProps> = ({
+  image,
+  entity = "person",
+  notifyImageWasUploaded,
+  notifyImageWasCanceled,
+}) => {
   const {
+    imageUploaded,
     imagePreview,
     inputFile,
     isPerson,
     handleUploadImage,
     handleFileUpload,
-  } = useGetImageUploadControllers({ image, entity });
+    handleCancelUpload,
+    handleDeleteImage,
+  } = useGetImageUploadControllers({
+    image,
+    entity,
+    notifyImageWasUploaded,
+    notifyImageWasCanceled,
+  });
 
   return (
-    <ImageContainer onClick={handleUploadImage}>
+    <ImageContainer>
       <StyledFileInput
         type="file"
         accept="image/*"
@@ -36,13 +49,24 @@ const ImageUpload: FC<Props> = ({ image, entity = "person" }) => {
         }
       />
       {isPerson ? (
-        <DisplayPersonImage imageSrc={imagePreview} />
+        <PersonImageContainer>
+          <DisplayPersonImage imageSrc={imagePreview} />
+        </PersonImageContainer>
       ) : (
         <DisplayRoomImage imageSrc={imagePreview} />
       )}
-      <StyledIconButton>
-        <CloudUploadIcon />
-      </StyledIconButton>
+      {image && !imageUploaded && (
+        <StyledDeleteButton onClick={handleDeleteImage} isPerson={isPerson}>
+          <DeleteForeverIcon />
+        </StyledDeleteButton>
+      )}
+      <StyledUploadButton
+        onClick={!imageUploaded ? handleUploadImage : handleCancelUpload}
+        imageUploaded={imageUploaded}
+        isPerson={isPerson}
+      >
+        {!imageUploaded ? <CloudUploadIcon /> : <ClearIcon />}
+      </StyledUploadButton>
     </ImageContainer>
   );
 };

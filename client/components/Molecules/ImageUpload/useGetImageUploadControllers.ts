@@ -1,15 +1,41 @@
-import { useRef, useState } from "react";
-import { arrayBufferToBase64 } from "../../../utils/helpers";
+import { useEffect, useRef, useState } from "react";
+import {
+  arrayBufferToBase64,
+  clearSessionStorageImages,
+} from "../../../utils/helpers";
+import emptyPersonImage from "../../../assets/emptyPersonImage.png";
+import emptyRoomImage from "../../../assets/emptyRoomImage.png";
+import { ImageUploadProps } from "../../../typings/forms";
 
-interface Props {
-  image?: string;
-  entity?: "person" | "room";
-}
-
-const useGetImageUploadControllers = ({ image, entity = "person" }: Props) => {
+const useGetImageUploadControllers = ({
+  image,
+  entity = "person",
+  notifyImageWasUploaded,
+  notifyImageWasCanceled,
+}: ImageUploadProps) => {
+  const [imageUploaded, setImageUploaded] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | undefined>(image);
   const inputFile = useRef<HTMLInputElement>(null);
   const isPerson = entity === "person";
+
+  useEffect(() => {
+    clearSessionStorageImages();
+
+    return () => {
+      clearSessionStorageImages();
+    };
+  }, []);
+
+  const updateImage = (img: string) => {
+    sessionStorage.setItem(
+      isPerson ? "pictureForRequest" : "imageForRequest",
+      img
+    );
+    setImagePreview(img);
+    setImageUploaded(true);
+
+    if (notifyImageWasUploaded) notifyImageWasUploaded();
+  };
 
   const handleUploadImage = () =>
     (inputFile as React.RefObject<HTMLInputElement>).current?.click();
@@ -26,11 +52,7 @@ const useGetImageUploadControllers = ({ image, entity = "person" }: Props) => {
           result = arrayBufferToBase64(result as ArrayBuffer);
         }
 
-        sessionStorage.setItem(
-          isPerson ? "pictureForRequest" : "imageForRequest",
-          result as string
-        );
-        setImagePreview(result as string);
+        updateImage(result as string);
       }
     };
     if (!e.target.files) return;
@@ -38,12 +60,30 @@ const useGetImageUploadControllers = ({ image, entity = "person" }: Props) => {
     fileReader.readAsDataURL(e.target.files[0]);
   };
 
+  const handleCancelUpload = () => {
+    setImagePreview(image);
+    setImageUploaded(false);
+    (inputFile.current as HTMLInputElement).value = "";
+    clearSessionStorageImages();
+
+    if (notifyImageWasCanceled) notifyImageWasCanceled();
+  };
+
+  const handleDeleteImage = () => {
+    const imageToSet = isPerson ? emptyPersonImage.src : emptyRoomImage.src;
+
+    updateImage(imageToSet);
+  };
+
   return {
+    imageUploaded,
     imagePreview,
     inputFile,
     isPerson,
     handleUploadImage,
     handleFileUpload,
+    handleCancelUpload,
+    handleDeleteImage,
   };
 };
 

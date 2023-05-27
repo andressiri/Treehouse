@@ -11,7 +11,7 @@ export const Container = styled(Box)(() => ({
 export const StyledImage = styled(Image)(() => ({
   width: "550px",
   height: "250px",
-  objectFit: "contain",
+  objectFit: "cover",
 }));
 
 export const Name = styled(Typography)(({ theme }) => ({

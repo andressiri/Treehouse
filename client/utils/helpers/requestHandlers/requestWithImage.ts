@@ -5,6 +5,7 @@ import {
   API_CONTENT_TYPE,
   API_CONTENT_TYPE_WITH_FILE,
 } from "../../../config/constants";
+import clearSessionStorageImages from "../clearSessionStorageImages";
 
 const requestWithImage = async ({
   route,
@@ -51,7 +52,7 @@ const requestWithImage = async ({
       headers: headersToPass,
     });
 
-    sessionStorage.removeItem("file");
+    clearSessionStorageImages();
 
     return response;
   } catch (err) {

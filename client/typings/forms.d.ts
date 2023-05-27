@@ -68,3 +68,10 @@ export interface IFormProps {
   disableSubmit: boolean;
   buttonText: string;
 }
+
+export interface ImageUploadProps {
+  image?: string;
+  entity?: "person" | "room";
+  notifyImageWasUploaded?: () => void;
+  notifyImageWasCanceled?: () => void;
+}
