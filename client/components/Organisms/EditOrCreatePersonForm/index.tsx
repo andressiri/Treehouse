@@ -2,7 +2,6 @@ import { FC, useContext, useRef, useState } from "react";
 import { StudentsContext, TeachersContext } from "../../../contexts";
 import { useRouter } from "next/router";
 import CheckIcon from "@mui/icons-material/Check";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { MenuItem } from "@mui/material";
 import {
   useCreateStudent,
@@ -13,17 +12,9 @@ import {
   useRemoveStudentFromRoom,
   useRemoveTeacherFromRoom,
 } from "../../../services";
-import { arrayBufferToBase64 } from "../../../utils/helpers";
 import { StyledButton, StyledTextField } from "../../../components/Atoms";
-import { DisplayPersonImage, RoomSelect } from "../../../components/Molecules";
-import {
-  Container,
-  ImageContainer,
-  StyledFileInput,
-  StyledIconButton,
-  ErrorContainer,
-  ErrorMessage,
-} from "./styledComponents";
+import { ImageUpload, RoomSelect } from "../../../components/Molecules";
+import { Container, ErrorContainer, ErrorMessage } from "./styledComponents";
 import getArrays from "./getArrays";
 import { PersonEntities } from "../../../typings/global";
 import { ITeacher, ITeacherWithRelations } from "../../../typings/teachers";
@@ -62,14 +53,10 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
       ? `${((person as ITeacherWithRelations)?.Room as IRoom)?.id}`
       : "",
   });
-  const [imagePreview, setImagePreview] = useState<string | undefined>(
-    person?.picture
-  );
   const [errorMessage, setErrorMessage] = useState<string>("");
   const isStudent = entityName === STUDENT_ENTITY;
   const submitted = useRef<boolean>(false);
   const studentRemoved = useRef<boolean>(false);
-  const inputFile = useRef<HTMLInputElement>(null);
   const { student } = useContext(StudentsContext);
   const { teacher, teacherWithRelations } = useContext(TeachersContext);
   const { genderArray } = getArrays();
@@ -265,49 +252,12 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
     createTeacher(teacherData);
   };
 
-  const handleUploadImage = () =>
-    (inputFile as React.RefObject<HTMLInputElement>).current?.click();
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileReader = new FileReader();
-    fileReader.onload = () => {
-      if (fileReader.readyState === 2) {
-        if (fileReader.result === null) return;
-
-        let result: string | ArrayBuffer = fileReader.result;
-
-        if (typeof fileReader.result !== "string") {
-          result = arrayBufferToBase64(result as ArrayBuffer);
-        }
-
-        sessionStorage.setItem("pictureForRequest", result as string);
-        setImagePreview(result as string);
-      }
-    };
-    if (!e.target.files) return;
-
-    fileReader.readAsDataURL(e.target.files[0]);
-  };
-
   return (
     <Container
       component="form"
       onSubmit={(e: React.FormEvent<HTMLDivElement>) => handleSubmit(e)}
     >
-      <ImageContainer onClick={handleUploadImage}>
-        <StyledFileInput
-          accept="image/*"
-          ref={inputFile}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            handleFileUpload(e)
-          }
-          type="file"
-        />
-        <DisplayPersonImage imageSrc={imagePreview} />
-        <StyledIconButton>
-          <CloudUploadIcon />
-        </StyledIconButton>
-      </ImageContainer>
+      <ImageUpload image={person?.picture} />
       <StyledTextField
         value={formData.name}
         name="name"
