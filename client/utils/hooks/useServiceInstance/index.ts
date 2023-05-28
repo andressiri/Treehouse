@@ -3,7 +3,6 @@ import {
   makeRequest,
   requestWithAuth,
   requestWithImage,
-  sanitizeRequestData,
 } from "../../../utils/helpers";
 import { EntitiesState /* SetServiceState */ } from "../../../typings/contexts";
 import {
@@ -45,12 +44,10 @@ const useServiceInstance = (responseOptions: IHandleResponseOptions) => {
       setIsLoading(true);
 
       try {
-        const dataToSend = data ? sanitizeRequestData(data) : undefined;
-
         const requestObj = {
           route,
           baseUrl,
-          data: dataToSend,
+          data,
           method,
           contentType,
           headers,

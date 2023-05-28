@@ -3,7 +3,6 @@ import { Box, IconButton } from "@mui/material";
 
 export const ImageContainer = styled(Box)(() => ({
   position: "relative",
-  cursor: "pointer",
 }));
 
 export const StyledFileInput = styled("input")(() => ({

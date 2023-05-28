@@ -1,29 +1,32 @@
-import { useEditRoom, useRemoveTeacherFromRoom } from "../../../../services";
+import { useEditStudent, useRemoveStudentFromRoom } from "../../../../services";
 import { sanitizeFormChanges } from "../../../../utils/helpers";
 import {
   useCheckImageWasUploaded,
   useGetFormBasicResponseHandlers,
-  useGetRoomFormDisableSubmit,
-  useGetRoomFormFieldsSpecifics,
-  useGetRoomFormState,
+  useGetPersonFormDisableSubmit,
+  useGetPersonFormFieldsSpecifics,
+  useGetPersonFormState,
 } from "../../../../utils/hooks";
-import { IRoom, IRoomFormData } from "../../../../typings/rooms";
 import { FormsComponentsProps } from "../../../../typings/forms";
-import { ROOM_ENTITY } from "../../../../config/constants";
+import { STUDENT_ENTITY } from "../../../../config/constants";
+import { IStudent } from "../../../../typings/students";
+import { IPersonFormData } from "../../../../typings/persons";
 
-const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
-  const title = `Edit ${room.name} room`;
-  const buttonText = "Edit room";
+const useGetEditStudentComponentsProps = (
+  student: IStudent
+): FormsComponentsProps => {
+  const title = `Edit ${student.name} student`;
+  const buttonText = "Edit student";
   const noChangesError = "There are no changes to submit";
-  const successMessage = `${room?.name} edited successfully`;
-  const entity = ROOM_ENTITY;
-  const isPerson = false;
+  const successMessage = `${student.name} edited successfully`;
+  const entity = STUDENT_ENTITY;
+  const isPerson = true;
 
   const { imageWasUploaded, notifyImageWasUploaded, notifyImageWasCanceled } =
     useCheckImageWasUploaded();
 
   const { formData, handleOnChange, formVisited, handleVisited } =
-    useGetRoomFormState({ room });
+    useGetPersonFormState({ person: student });
 
   const {
     errorAction,
@@ -34,17 +37,20 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
     setKeepLoading,
   } = useGetFormBasicResponseHandlers(entity);
 
-  const formFieldsSpecificsArray = useGetRoomFormFieldsSpecifics(
+  const formFieldsSpecificsArray = useGetPersonFormFieldsSpecifics(
     formData,
-    formVisited,
-    room.id
+    formVisited
+  );
+
+  const noRemoveFromRoomRequired = Boolean(
+    formData.roomId || (!formData.roomId && !student.roomId)
   );
 
   const {
-    removeTeacherFromRoom,
+    removeStudentFromRoom,
     isLoading: removeLoading,
     message: removeMessage,
-  } = useRemoveTeacherFromRoom({
+  } = useRemoveStudentFromRoom({
     errorAction: () => errorAction(removeMessage),
     successAction,
     successMessage,
@@ -52,34 +58,35 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
   });
 
   const {
-    editRoom,
+    editStudent,
     isLoading: editLoading,
     message: editMessage,
-  } = useEditRoom({
+  } = useEditStudent({
     errorAction: () => {
-      !formData.teacherId && room.teacherId
-        ? removeTeacherFromRoom(room.id)
-        : errorAction(editMessage);
+      noRemoveFromRoomRequired
+        ? errorAction(editMessage)
+        : removeStudentFromRoom(student.id);
     },
     successAction: () => {
-      !formData.teacherId && room.teacherId
-        ? removeTeacherFromRoom(room.id)
-        : successAction();
+      noRemoveFromRoomRequired
+        ? successAction()
+        : removeStudentFromRoom(student.id);
     },
-    successToast: !(!formData.teacherId && room.teacherId),
+    successToast: noRemoveFromRoomRequired,
   });
 
-  const checkChanges = () => Boolean(sanitizeFormChanges(formData, room, true));
+  const checkChanges = () =>
+    Boolean(sanitizeFormChanges(formData, student, true));
 
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    const data = sanitizeFormChanges(formData, room);
+    const data = sanitizeFormChanges(formData, student);
 
     if (data || imageWasUploaded) {
       setErrorMessage("");
       setKeepLoading(true);
-      editRoom(data as Partial<IRoomFormData>, room.id);
+      editStudent(data as Partial<IPersonFormData>, student.id);
     } else {
       setErrorMessage(noChangesError);
     }
@@ -87,7 +94,7 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
 
   const formIsLoading = editLoading || removeLoading || keepLoading;
 
-  const disableSubmit = useGetRoomFormDisableSubmit(
+  const disableSubmit = useGetPersonFormDisableSubmit(
     imageWasUploaded,
     formData,
     checkChanges,
@@ -99,7 +106,7 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
   return {
     title,
     imageProps: {
-      image: room.image,
+      image: student.picture,
       isPerson,
       notifyImageWasUploaded,
       notifyImageWasCanceled,
@@ -121,4 +128,4 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
   };
 };
 
-export default useGetEditRoomComponentsProps;
+export default useGetEditStudentComponentsProps;

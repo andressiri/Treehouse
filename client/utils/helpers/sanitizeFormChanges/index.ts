@@ -23,7 +23,7 @@ const sanitizeFormChanges = (
     } else {
       emptyObj = false;
       if (!formDataItem)
-        (obj[key as keyof typeof obj] as string | undefined) = undefined;
+        (obj[key as keyof typeof obj] as string | undefined) = "";
       if (shouldBreak) break;
     }
   }
