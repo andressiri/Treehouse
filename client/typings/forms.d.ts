@@ -67,12 +67,13 @@ export interface IFormProps {
   handleCancel: () => void;
   errorMessage: string;
   disableSubmit: boolean;
+  formIsLoading: boolean;
   buttonText: string;
 }
 
 export interface ImageUploadProps {
   image?: string;
-  entity?: "person" | "room";
+  isPerson: boolean;
   notifyImageWasUploaded?: () => void;
   notifyImageWasCanceled?: () => void;
 }
@@ -81,5 +82,4 @@ export interface FormsComponentsProps {
   title: string;
   imageProps: ImageUploadProps;
   formProps: IFormProps;
-  isPerson?: boolean;
 }

@@ -1,24 +1,25 @@
-import { useState } from "react";
 import { useRouter } from "next/router";
 import { useEditRoom, useRemoveTeacherFromRoom } from "../../../../services";
 import { sanitizeFormChanges } from "../../../../utils/helpers";
 import {
   useCheckImageWasUploaded,
+  useGetFormBasicResponseHandlers,
   useGetRoomFormDisableSubmit,
   useGetRoomFormFieldsSpecifics,
-  useGetRoomFormResponseHandlers,
   useGetRoomFormState,
 } from "../../../../utils/hooks";
 import { IRoom, IRoomFormData } from "../../../../typings/rooms";
 import { FormsComponentsProps } from "../../../../typings/forms";
-import { ROOMS_ROUTE, ROOMS_SINGULAR } from "../../../../config/constants";
+import { ROOM_ENTITY } from "../../../../config/constants";
 
 const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
-  const [keepLoading, setKeepLoading] = useState(false);
   const title = `Edit ${room.name} room`;
   const buttonText = "Edit room";
-  const entity = "room";
-  const { push, query } = useRouter();
+  const noChangesError = "There are no changes to submit";
+  const successMessage = `${room?.name} edited successfully`;
+  const entity = ROOM_ENTITY;
+  const isPerson = false;
+  const { query } = useRouter();
   const roomIdNumber = Number(query.id);
 
   const { imageWasUploaded, notifyImageWasUploaded, notifyImageWasCanceled } =
@@ -27,8 +28,14 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
   const { formData, handleOnChange, formVisited, handleVisited } =
     useGetRoomFormState({ room });
 
-  const { errorAction, successAction, errorMessage, setErrorMessage } =
-    useGetRoomFormResponseHandlers();
+  const {
+    errorAction,
+    successAction,
+    errorMessage,
+    setErrorMessage,
+    keepLoading,
+    setKeepLoading,
+  } = useGetFormBasicResponseHandlers(entity);
 
   const formFieldsSpecificsArray = useGetRoomFormFieldsSpecifics(
     formData,
@@ -41,15 +48,9 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
     isLoading: removeLoading,
     message: removeMessage,
   } = useRemoveTeacherFromRoom({
-    errorAction: () => {
-      errorAction(removeMessage);
-      setKeepLoading(false);
-    },
-    successAction: () => {
-      successAction();
-      setKeepLoading(false);
-    },
-    successMessage: `${room?.name} edited successfully`,
+    errorAction: () => errorAction(removeMessage),
+    successAction,
+    successMessage,
     successToast: true,
   });
 
@@ -59,19 +60,14 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
     message: editMessage,
   } = useEditRoom({
     errorAction: () => {
-      if (!formData.teacherId && room.teacherId) {
-        removeTeacherFromRoom(roomIdNumber);
-      } else {
-        errorAction(editMessage);
-      }
+      !formData.teacherId && room.teacherId
+        ? removeTeacherFromRoom(roomIdNumber)
+        : errorAction(editMessage);
     },
     successAction: () => {
-      if (!formData.teacherId && room.teacherId) {
-        removeTeacherFromRoom(roomIdNumber);
-      } else {
-        successAction();
-        setKeepLoading(false);
-      }
+      !formData.teacherId && room.teacherId
+        ? removeTeacherFromRoom(roomIdNumber)
+        : successAction();
     },
     successToast: !(!formData.teacherId && room.teacherId),
   });
@@ -88,7 +84,7 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
       setKeepLoading(true);
       editRoom(data as Partial<IRoomFormData>, roomIdNumber);
     } else {
-      setErrorMessage("There are no changes to submit");
+      setErrorMessage(noChangesError);
     }
   };
 
@@ -101,14 +97,13 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
     formIsLoading
   );
 
-  const handleCancel = () =>
-    push(`/${ROOMS_ROUTE}/${ROOMS_SINGULAR}/${room.id}`);
+  const handleCancel = () => successAction();
 
   return {
     title,
     imageProps: {
       image: room.image,
-      entity,
+      isPerson,
       notifyImageWasUploaded,
       notifyImageWasCanceled,
     },
@@ -123,6 +118,7 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
       handleCancel,
       errorMessage,
       disableSubmit,
+      formIsLoading,
       buttonText,
     },
   };

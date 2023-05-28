@@ -1,5 +1,5 @@
 import { styled } from "@mui/material/styles";
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
 export const Container = styled(Box)(() => ({
   width: "700px",
@@ -17,6 +17,12 @@ export const ActionsContainer = styled(Box)(() => ({
   gap: "50px",
   alignItems: "center",
   justifyContent: "center",
+}));
+
+export const Loader = styled(CircularProgress)(() => ({
+  width: "30px !important",
+  height: "30px !important",
+  color: "currentColor",
 }));
 
 export const ErrorContainer = styled(Box)(() => ({

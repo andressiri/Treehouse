@@ -9,12 +9,11 @@ const CreateOrEditPage: FC<FormsComponentsProps> = ({
   title,
   imageProps,
   formProps,
-  isPerson,
 }) => {
   return (
     <Container>
       <SectionTitle>{title}</SectionTitle>
-      <ImageContainer isPerson={isPerson}>
+      <ImageContainer isPerson={imageProps.isPerson}>
         <ImageUpload {...imageProps} />
       </ImageContainer>
       <BasicFormConstructor {...formProps} />

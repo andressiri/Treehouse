@@ -7,6 +7,7 @@ import { ConfirmModal } from "..";
 import {
   Container,
   ActionsContainer,
+  Loader,
   ErrorContainer,
   ErrorMessage,
 } from "./styledComponents";
@@ -23,6 +24,7 @@ const BasicFormConstructor: FC<IFormProps> = ({
   handleCancel,
   errorMessage,
   disableSubmit,
+  formIsLoading,
   buttonText,
 }) => {
   const [openConfirm, setOpenConfirm] = useState(false);
@@ -67,6 +69,7 @@ const BasicFormConstructor: FC<IFormProps> = ({
       <ActionsContainer>
         <StyledButton
           BGType="secondaryContrastOutlined"
+          disabled={formIsLoading}
           endIcon={<NotInterestedIcon />}
           onClick={() => {
             checkChanges() ? openConfirmModal() : handleCancel();
@@ -77,9 +80,9 @@ const BasicFormConstructor: FC<IFormProps> = ({
         <StyledButton
           type="submit"
           disabled={disableSubmit}
-          endIcon={<CheckIcon />}
+          endIcon={!formIsLoading ? <CheckIcon /> : undefined}
         >
-          {buttonText}
+          {formIsLoading ? <Loader /> : buttonText}
         </StyledButton>
       </ActionsContainer>
       <ConfirmModal

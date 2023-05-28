@@ -257,7 +257,7 @@ const EditOrCreatePersonForm: FC<Props> = ({ person, entityName }) => {
       component="form"
       onSubmit={(e: React.FormEvent<HTMLDivElement>) => handleSubmit(e)}
     >
-      <ImageUpload image={person?.picture} />
+      <ImageUpload image={person?.picture} isPerson={true} />
       <StyledTextField
         value={formData.name}
         name="name"

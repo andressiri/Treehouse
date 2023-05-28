@@ -1,24 +1,29 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { TeachersContext } from "../../../../contexts";
 import { useRouter } from "next/router";
 import { useCreateTeacher, useEditRoom } from "../../../../services";
 import {
   useCheckCreationFormChanges,
   useCheckImageWasUploaded,
+  useGetFormBasicResponseHandlers,
   useGetPersonFormDisableSubmit,
   useGetPersonFormFieldsSpecifics,
   useGetPersonFormState,
-  useGetTeacherFormResponseHandlers,
 } from "../../../../utils/hooks";
 import { FormsComponentsProps } from "../../../../typings/forms";
 import { ITeacher } from "../../../../typings/teachers";
-import { STUDENTS_ROUTE } from "../../../../config/constants";
+import { STUDENTS_ROUTE, TEACHER_ENTITY } from "../../../../config/constants";
 
 const useGetCreateTeacherComponentsProps = (): FormsComponentsProps => {
   const { teacher } = useContext(TeachersContext);
-  const [keepLoading, setKeepLoading] = useState(false);
   const title = "Create a brand new teacher";
   const buttonText = "Create teacher";
+  const informationMissingError = "Please add the information required";
+  const successMessage = `${
+    (teacher as ITeacher)?.name
+  } teacher created successfully`;
+  const cancelRoute = `/${STUDENTS_ROUTE}`;
+  const entity = TEACHER_ENTITY;
   const isPerson = true;
   const { push } = useRouter();
 
@@ -34,32 +39,29 @@ const useGetCreateTeacherComponentsProps = (): FormsComponentsProps => {
     true
   );
 
-  const { errorAction, successAction, errorMessage, setErrorMessage } =
-    useGetTeacherFormResponseHandlers();
+  const {
+    errorAction,
+    successAction,
+    errorMessage,
+    setErrorMessage,
+    keepLoading,
+    setKeepLoading,
+  } = useGetFormBasicResponseHandlers(entity);
 
   const {
     editRoom,
     isLoading: roomLoading,
     message: roomMessage,
   } = useEditRoom({
-    errorAction: () => {
-      errorAction(roomMessage);
-      setKeepLoading(false);
-    },
-    successAction: () => {
-      setKeepLoading(false);
-      successAction();
-    },
+    errorAction: () => errorAction(roomMessage),
+    successAction,
     successToast: true,
-    successMessage: `${
-      (teacher as ITeacher)?.name
-    } teacher created successfully`,
+    successMessage,
   });
 
   const teachersSuccessAction = () => {
     if (!formData.roomId) {
       successAction();
-      setKeepLoading(false);
       return;
     }
 
@@ -74,10 +76,7 @@ const useGetCreateTeacherComponentsProps = (): FormsComponentsProps => {
     isLoading: teacherLoading,
     message: teacherMessage,
   } = useCreateTeacher({
-    errorAction: () => {
-      errorAction(teacherMessage);
-      setKeepLoading(false);
-    },
+    errorAction: () => errorAction(teacherMessage),
     successAction: teachersSuccessAction,
     successToast: Boolean(!formData.roomId),
   });
@@ -92,7 +91,7 @@ const useGetCreateTeacherComponentsProps = (): FormsComponentsProps => {
       setKeepLoading(true);
       createTeacher(formData);
     } else {
-      setErrorMessage("Please add the information required");
+      setErrorMessage(informationMissingError);
     }
   };
 
@@ -105,11 +104,12 @@ const useGetCreateTeacherComponentsProps = (): FormsComponentsProps => {
     formIsLoading
   );
 
-  const handleCancel = () => push(`/${STUDENTS_ROUTE}`);
+  const handleCancel = () => push(cancelRoute);
 
   return {
     title,
     imageProps: {
+      isPerson,
       notifyImageWasUploaded,
       notifyImageWasCanceled,
     },
@@ -124,9 +124,9 @@ const useGetCreateTeacherComponentsProps = (): FormsComponentsProps => {
       handleCancel,
       errorMessage,
       disableSubmit,
+      formIsLoading,
       buttonText,
     },
-    isPerson,
   };
 };
 

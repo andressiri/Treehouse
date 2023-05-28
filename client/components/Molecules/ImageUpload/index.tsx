@@ -18,7 +18,7 @@ import { ImageUploadProps } from "../../../typings/forms";
 
 const ImageUpload: FC<ImageUploadProps> = ({
   image,
-  entity = "person",
+  isPerson,
   notifyImageWasUploaded,
   notifyImageWasCanceled,
 }) => {
@@ -26,14 +26,13 @@ const ImageUpload: FC<ImageUploadProps> = ({
     imageUploaded,
     imagePreview,
     inputFile,
-    isPerson,
     handleUploadImage,
     handleFileUpload,
     handleCancelUpload,
     handleDeleteImage,
   } = useGetImageUploadControllers({
     image,
-    entity,
+    isPerson,
     notifyImageWasUploaded,
     notifyImageWasCanceled,
   });

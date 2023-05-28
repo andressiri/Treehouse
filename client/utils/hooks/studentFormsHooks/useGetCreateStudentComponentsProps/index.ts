@@ -3,17 +3,20 @@ import { useCreateStudent } from "../../../../services";
 import {
   useCheckCreationFormChanges,
   useCheckImageWasUploaded,
+  useGetFormBasicResponseHandlers,
   useGetPersonFormDisableSubmit,
   useGetPersonFormFieldsSpecifics,
   useGetPersonFormState,
-  useGetStudentFormResponseHandlers,
 } from "../../../../utils/hooks";
 import { FormsComponentsProps } from "../../../../typings/forms";
-import { STUDENTS_ROUTE } from "../../../../config/constants";
+import { STUDENTS_ROUTE, STUDENT_ENTITY } from "../../../../config/constants";
 
 const useGetCreateStudentComponentsProps = (): FormsComponentsProps => {
   const title = "Create a brand new student";
   const buttonText = "Create student";
+  const informationMissingError = "Please add the information required";
+  const cancelRoute = `/${STUDENTS_ROUTE}`;
+  const entity = STUDENT_ENTITY;
   const isPerson = true;
   const { push } = useRouter();
 
@@ -28,8 +31,14 @@ const useGetCreateStudentComponentsProps = (): FormsComponentsProps => {
     formVisited
   );
 
-  const { errorAction, successAction, errorMessage, setErrorMessage } =
-    useGetStudentFormResponseHandlers();
+  const {
+    errorAction,
+    successAction,
+    errorMessage,
+    setErrorMessage,
+    keepLoading,
+    setKeepLoading,
+  } = useGetFormBasicResponseHandlers(entity);
 
   const { createStudent, isLoading, message } = useCreateStudent({
     errorAction: () => errorAction(message),
@@ -44,24 +53,28 @@ const useGetCreateStudentComponentsProps = (): FormsComponentsProps => {
 
     if (checkChanges()) {
       setErrorMessage("");
+      setKeepLoading(true);
       createStudent(formData);
     } else {
-      setErrorMessage("Please add the information required");
+      setErrorMessage(informationMissingError);
     }
   };
+
+  const formIsLoading = isLoading || keepLoading;
 
   const disableSubmit = useGetPersonFormDisableSubmit(
     imageWasUploaded,
     formData,
     checkChanges,
-    isLoading
+    formIsLoading
   );
 
-  const handleCancel = () => push(`/${STUDENTS_ROUTE}`);
+  const handleCancel = () => push(cancelRoute);
 
   return {
     title,
     imageProps: {
+      isPerson,
       notifyImageWasUploaded,
       notifyImageWasCanceled,
     },
@@ -76,9 +89,9 @@ const useGetCreateStudentComponentsProps = (): FormsComponentsProps => {
       handleCancel,
       errorMessage,
       disableSubmit,
+      formIsLoading,
       buttonText,
     },
-    isPerson,
   };
 };
 

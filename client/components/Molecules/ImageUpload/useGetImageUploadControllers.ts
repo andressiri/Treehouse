@@ -9,14 +9,13 @@ import { ImageUploadProps } from "../../../typings/forms";
 
 const useGetImageUploadControllers = ({
   image,
-  entity = "person",
+  isPerson,
   notifyImageWasUploaded,
   notifyImageWasCanceled,
 }: ImageUploadProps) => {
   const [imageUploaded, setImageUploaded] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | undefined>(image);
   const inputFile = useRef<HTMLInputElement>(null);
-  const isPerson = entity === "person";
 
   useEffect(() => {
     clearSessionStorageImages();
@@ -79,7 +78,6 @@ const useGetImageUploadControllers = ({
     imageUploaded,
     imagePreview,
     inputFile,
-    isPerson,
     handleUploadImage,
     handleFileUpload,
     handleCancelUpload,

@@ -3,18 +3,21 @@ import { useCreateRoom } from "../../../../services";
 import {
   useCheckCreationFormChanges,
   useCheckImageWasUploaded,
+  useGetFormBasicResponseHandlers,
   useGetRoomFormDisableSubmit,
   useGetRoomFormFieldsSpecifics,
-  useGetRoomFormResponseHandlers,
   useGetRoomFormState,
 } from "../../../../utils/hooks";
 import { FormsComponentsProps } from "../../../../typings/forms";
-import { ROOMS_ROUTE } from "../../../../config/constants";
+import { ROOMS_ROUTE, ROOM_ENTITY } from "../../../../config/constants";
 
 const useGetCreateRoomComponentsProps = (): FormsComponentsProps => {
   const title = "Create a brand new room";
   const buttonText = "Create room";
-  const entity = "room";
+  const informationMissingError = "Please add the information required";
+  const cancelRoute = `/${ROOMS_ROUTE}`;
+  const entity = ROOM_ENTITY;
+  const isPerson = false;
   const { push } = useRouter();
 
   const { imageWasUploaded, notifyImageWasUploaded, notifyImageWasCanceled } =
@@ -28,8 +31,14 @@ const useGetCreateRoomComponentsProps = (): FormsComponentsProps => {
     formVisited
   );
 
-  const { errorAction, successAction, errorMessage, setErrorMessage } =
-    useGetRoomFormResponseHandlers();
+  const {
+    errorAction,
+    successAction,
+    errorMessage,
+    setErrorMessage,
+    keepLoading,
+    setKeepLoading,
+  } = useGetFormBasicResponseHandlers(entity);
 
   const { createRoom, isLoading, message } = useCreateRoom({
     errorAction: () => errorAction(message),
@@ -44,25 +53,28 @@ const useGetCreateRoomComponentsProps = (): FormsComponentsProps => {
 
     if (checkChanges()) {
       setErrorMessage("");
+      setKeepLoading(true);
       createRoom(formData);
     } else {
-      setErrorMessage("Please add the information required");
+      setErrorMessage(informationMissingError);
     }
   };
+
+  const formIsLoading = isLoading || keepLoading;
 
   const disableSubmit = useGetRoomFormDisableSubmit(
     imageWasUploaded,
     formData,
     checkChanges,
-    isLoading
+    formIsLoading
   );
 
-  const handleCancel = () => push(`/${ROOMS_ROUTE}`);
+  const handleCancel = () => push(cancelRoute);
 
   return {
     title,
     imageProps: {
-      entity,
+      isPerson,
       notifyImageWasUploaded,
       notifyImageWasCanceled,
     },
@@ -77,6 +89,7 @@ const useGetCreateRoomComponentsProps = (): FormsComponentsProps => {
       handleCancel,
       errorMessage,
       disableSubmit,
+      formIsLoading,
       buttonText,
     },
   };
