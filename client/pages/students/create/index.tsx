@@ -1,11 +1,10 @@
 import { FC } from "react";
-import { Layout, EditOrCreatePersonPage } from "../../../components/Templates";
-import { STUDENT_ENTITY } from "../../../config/constants";
+import { Layout, CreateStudentPage } from "../../../components/Templates";
 
 const CreateStudent: FC = () => {
   return (
     <Layout>
-      <EditOrCreatePersonPage entityName={STUDENT_ENTITY} />
+      <CreateStudentPage />
     </Layout>
   );
 };
