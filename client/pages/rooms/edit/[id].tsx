@@ -2,7 +2,8 @@ import { FC, useContext } from "react";
 import { useRouter } from "next/router";
 import { RoomsContext } from "../../../contexts";
 import { useGetRoomByIdEffect } from "../../../services";
-import { Layout, EditRoomPage } from "../../../components/Templates";
+import { useGetEditRoomComponentsProps } from "../../../utils/hooks";
+import { Layout, CreateOrEditPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
   API_ROUTE,
@@ -23,17 +24,16 @@ const EditRoom: FC<Props> = ({ staticRoom }) => {
 
   useGetRoomByIdEffect({ errorToast: true });
 
+  const roomToUse =
+    !isReady || !(room as IRoom)?.id || (room as IRoom).id !== Number(query.id)
+      ? staticRoom
+      : (room as IRoom);
+
+  const componentsProps = useGetEditRoomComponentsProps(roomToUse);
+
   return (
     <Layout>
-      <EditRoomPage
-        room={
-          !isReady ||
-          !(room as IRoom)?.id ||
-          (room as IRoom).id !== Number(query.id)
-            ? staticRoom
-            : (room as IRoom)
-        }
-      />
+      <CreateOrEditPage {...componentsProps} />
     </Layout>
   );
 };

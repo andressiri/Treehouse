@@ -1,19 +1,21 @@
 import { useRouter } from "next/router";
-import { useEditRoom, useRemoveTeacherFromRoom } from "../../../services";
-import { sanitizeFormChanges } from "../../../utils/helpers";
+import { useEditRoom, useRemoveTeacherFromRoom } from "../../../../services";
+import { sanitizeFormChanges } from "../../../../utils/helpers";
 import {
   useCheckImageWasUploaded,
   useGetRoomFormDisableSubmit,
   useGetRoomFormFieldsSpecifics,
   useGetRoomFormResponseHandlers,
   useGetRoomFormState,
-} from "../../../utils/hooks";
-import { IRoom, IRoomFormData } from "../../../typings/rooms";
-import { FormsComponentsProps } from "../../../typings/forms";
-import { ROOMS_ROUTE, ROOMS_SINGULAR } from "../../../config/constants";
+} from "../../../../utils/hooks";
+import { IRoom, IRoomFormData } from "../../../../typings/rooms";
+import { FormsComponentsProps } from "../../../../typings/forms";
+import { ROOMS_ROUTE, ROOMS_SINGULAR } from "../../../../config/constants";
 
-const useGetComponentsProps = (room: IRoom): FormsComponentsProps => {
+const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
+  const title = `Edit ${room.name} room`;
   const buttonText = "Edit room";
+  const entity = "room";
   const { push, query } = useRouter();
   const roomIdNumber = Number(query.id);
 
@@ -87,9 +89,10 @@ const useGetComponentsProps = (room: IRoom): FormsComponentsProps => {
     push(`/${ROOMS_ROUTE}/${ROOMS_SINGULAR}/${room.id}`);
 
   return {
+    title,
     imageProps: {
       image: room.image,
-      entity: "room",
+      entity,
       notifyImageWasUploaded,
       notifyImageWasCanceled,
     },
@@ -109,4 +112,4 @@ const useGetComponentsProps = (room: IRoom): FormsComponentsProps => {
   };
 };
 
-export default useGetComponentsProps;
+export default useGetEditRoomComponentsProps;
