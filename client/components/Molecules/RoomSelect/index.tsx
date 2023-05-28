@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { MenuItem } from "@mui/material";
 import { StyledTextField } from "../../../components/Atoms";
-import useGetRoomsArray from "./useGetRoomsArray";
+import { useGetRoomsArray } from "../../../utils/hooks";
 
 interface Props {
   value: string;
