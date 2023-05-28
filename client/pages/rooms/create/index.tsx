@@ -1,10 +1,13 @@
 import { FC } from "react";
-import { Layout, CreateRoomPage } from "../../../components/Templates";
+import { Layout, CreateOrEditPage } from "../../../components/Templates";
+import { useGetCreateRoomComponentsProps } from "../../../utils/hooks";
 
 const CreateRoom: FC = () => {
+  const componentsProps = useGetCreateRoomComponentsProps();
+
   return (
     <Layout>
-      <CreateRoomPage />
+      <CreateOrEditPage {...componentsProps} />
     </Layout>
   );
 };

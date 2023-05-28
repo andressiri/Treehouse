@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useCreateRoom } from "../../../services";
+import { useCreateRoom } from "../../../../services";
 import {
   useCheckCreationFormChanges,
   useCheckImageWasUploaded,
@@ -7,12 +7,14 @@ import {
   useGetRoomFormFieldsSpecifics,
   useGetRoomFormResponseHandlers,
   useGetRoomFormState,
-} from "../../../utils/hooks";
-import { FormsComponentsProps } from "../../../typings/forms";
-import { ROOMS_ROUTE } from "../../../config/constants";
+} from "../../../../utils/hooks";
+import { FormsComponentsProps } from "../../../../typings/forms";
+import { ROOMS_ROUTE } from "../../../../config/constants";
 
-const useGetComponentsProps = (): FormsComponentsProps => {
+const useGetCreateRoomComponentsProps = (): FormsComponentsProps => {
+  const title = "Create a brand new room";
   const buttonText = "Create room";
+  const entity = "room";
   const { push } = useRouter();
 
   const { imageWasUploaded, notifyImageWasUploaded, notifyImageWasCanceled } =
@@ -58,8 +60,9 @@ const useGetComponentsProps = (): FormsComponentsProps => {
   const handleCancel = () => push(`/${ROOMS_ROUTE}`);
 
   return {
+    title,
     imageProps: {
-      entity: "room",
+      entity,
       notifyImageWasUploaded,
       notifyImageWasCanceled,
     },
@@ -79,4 +82,4 @@ const useGetComponentsProps = (): FormsComponentsProps => {
   };
 };
 
-export default useGetComponentsProps;
+export default useGetCreateRoomComponentsProps;
