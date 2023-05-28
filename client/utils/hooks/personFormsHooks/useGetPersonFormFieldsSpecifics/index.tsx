@@ -10,6 +10,7 @@ import { getSelectGenderArray } from "../../../helpers";
 const useGetPersonFormFieldsSpecifics = (
   formData: IPersonFormData,
   formVisited: IPersonFormVisited,
+  isTeacher?: boolean,
   teacherId?: number // if person is a teacher, teacherId should be passed
 ) => {
   const ageIsOk =
@@ -18,7 +19,7 @@ const useGetPersonFormFieldsSpecifics = (
   const genderArray = getSelectGenderArray();
 
   const roomsSelectOptions = useGetRoomsArray({
-    showTeacherless: Boolean(teacherId),
+    showTeacherless: isTeacher,
     teacherId,
   });
 

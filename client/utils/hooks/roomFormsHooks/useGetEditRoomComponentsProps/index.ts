@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { useEditRoom, useRemoveTeacherFromRoom } from "../../../../services";
 import { sanitizeFormChanges } from "../../../../utils/helpers";
@@ -13,6 +14,7 @@ import { FormsComponentsProps } from "../../../../typings/forms";
 import { ROOMS_ROUTE, ROOMS_SINGULAR } from "../../../../config/constants";
 
 const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
+  const [keepLoading, setKeepLoading] = useState(false);
   const title = `Edit ${room.name} room`;
   const buttonText = "Edit room";
   const entity = "room";
@@ -39,9 +41,15 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
     isLoading: removeLoading,
     message: removeMessage,
   } = useRemoveTeacherFromRoom({
-    errorAction: () => errorAction(removeMessage),
-    successAction,
-    successMessage: "Room edited successfully",
+    errorAction: () => {
+      errorAction(removeMessage);
+      setKeepLoading(false);
+    },
+    successAction: () => {
+      successAction();
+      setKeepLoading(false);
+    },
+    successMessage: `${room?.name} edited successfully`,
     successToast: true,
   });
 
@@ -51,14 +59,19 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
     message: editMessage,
   } = useEditRoom({
     errorAction: () => {
-      !formData.teacherId && room.teacherId
-        ? removeTeacherFromRoom(roomIdNumber)
-        : errorAction(editMessage);
+      if (!formData.teacherId && room.teacherId) {
+        removeTeacherFromRoom(roomIdNumber);
+      } else {
+        errorAction(editMessage);
+      }
     },
     successAction: () => {
-      !formData.teacherId && room.teacherId
-        ? removeTeacherFromRoom(roomIdNumber)
-        : successAction();
+      if (!formData.teacherId && room.teacherId) {
+        removeTeacherFromRoom(roomIdNumber);
+      } else {
+        successAction();
+        setKeepLoading(false);
+      }
     },
     successToast: !(!formData.teacherId && room.teacherId),
   });
@@ -70,19 +83,22 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
 
     const data = sanitizeFormChanges(formData, room);
 
-    if (data) {
+    if (data || imageWasUploaded) {
       setErrorMessage("");
+      setKeepLoading(true);
       editRoom(data as Partial<IRoomFormData>, roomIdNumber);
     } else {
       setErrorMessage("There are no changes to submit");
     }
   };
 
+  const formIsLoading = editLoading || removeLoading || keepLoading;
+
   const disableSubmit = useGetRoomFormDisableSubmit(
     imageWasUploaded,
     formData,
     checkChanges,
-    editLoading || removeLoading
+    formIsLoading
   );
 
   const handleCancel = () =>

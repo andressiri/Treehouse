@@ -10,3 +10,4 @@ export { default as useServiceInstance } from "./useServiceInstance";
 export * from "./personFormsHooks";
 export * from "./roomFormsHooks";
 export * from "./studentFormsHooks";
+export * from "./teacherFormsHooks";
