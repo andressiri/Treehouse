@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useCreateStudent } from "../../../services";
+import { useCreateStudent } from "../../../../services";
 import {
   useCheckCreationFormChanges,
   useCheckImageWasUploaded,
@@ -7,12 +7,14 @@ import {
   useGetPersonFormFieldsSpecifics,
   useGetPersonFormState,
   useGetStudentFormResponseHandlers,
-} from "../../../utils/hooks";
-import { FormsComponentsProps } from "../../../typings/forms";
-import { STUDENTS_ROUTE } from "../../../config/constants";
+} from "../../../../utils/hooks";
+import { FormsComponentsProps } from "../../../../typings/forms";
+import { STUDENTS_ROUTE } from "../../../../config/constants";
 
-const useGetComponentsProps = (): FormsComponentsProps => {
+const useGetCreateStudentComponentsProps = (): FormsComponentsProps => {
+  const title = "Create a brand new student";
   const buttonText = "Create student";
+  const isPerson = true;
   const { push } = useRouter();
 
   const { imageWasUploaded, notifyImageWasUploaded, notifyImageWasCanceled } =
@@ -58,6 +60,7 @@ const useGetComponentsProps = (): FormsComponentsProps => {
   const handleCancel = () => push(`/${STUDENTS_ROUTE}`);
 
   return {
+    title,
     imageProps: {
       notifyImageWasUploaded,
       notifyImageWasCanceled,
@@ -75,7 +78,8 @@ const useGetComponentsProps = (): FormsComponentsProps => {
       disableSubmit,
       buttonText,
     },
+    isPerson,
   };
 };
 
-export default useGetComponentsProps;
+export default useGetCreateStudentComponentsProps;

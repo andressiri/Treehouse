@@ -1,10 +1,13 @@
 import { FC } from "react";
-import { Layout, CreateStudentPage } from "../../../components/Templates";
+import { useGetCreateStudentComponentsProps } from "../../../utils/hooks";
+import { Layout, CreateOrEditPage } from "../../../components/Templates";
 
 const CreateStudent: FC = () => {
+  const componentsProps = useGetCreateStudentComponentsProps();
+
   return (
     <Layout>
-      <CreateStudentPage />
+      <CreateOrEditPage {...componentsProps} />
     </Layout>
   );
 };

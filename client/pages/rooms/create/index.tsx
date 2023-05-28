@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { Layout, CreateOrEditPage } from "../../../components/Templates";
 import { useGetCreateRoomComponentsProps } from "../../../utils/hooks";
+import { Layout, CreateOrEditPage } from "../../../components/Templates";
 
 const CreateRoom: FC = () => {
   const componentsProps = useGetCreateRoomComponentsProps();
