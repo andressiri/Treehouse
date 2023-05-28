@@ -78,6 +78,8 @@ export interface ImageUploadProps {
 }
 
 export interface FormsComponentsProps {
+  title: string;
   imageProps: ImageUploadProps;
   formProps: IFormProps;
+  isPerson?: boolean;
 }

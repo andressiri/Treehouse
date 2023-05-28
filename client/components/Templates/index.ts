@@ -1,3 +1,4 @@
+export { default as CreateOrEditPage } from "./CreateOrEditPage";
 export { default as CreateRoomPage } from "./CreateRoomPage";
 export { default as CreateStudentPage } from "./CreateStudentPage";
 export { default as DisplayPage } from "./DisplayPage";
