@@ -1,32 +1,25 @@
 import { useRouter } from "next/router";
 import { useCreateRoom } from "../../../services";
 import {
+  useCheckCreationFormChanges,
+  useCheckImageWasUploaded,
   useGetRoomFormDisableSubmit,
   useGetRoomFormFieldsSpecifics,
-  useGetRoomFormRequestHandlers,
+  useGetRoomFormResponseHandlers,
   useGetRoomFormState,
 } from "../../../utils/hooks";
-import { IFormProps, ImageUploadProps } from "../../../typings/forms";
+import { FormsComponentsProps } from "../../../typings/forms";
 import { ROOMS_ROUTE } from "../../../config/constants";
 
-interface ReturnObject {
-  imageProps: ImageUploadProps;
-  formProps: IFormProps;
-}
-
-const useGetComponentsProps = (): ReturnObject => {
+const useGetComponentsProps = (): FormsComponentsProps => {
   const buttonText = "Create room";
   const { push } = useRouter();
 
-  const {
-    imageWasUploaded,
-    notifyImageWasUploaded,
-    notifyImageWasCanceled,
-    formData,
-    handleOnChange,
-    formVisited,
-    handleVisited,
-  } = useGetRoomFormState({});
+  const { imageWasUploaded, notifyImageWasUploaded, notifyImageWasCanceled } =
+    useCheckImageWasUploaded();
+
+  const { formData, handleOnChange, formVisited, handleVisited } =
+    useGetRoomFormState({});
 
   const formFieldsSpecificsArray = useGetRoomFormFieldsSpecifics(
     formData,
@@ -34,7 +27,7 @@ const useGetComponentsProps = (): ReturnObject => {
   );
 
   const { errorAction, successAction, errorMessage, setErrorMessage } =
-    useGetRoomFormRequestHandlers();
+    useGetRoomFormResponseHandlers();
 
   const { createRoom, isLoading, message } = useCreateRoom({
     errorAction: () => errorAction(message),
@@ -42,17 +35,7 @@ const useGetComponentsProps = (): ReturnObject => {
     successToast: true,
   });
 
-  const checkChanges = () => {
-    let bool = false;
-    for (const key in formData) {
-      if (formData[key as keyof typeof formData]) {
-        bool = true;
-        break;
-      }
-    }
-
-    return bool;
-  };
+  const checkChanges = useCheckCreationFormChanges(formData);
 
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();

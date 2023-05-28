@@ -1,5 +1,6 @@
 import { InputLabelProps, InputProps } from "@mui/material";
 import { IRoomFormData, IRoomFormVisited } from "./rooms";
+import { IPersonFormData, IPersonFormVisited } from "./persons";
 
 export interface SelectOption {
   value?: string;
@@ -37,9 +38,9 @@ interface IFormFieldSpecifics extends Omit<SharedTextFieldProps, "onChange"> {
   label?: string;
 }
 
-export type formFieldsData = IRoomFormData;
+export type formFieldsData = IRoomFormData | IPersonFormData;
 
-export type formFieldsVisited = IRoomFormVisited;
+export type formFieldsVisited = IRoomFormVisited | IPersonFormVisited;
 
 export interface FormFieldProps extends SharedTextFieldProps {
   field: string;
@@ -74,4 +75,9 @@ export interface ImageUploadProps {
   entity?: "person" | "room";
   notifyImageWasUploaded?: () => void;
   notifyImageWasCanceled?: () => void;
+}
+
+export interface FormsComponentsProps {
+  imageProps: ImageUploadProps;
+  formProps: IFormProps;
 }

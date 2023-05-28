@@ -1,4 +1,5 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import { useHandleFormChange, useHandleFormVisited } from "../..";
 import {
   IRoom,
   IRoomFormData,
@@ -10,7 +11,6 @@ interface Props {
 }
 
 const useGetRoomFormState = ({ room }: Props) => {
-  const [imageWasUploaded, setImageWasUploaded] = useState(false);
   const [formData, setFormData] = useState<IRoomFormData>({
     name: room?.name || "",
     capacity: room?.capacity ? `${room.capacity}` : "",
@@ -24,37 +24,11 @@ const useGetRoomFormState = ({ room }: Props) => {
     teacherId: false,
   });
 
-  const notifyImageWasUploaded = () => setImageWasUploaded(true);
+  const handleOnChange = useHandleFormChange({ formData, setFormData });
 
-  const notifyImageWasCanceled = () => setImageWasUploaded(false);
-
-  const handleOnChange = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-      setFormData({
-        ...formData,
-        [e.target.name]:
-          typeof e.target.value === "string" ? e.target.value : "",
-      });
-    },
-    [formData]
-  );
-
-  const handleVisited = useCallback(
-    (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-      if (formVisited[e.target.name as keyof typeof formVisited]) return;
-
-      setFormVisited({
-        ...formVisited,
-        [e.target.name]: true,
-      });
-    },
-    [formVisited]
-  );
+  const handleVisited = useHandleFormVisited({ formVisited, setFormVisited });
 
   return {
-    imageWasUploaded,
-    notifyImageWasUploaded,
-    notifyImageWasCanceled,
     formData,
     setFormData,
     handleOnChange,

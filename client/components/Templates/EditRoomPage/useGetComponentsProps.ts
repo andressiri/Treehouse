@@ -2,35 +2,29 @@ import { useRouter } from "next/router";
 import { useEditRoom, useRemoveTeacherFromRoom } from "../../../services";
 import { sanitizeFormChanges } from "../../../utils/helpers";
 import {
+  useCheckImageWasUploaded,
   useGetRoomFormDisableSubmit,
   useGetRoomFormFieldsSpecifics,
-  useGetRoomFormRequestHandlers,
+  useGetRoomFormResponseHandlers,
   useGetRoomFormState,
 } from "../../../utils/hooks";
 import { IRoom, IRoomFormData } from "../../../typings/rooms";
-import { IFormProps, ImageUploadProps } from "../../../typings/forms";
+import { FormsComponentsProps } from "../../../typings/forms";
 import { ROOMS_ROUTE, ROOMS_SINGULAR } from "../../../config/constants";
 
-interface ReturnObject {
-  imageProps: ImageUploadProps;
-  formProps: IFormProps;
-}
-
-const useGetComponentsProps = (room: IRoom): ReturnObject => {
+const useGetComponentsProps = (room: IRoom): FormsComponentsProps => {
   const buttonText = "Edit room";
   const { push, query } = useRouter();
   const roomIdNumber = Number(query.id);
-  const {
-    imageWasUploaded,
-    notifyImageWasUploaded,
-    notifyImageWasCanceled,
-    formData,
-    handleOnChange,
-    formVisited,
-    handleVisited,
-  } = useGetRoomFormState({ room });
+
+  const { imageWasUploaded, notifyImageWasUploaded, notifyImageWasCanceled } =
+    useCheckImageWasUploaded();
+
+  const { formData, handleOnChange, formVisited, handleVisited } =
+    useGetRoomFormState({ room });
+
   const { errorAction, successAction, errorMessage, setErrorMessage } =
-    useGetRoomFormRequestHandlers();
+    useGetRoomFormResponseHandlers();
 
   const formFieldsSpecificsArray = useGetRoomFormFieldsSpecifics(
     formData,

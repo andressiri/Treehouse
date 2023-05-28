@@ -1,24 +1,18 @@
 import { MenuItem } from "@mui/material";
-import useGetAvailableTeachers from "../../useGetAvailableTeachers";
+import { useGetSelectAvailableTeachersArray } from "../../";
 import { IRoomFormData, IRoomFormVisited } from "../../../../typings/rooms";
-import { IFormFieldSpecifics, SelectOption } from "../../../../typings/forms";
+import { IFormFieldSpecifics } from "../../../../typings/forms";
 
 const useGetRoomFormFieldsSpecifics = (
   formData: IRoomFormData,
   formVisited: IRoomFormVisited,
   roomId?: number
 ) => {
-  const capacityError =
+  const capacityIsOk =
     (formData.capacity && Number(formData.capacity) > 0) ||
     !formVisited.capacity;
-  const teachersSelectOptions: SelectOption[] = (
-    useGetAvailableTeachers(roomId).map((teacher) => {
-      return {
-        value: `${teacher.id}`,
-        name: teacher.name,
-      };
-    }) as SelectOption[]
-  ).concat([{ value: undefined, name: "No teacher" }]);
+
+  const teachersSelectOptions = useGetSelectAvailableTeachersArray(roomId);
 
   const formFieldsSpecificsArray: IFormFieldSpecifics[] = [
     {
@@ -31,8 +25,8 @@ const useGetRoomFormFieldsSpecifics = (
       field: "capacity",
       type: "number",
       required: true,
-      error: !capacityError,
-      helperText: capacityError
+      error: !capacityIsOk,
+      helperText: capacityIsOk
         ? ""
         : !formData.capacity
         ? "A room capacity is required"

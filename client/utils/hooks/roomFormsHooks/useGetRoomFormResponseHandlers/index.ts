@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { IRoom } from "../../../../typings/rooms";
 import { ROOMS_ROUTE, ROOMS_SINGULAR } from "../../../../config/constants";
 
-const useGetRoomFormRequestHandlers = () => {
+const useGetRoomFormResponseHandlers = () => {
   const { room } = useContext(RoomsContext);
   const [errorMessage, setErrorMessage] = useState("");
   const { push } = useRouter();
@@ -22,4 +22,4 @@ const useGetRoomFormRequestHandlers = () => {
   };
 };
 
-export default useGetRoomFormRequestHandlers;
+export default useGetRoomFormResponseHandlers;
