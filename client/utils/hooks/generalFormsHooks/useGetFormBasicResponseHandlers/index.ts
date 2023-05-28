@@ -3,12 +3,12 @@ import {
   RoomsContext,
   StudentsContext,
   TeachersContext,
-} from "../../../contexts";
+} from "../../../../contexts";
 import { useRouter } from "next/router";
-import { Entities } from "../../../typings/global";
-import { IRoom } from "../../../typings/rooms";
-import { IStudent } from "../../../typings/students";
-import { ITeacher } from "../../../typings/teachers";
+import { Entities } from "../../../../typings/global";
+import { IRoom } from "../../../../typings/rooms";
+import { IStudent } from "../../../../typings/students";
+import { ITeacher } from "../../../../typings/teachers";
 import {
   ROOMS_ROUTE,
   ROOMS_SINGULAR,
@@ -18,7 +18,7 @@ import {
   STUDENT_ENTITY,
   TEACHERS_ROUTE,
   TEACHERS_SINGULAR,
-} from "../../../config/constants";
+} from "../../../../config/constants";
 
 const useGetFormBasicResponseHandlers = (entity: Entities) => {
   const { room } = useContext(RoomsContext);

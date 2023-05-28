@@ -1,9 +1,9 @@
 import { useContext, useMemo } from "react";
-import { RoomsContext } from "../../../contexts";
-import { useGetRoomsEffect } from "../../../services";
-import { sortByName } from "../../../utils/helpers";
-import { SelectOption } from "../../../typings/forms";
-import { AnyRoomArray, IRoom } from "../../../typings/rooms";
+import { RoomsContext } from "../../../../contexts";
+import { useGetRoomsEffect } from "../../../../services";
+import { sortByName } from "../../../../utils/helpers";
+import { SelectOption } from "../../../../typings/forms";
+import { AnyRoomArray, IRoom } from "../../../../typings/rooms";
 
 interface Props {
   showTeacherless?: boolean;

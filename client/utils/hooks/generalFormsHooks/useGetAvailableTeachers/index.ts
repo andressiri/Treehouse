@@ -1,7 +1,7 @@
 import { useContext, useMemo } from "react";
-import { TeachersContext } from "../../../contexts";
-import { useGetTeachersWithRelationsEffect } from "../../../services";
-import { IRoom } from "../../../typings/rooms";
+import { TeachersContext } from "../../../../contexts";
+import { useGetTeachersWithRelationsEffect } from "../../../../services";
+import { IRoom } from "../../../../typings/rooms";
 
 const useGetAvailableTeachers = (roomId?: number) => {
   const { teachersWithRelations } = useContext(TeachersContext);

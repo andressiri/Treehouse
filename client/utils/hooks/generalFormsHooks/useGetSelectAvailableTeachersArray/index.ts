@@ -1,5 +1,5 @@
 import { useGetAvailableTeachers } from "../";
-import { SelectOption } from "../../../typings/forms";
+import { SelectOption } from "../../../../typings/forms";
 
 const useGetSelectAvailableTeachersArray = (
   roomId?: number
