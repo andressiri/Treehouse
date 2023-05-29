@@ -9,7 +9,7 @@ import {
   StyledButton,
 } from "../../../components/Atoms";
 import {
-  DisplayImage,
+  DisplayPersonImage,
   PersonBasicInfo,
   PersonRoom,
   PersonRoomFallback,
@@ -56,7 +56,7 @@ const PersonPage: FC<Props> = ({ person, entityName }) => {
     <Container component="section">
       <InnerContainer>
         <SectionTitle>{person.name}</SectionTitle>
-        <DisplayImage imageSrc={person.picture} />
+        <DisplayPersonImage imageSrc={person.picture} />
         <PersonBasicInfo age={person.age} gender={person.gender} />
         {person.description ? (
           <Description>{person.description}</Description>

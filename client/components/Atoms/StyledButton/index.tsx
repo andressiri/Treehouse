@@ -2,8 +2,9 @@ import React, { FC } from "react";
 import { ButtonStyled } from "./styledComponents";
 import { IStyledButton } from "../../../typings/buttons";
 
-const ContactButton: FC<IStyledButton> = ({
-  disabled = false,
+const StyledButton: FC<IStyledButton> = ({
+  disabled,
+  type,
   BGType = "primaryBG",
   passRef,
   transparent = false,
@@ -17,11 +18,12 @@ const ContactButton: FC<IStyledButton> = ({
   onBlur,
   tabIndex = 0,
   children,
-  type,
 }) => {
   return (
     <ButtonStyled
       disabled={disabled}
+      isDisabled={disabled}
+      type={type}
       transparent={transparent}
       hover={hover}
       ref={passRef}
@@ -34,11 +36,10 @@ const ContactButton: FC<IStyledButton> = ({
       onFocus={onFocus}
       onBlur={onBlur}
       tabIndex={tabIndex}
-      type={type}
     >
       {children}
     </ButtonStyled>
   );
 };
 
-export default ContactButton;
+export default StyledButton;

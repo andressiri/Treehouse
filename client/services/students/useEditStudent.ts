@@ -2,15 +2,10 @@ import { useCallback, useContext } from "react";
 import { StudentsContext } from "../../contexts";
 import { useServiceInstance } from "../../utils/hooks";
 import { IHandleResponseOptions } from "../../typings/services";
+import { IPersonFormData } from "../../typings/persons";
 import { EDIT, STUDENTS_ROUTE } from "../../config/constants";
 
-interface IFormData {
-  name?: string;
-  age?: string;
-  gender?: string;
-  description?: string;
-  roomId?: string;
-}
+type IFormData = Partial<IPersonFormData>;
 
 const useEditStudent = (responseOptions: IHandleResponseOptions) => {
   const { setStudent } = useContext(StudentsContext);
@@ -21,9 +16,10 @@ const useEditStudent = (responseOptions: IHandleResponseOptions) => {
     (formData: IFormData, id: number) => {
       executeRequest({
         route: `/${STUDENTS_ROUTE}/${EDIT}/${id}`,
+        data: formData,
         method: "PUT",
         setState: setStudent,
-        formData,
+        type: "withImage",
       });
     },
     [executeRequest, setStudent]

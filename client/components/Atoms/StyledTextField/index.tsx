@@ -1,39 +1,51 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { TextFieldStyled } from "./styledComponents";
-import { InputLabelProps } from "@mui/material";
+import { TextFieldProps } from "../../../typings/forms";
 
-interface Props {
-  value?: string;
-  name: string;
-  label: string;
-  variant?: "standard" | "filled" | "outlined";
-  multiline?: boolean;
-  rows?: number;
-  onChange: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-  InputLabelProps?: Partial<InputLabelProps>;
-}
-
-const StyledTextField: FC<Props> = ({
+const StyledTextField: FC<TextFieldProps> = ({
+  type = "text",
+  required = false,
+  disabled = false,
+  select,
+  multiline = false,
+  rows = 1,
+  error,
+  helperText = "",
+  conditionalHelperText = true,
+  InputProps = { inputProps: { maxLength: "255" } },
+  onChange,
+  children,
+  onBlur,
   value,
   name,
   label,
   variant = "outlined",
-  multiline = false,
-  rows = 1,
-  onChange,
   InputLabelProps,
 }) => {
   return (
     <TextFieldStyled
+      type={type}
+      required={required}
+      disabled={disabled}
+      select={Boolean(children) || select}
+      multiline={multiline}
+      rows={rows}
+      rowsNumber={rows}
+      error={error}
+      isError={error}
+      helperText={helperText}
+      conditionalHelperText={conditionalHelperText}
+      InputProps={InputProps}
+      onChange={onChange}
+      onBlur={onBlur}
       value={value}
       name={name}
       label={label}
       variant={variant}
-      multiline={multiline}
-      rows={rows}
-      onChange={onChange}
       InputLabelProps={InputLabelProps}
-    />
+    >
+      {children}
+    </TextFieldStyled>
   );
 };
 

@@ -35,8 +35,3 @@ export type Entities =
   | typeof TEACHER_ENTITY;
 
 export type PersonEntities = typeof STUDENT_ENTITY | typeof TEACHER_ENTITY;
-
-export interface SelectOption {
-  value: string;
-  name: string;
-}

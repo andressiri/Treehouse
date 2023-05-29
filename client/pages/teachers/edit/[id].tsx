@@ -2,20 +2,20 @@ import { FC, useContext } from "react";
 import { useRouter } from "next/router";
 import { TeachersContext } from "../../../contexts";
 import { useGetTeacherByIdWithRelationsEffect } from "../../../services";
-import { Layout, EditOrCreatePersonPage } from "../../../components/Templates";
+import { Layout, CreateOrEditPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
   API_ROUTE,
   API_VERSION,
   TEACHERS_ROUTE,
   TEACHERS_SINGULAR,
-  TEACHER_ENTITY,
 } from "../../../config/constants";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ITeacherWithRelations } from "../../../typings/teachers";
+import { useGetEditTeacherComponentsProps } from "../../../utils/hooks";
 
 interface Props {
-  staticTeacher?: ITeacherWithRelations;
+  staticTeacher: ITeacherWithRelations;
 }
 
 const EditTeacher: FC<Props> = ({ staticTeacher }) => {
@@ -24,19 +24,18 @@ const EditTeacher: FC<Props> = ({ staticTeacher }) => {
 
   useGetTeacherByIdWithRelationsEffect({ errorToast: true });
 
+  const teacherToUse =
+    !isReady ||
+    !(teacherWithRelations as ITeacherWithRelations)?.id ||
+    (teacherWithRelations as ITeacherWithRelations).id !== Number(query.id)
+      ? staticTeacher
+      : (teacherWithRelations as ITeacherWithRelations);
+
+  const componentsProps = useGetEditTeacherComponentsProps(teacherToUse);
+
   return (
     <Layout>
-      <EditOrCreatePersonPage
-        person={
-          !isReady ||
-          !(teacherWithRelations as ITeacherWithRelations)?.id ||
-          (teacherWithRelations as ITeacherWithRelations).id !==
-            Number(query.id)
-            ? staticTeacher
-            : (teacherWithRelations as ITeacherWithRelations)
-        }
-        entityName={TEACHER_ENTITY}
-      />
+      <CreateOrEditPage {...componentsProps} />
     </Layout>
   );
 };

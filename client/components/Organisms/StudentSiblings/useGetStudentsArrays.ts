@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { StudentsContext } from "../../../contexts";
 import { useGetStudentsWithRelationsEffect } from "../../../services";
 import { IStudentWithRelations } from "../../../typings/students";
-import { SelectOption } from "../../../typings/global";
+import { SelectOption } from "../../../typings/forms";
 import { sortByName } from "../../../utils/helpers";
 
 const useGetStudentsArrays = (person: IStudentWithRelations) => {
@@ -22,15 +22,16 @@ const useGetStudentsArrays = (person: IStudentWithRelations) => {
     return true;
   });
 
-  const selectSiblingArray: SelectOption[] = studentsArray
-    .map((student) => {
-      return {
-        value: `${student.id}`,
-        name: student.name,
-      };
-    })
-    .sort(sortByName)
-    .concat([{ value: "", name: "Cancel" }]);
+  const selectSiblingArray: SelectOption[] = (
+    studentsArray
+      .map((student) => {
+        return {
+          value: `${student.id}`,
+          name: student.name,
+        };
+      })
+      .sort(sortByName) as SelectOption[]
+  ).concat([{ value: undefined, name: "Cancel" }]);
 
   return { siblingsIds, studentsArray, selectSiblingArray };
 };
