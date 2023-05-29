@@ -2,7 +2,6 @@ export { default as BasicFormConstructor } from "./BasicFormConstructor";
 export { default as CardsDisplay } from "./CardsDisplay";
 export { default as ConfirmModal } from "./ConfirmModal";
 export { default as DisplayCard } from "./DisplayCard";
-export { default as EditOrCreatePersonForm } from "./EditOrCreatePersonForm";
 export { default as Header } from "./Header";
 export { default as MobileDrawer } from "./MobileDrawer";
 export { default as RoomTeacher } from "./RoomTeacher";
