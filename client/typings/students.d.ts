@@ -1,14 +1,8 @@
-import { Gender } from "./global";
+import { IPerson } from "./persons";
 import { IRoom } from "./rooms";
 import { ITeacher } from "./teachers";
 
-export interface IStudent {
-  id: number;
-  name: string;
-  age: number;
-  gender: Gender;
-  picture?: string;
-  description?: string;
+export interface IStudent extends IPerson {
   roomId?: number;
   teacherId?: number;
   createdAt: Date;

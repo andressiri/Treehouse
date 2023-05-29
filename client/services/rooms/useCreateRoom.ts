@@ -2,12 +2,8 @@ import { useCallback, useContext } from "react";
 import { RoomsContext } from "../../contexts";
 import { useServiceInstance } from "../../utils/hooks";
 import { IHandleResponseOptions } from "../../typings/services";
+import { IRoomFormData } from "../../typings/rooms";
 import { ROOMS_ROUTE } from "../../config/constants";
-
-interface IFormData {
-  name: string;
-  description?: string;
-}
 
 const useCreateRoom = (responseOptions: IHandleResponseOptions) => {
   const { setRoom } = useContext(RoomsContext);
@@ -15,12 +11,13 @@ const useCreateRoom = (responseOptions: IHandleResponseOptions) => {
     useServiceInstance(responseOptions);
 
   const createRoom = useCallback(
-    (formData: IFormData) => {
+    (formData: IRoomFormData) => {
       executeRequest({
         route: `/${ROOMS_ROUTE}`,
+        data: formData,
         method: "POST",
         setState: setRoom,
-        formData,
+        type: "withImage",
       });
     },
     [executeRequest, setRoom]

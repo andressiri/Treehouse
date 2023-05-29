@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { MenuItem } from "@mui/material";
-import { StyledSelect } from "../../../components/Atoms";
-import useGetRoomsArray from "./useGetRoomsArray";
+import { StyledTextField } from "../../../components/Atoms";
+import { useGetRoomsArray } from "../../../utils/hooks";
 
 interface Props {
   value: string;
@@ -9,14 +9,21 @@ interface Props {
   onChange: (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void;
+  showTeacherless?: boolean;
   teacherId?: number;
 }
 
-const RoomSelect: FC<Props> = ({ value, name, onChange, teacherId }) => {
-  const roomsArray = useGetRoomsArray(teacherId);
+const RoomSelect: FC<Props> = ({
+  value,
+  name,
+  onChange,
+  showTeacherless,
+  teacherId,
+}) => {
+  const roomsArray = useGetRoomsArray({ showTeacherless, teacherId });
 
   return (
-    <StyledSelect
+    <StyledTextField
       disabled={roomsArray.length < 2}
       select={true}
       value={value}
@@ -31,7 +38,7 @@ const RoomSelect: FC<Props> = ({ value, name, onChange, teacherId }) => {
           {option.name}
         </MenuItem>
       ))}
-    </StyledSelect>
+    </StyledTextField>
   );
 };
 

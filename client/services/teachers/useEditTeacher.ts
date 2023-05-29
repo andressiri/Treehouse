@@ -3,13 +3,10 @@ import { TeachersContext } from "../../contexts";
 import { useServiceInstance } from "../../utils/hooks";
 import { IHandleResponseOptions } from "../../typings/services";
 import { EDIT, TEACHERS_ROUTE } from "../../config/constants";
+import { IPersonFormData } from "../../typings/persons";
 
-interface IFormData {
-  name: string;
-  age: string;
-  gender: string;
-  description?: string;
-}
+type ITeacherData = Omit<IPersonFormData, "roomId">;
+type IFormData = Partial<ITeacherData>;
 
 const useEditTeacher = (responseOptions: IHandleResponseOptions) => {
   const { setTeacher } = useContext(TeachersContext);
@@ -20,9 +17,10 @@ const useEditTeacher = (responseOptions: IHandleResponseOptions) => {
     (formData: IFormData, id: number) => {
       executeRequest({
         route: `/${TEACHERS_ROUTE}/${EDIT}/${id}`,
+        data: formData,
         method: "PUT",
         setState: setTeacher,
-        formData,
+        type: "withImage",
       });
     },
     [executeRequest, setTeacher]

@@ -1,4 +1,6 @@
 export const API_ORIGIN = process.env.NEXT_PUBLIC_API_ORIGIN;
+export const API_CONTENT_TYPE = "application/json";
+export const API_CONTENT_TYPE_WITH_FILE = "multipart/form-data";
 
 // Following constants are directly copied from server routing constants config
 // General

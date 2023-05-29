@@ -1,5 +1,8 @@
 import { FC } from "react";
-import { PersonBasicInfo, DisplayImage } from "../../../components/Molecules";
+import {
+  PersonBasicInfo,
+  DisplayPersonImage,
+} from "../../../components/Molecules";
 import { Container, InfoContainer, Description } from "./styledComponents";
 import { ITeacher } from "../../../typings/teachers";
 
@@ -11,7 +14,7 @@ interface Props {
 const RoomTeacher: FC<Props> = ({ teacher }) => {
   return (
     <Container>
-      <DisplayImage imageSrc={teacher.picture} name={teacher.name} />
+      <DisplayPersonImage imageSrc={teacher.picture} name={teacher.name} />
       <InfoContainer>
         <PersonBasicInfo age={teacher.age} gender={teacher.gender} />
         <Description>{teacher.description}</Description>

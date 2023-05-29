@@ -1,11 +1,13 @@
 import { FC } from "react";
-import { Layout, EditOrCreatePersonPage } from "../../../components/Templates";
-import { TEACHER_ENTITY } from "../../../config/constants";
+import { Layout, CreateOrEditPage } from "../../../components/Templates";
+import { useGetCreateTeacherComponentsProps } from "../../../utils/hooks";
 
 const CreateTeacher: FC = () => {
+  const componentsProps = useGetCreateTeacherComponentsProps();
+
   return (
     <Layout>
-      <EditOrCreatePersonPage entityName={TEACHER_ENTITY} />
+      <CreateOrEditPage {...componentsProps} />
     </Layout>
   );
 };

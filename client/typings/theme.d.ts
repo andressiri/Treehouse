@@ -2,6 +2,9 @@ import { Theme, ThemeOptions } from "@mui/material/styles"; // eslint-disable-li
 
 interface custom {
   buttons: {
+    height: string;
+    disabledBackground: string;
+    disabledColor: string;
     fontSizeMd: string;
   };
   radius: {

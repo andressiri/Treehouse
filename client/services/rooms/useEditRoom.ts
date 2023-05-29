@@ -2,13 +2,10 @@ import { useCallback, useContext } from "react";
 import { RoomsContext } from "../../contexts";
 import { useServiceInstance } from "../../utils/hooks";
 import { IHandleResponseOptions } from "../../typings/services";
+import { IRoomFormData } from "../../typings/rooms";
 import { EDIT, ROOMS_ROUTE } from "../../config/constants";
 
-interface IFormData {
-  name?: string;
-  description?: string;
-  teacherId?: string;
-}
+type IFormData = Partial<IRoomFormData>;
 
 const useEditRoom = (responseOptions: IHandleResponseOptions) => {
   const { setRoom } = useContext(RoomsContext);
@@ -19,9 +16,10 @@ const useEditRoom = (responseOptions: IHandleResponseOptions) => {
     (formData: IFormData, id: number) => {
       executeRequest({
         route: `/${ROOMS_ROUTE}/${EDIT}/${id}`,
+        data: formData,
         method: "PUT",
         setState: setRoom,
-        formData,
+        type: "withImage",
       });
     },
     [executeRequest, setRoom]

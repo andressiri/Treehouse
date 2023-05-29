@@ -2,20 +2,20 @@ import { FC, useContext } from "react";
 import { useRouter } from "next/router";
 import { StudentsContext } from "../../../contexts";
 import { useGetStudentByIdEffect } from "../../../services";
-import { Layout, EditOrCreatePersonPage } from "../../../components/Templates";
+import { Layout, CreateOrEditPage } from "../../../components/Templates";
 import {
   API_ORIGIN,
   API_ROUTE,
   API_VERSION,
   STUDENTS_ROUTE,
   STUDENTS_SINGULAR,
-  STUDENT_ENTITY,
 } from "../../../config/constants";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { IStudent } from "../../../typings/students";
+import { useGetEditStudentComponentsProps } from "../../../utils/hooks";
 
 interface Props {
-  staticStudent?: IStudent;
+  staticStudent: IStudent;
 }
 
 const EditStudent: FC<Props> = ({ staticStudent }) => {
@@ -24,18 +24,18 @@ const EditStudent: FC<Props> = ({ staticStudent }) => {
 
   useGetStudentByIdEffect({ errorToast: true });
 
+  const studentToUse =
+    !isReady ||
+    !(student as IStudent)?.id ||
+    (student as IStudent).id !== Number(query.id)
+      ? staticStudent
+      : (student as IStudent);
+
+  const componentsProps = useGetEditStudentComponentsProps(studentToUse);
+
   return (
     <Layout>
-      <EditOrCreatePersonPage
-        person={
-          !isReady ||
-          !(student as IStudent)?.id ||
-          (student as IStudent).id !== Number(query.id)
-            ? staticStudent
-            : (student as IStudent)
-        }
-        entityName={STUDENT_ENTITY}
-      />
+      <CreateOrEditPage {...componentsProps} />
     </Layout>
   );
 };
