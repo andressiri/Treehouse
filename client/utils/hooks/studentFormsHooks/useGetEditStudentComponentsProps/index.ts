@@ -78,20 +78,6 @@ const useGetEditStudentComponentsProps = (
   const checkChanges = () =>
     Boolean(sanitizeFormChanges(formData, student, true));
 
-  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
-    e.preventDefault();
-
-    const data = sanitizeFormChanges(formData, student);
-
-    if (data || imageWasUploaded) {
-      setErrorMessage("");
-      setKeepLoading(true);
-      editStudent(data as Partial<IPersonFormData>, student.id);
-    } else {
-      setErrorMessage(noChangesError);
-    }
-  };
-
   const formIsLoading = editLoading || removeLoading || keepLoading;
 
   const disableSubmit = useGetPersonFormDisableSubmit(
@@ -100,6 +86,20 @@ const useGetEditStudentComponentsProps = (
     checkChanges,
     formIsLoading
   );
+
+  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
+    e.preventDefault();
+
+    const data = sanitizeFormChanges(formData, student);
+
+    if (!disableSubmit && (data || imageWasUploaded)) {
+      setErrorMessage("");
+      setKeepLoading(true);
+      editStudent(data as Partial<IPersonFormData>, student.id);
+    } else {
+      setErrorMessage(noChangesError);
+    }
+  };
 
   const handleCancel = () => successAction();
 

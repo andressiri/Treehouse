@@ -14,7 +14,7 @@ import { STUDENTS_ROUTE, STUDENT_ENTITY } from "../../../../config/constants";
 const useGetCreateStudentComponentsProps = (): FormsComponentsProps => {
   const title = "Create a brand new student";
   const buttonText = "Create student";
-  const informationMissingError = "Please add the information required";
+  const informationMissingError = "Please add the information as required";
   const cancelRoute = `/${STUDENTS_ROUTE}`;
   const entity = STUDENT_ENTITY;
   const isPerson = true;
@@ -48,18 +48,6 @@ const useGetCreateStudentComponentsProps = (): FormsComponentsProps => {
 
   const checkChanges = useCheckCreationFormChanges(formData);
 
-  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
-    e.preventDefault();
-
-    if (checkChanges()) {
-      setErrorMessage("");
-      setKeepLoading(true);
-      createStudent(formData);
-    } else {
-      setErrorMessage(informationMissingError);
-    }
-  };
-
   const formIsLoading = isLoading || keepLoading;
 
   const disableSubmit = useGetPersonFormDisableSubmit(
@@ -68,6 +56,18 @@ const useGetCreateStudentComponentsProps = (): FormsComponentsProps => {
     checkChanges,
     formIsLoading
   );
+
+  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
+    e.preventDefault();
+
+    if (!disableSubmit) {
+      setErrorMessage("");
+      setKeepLoading(true);
+      createStudent(formData);
+    } else {
+      setErrorMessage(informationMissingError);
+    }
+  };
 
   const handleCancel = () => push(cancelRoute);
 

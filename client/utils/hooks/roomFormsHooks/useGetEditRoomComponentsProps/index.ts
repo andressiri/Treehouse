@@ -71,20 +71,6 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
 
   const checkChanges = () => Boolean(sanitizeFormChanges(formData, room, true));
 
-  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
-    e.preventDefault();
-
-    const data = sanitizeFormChanges(formData, room);
-
-    if (data || imageWasUploaded) {
-      setErrorMessage("");
-      setKeepLoading(true);
-      editRoom(data as Partial<IRoomFormData>, room.id);
-    } else {
-      setErrorMessage(noChangesError);
-    }
-  };
-
   const formIsLoading = editLoading || removeLoading || keepLoading;
 
   const disableSubmit = useGetRoomFormDisableSubmit(
@@ -93,6 +79,20 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
     checkChanges,
     formIsLoading
   );
+
+  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
+    e.preventDefault();
+
+    const data = sanitizeFormChanges(formData, room);
+
+    if (!disableSubmit && (data || imageWasUploaded)) {
+      setErrorMessage("");
+      setKeepLoading(true);
+      editRoom(data as Partial<IRoomFormData>, room.id);
+    } else {
+      setErrorMessage(noChangesError);
+    }
+  };
 
   const handleCancel = () => successAction();
 

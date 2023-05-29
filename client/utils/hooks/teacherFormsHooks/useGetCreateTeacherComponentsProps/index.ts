@@ -13,12 +13,13 @@ import {
 import { FormsComponentsProps } from "../../../../typings/forms";
 import { ITeacher } from "../../../../typings/teachers";
 import { STUDENTS_ROUTE, TEACHER_ENTITY } from "../../../../config/constants";
+import { IPersonFormData } from "../../../../typings/persons";
 
 const useGetCreateTeacherComponentsProps = (): FormsComponentsProps => {
   const { teacher } = useContext(TeachersContext);
   const title = "Create a brand new teacher";
   const buttonText = "Create teacher";
-  const informationMissingError = "Please add the information required";
+  const informationMissingError = "Please add the information as required";
   const successMessage = `${
     (teacher as ITeacher)?.name
   } teacher created successfully`;
@@ -83,18 +84,6 @@ const useGetCreateTeacherComponentsProps = (): FormsComponentsProps => {
 
   const checkChanges = useCheckCreationFormChanges(formData);
 
-  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
-    e.preventDefault();
-
-    if (checkChanges()) {
-      setErrorMessage("");
-      setKeepLoading(true);
-      createTeacher(formData);
-    } else {
-      setErrorMessage(informationMissingError);
-    }
-  };
-
   const formIsLoading = teacherLoading || roomLoading || keepLoading;
 
   const disableSubmit = useGetPersonFormDisableSubmit(
@@ -103,6 +92,22 @@ const useGetCreateTeacherComponentsProps = (): FormsComponentsProps => {
     checkChanges,
     formIsLoading
   );
+
+  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
+    e.preventDefault();
+
+    const data = { ...formData };
+    if ((data as Partial<IPersonFormData>).roomId)
+      delete (data as Partial<IPersonFormData>).roomId;
+
+    if (!disableSubmit) {
+      setErrorMessage("");
+      setKeepLoading(true);
+      createTeacher(data);
+    } else {
+      setErrorMessage(informationMissingError);
+    }
+  };
 
   const handleCancel = () => push(cancelRoute);
 

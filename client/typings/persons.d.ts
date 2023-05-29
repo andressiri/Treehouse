@@ -14,7 +14,7 @@ export interface IPersonFormData {
   age: string;
   gender: Gender | "";
   description?: string;
-  roomId: string;
+  roomId?: string;
 }
 
 export interface IPersonFormVisited {
@@ -22,5 +22,5 @@ export interface IPersonFormVisited {
   age: boolean;
   gender: boolean;
   description?: boolean;
-  roomId: boolean;
+  roomId?: boolean;
 }

@@ -14,7 +14,7 @@ import { ROOMS_ROUTE, ROOM_ENTITY } from "../../../../config/constants";
 const useGetCreateRoomComponentsProps = (): FormsComponentsProps => {
   const title = "Create a brand new room";
   const buttonText = "Create room";
-  const informationMissingError = "Please add the information required";
+  const informationMissingError = "Please add the information as required";
   const cancelRoute = `/${ROOMS_ROUTE}`;
   const entity = ROOM_ENTITY;
   const isPerson = false;
@@ -48,18 +48,6 @@ const useGetCreateRoomComponentsProps = (): FormsComponentsProps => {
 
   const checkChanges = useCheckCreationFormChanges(formData);
 
-  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
-    e.preventDefault();
-
-    if (checkChanges()) {
-      setErrorMessage("");
-      setKeepLoading(true);
-      createRoom(formData);
-    } else {
-      setErrorMessage(informationMissingError);
-    }
-  };
-
   const formIsLoading = isLoading || keepLoading;
 
   const disableSubmit = useGetRoomFormDisableSubmit(
@@ -68,6 +56,18 @@ const useGetCreateRoomComponentsProps = (): FormsComponentsProps => {
     checkChanges,
     formIsLoading
   );
+
+  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
+    e.preventDefault();
+
+    if (!disableSubmit) {
+      setErrorMessage("");
+      setKeepLoading(true);
+      createRoom(formData);
+    } else {
+      setErrorMessage(informationMissingError);
+    }
+  };
 
   const handleCancel = () => push(cancelRoute);
 
