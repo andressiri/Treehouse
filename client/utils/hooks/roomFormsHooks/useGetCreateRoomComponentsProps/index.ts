@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useCreateRoom } from "../../../../services";
+import { sanitizeRequestData } from "../../../helpers";
 import {
   useCheckCreationFormChanges,
   useCheckImageWasUploaded,
@@ -9,6 +10,7 @@ import {
   useGetRoomFormState,
 } from "../../../../utils/hooks";
 import { FormsComponentsProps } from "../../../../typings/forms";
+import { IRoomFormData } from "../../../../typings/rooms";
 import { ROOMS_ROUTE, ROOM_ENTITY } from "../../../../config/constants";
 
 const useGetCreateRoomComponentsProps = (): FormsComponentsProps => {
@@ -63,7 +65,9 @@ const useGetCreateRoomComponentsProps = (): FormsComponentsProps => {
     if (!disableSubmit) {
       setErrorMessage("");
       setKeepLoading(true);
-      createRoom(formData);
+
+      const data = sanitizeRequestData(formData);
+      createRoom(data as IRoomFormData);
     } else {
       setErrorMessage(informationMissingError);
     }
