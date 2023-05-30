@@ -80,20 +80,24 @@ const useGetEditTeacherComponentsProps = (
     successToast: Boolean(!formData.roomId),
   });
 
+  const editTeacherAction = (responseAction: () => void) => {
+    noRoomActionRequired
+      ? responseAction()
+      : (teacher.Room as IRoom)?.id
+      ? removeTeacherFromRoom((teacher.Room as IRoom)?.id)
+      : editRoom({ teacherId: `${teacher.id}` }, Number(formData.roomId));
+  };
+
   const {
     editTeacher,
     isLoading: editLoading,
     message: editMessage,
   } = useEditTeacher({
     errorAction: () => {
-      noRoomActionRequired
-        ? errorAction(editMessage)
-        : removeTeacherFromRoom((teacher.Room as IRoom)?.id);
+      editTeacherAction(() => errorAction(editMessage));
     },
     successAction: () => {
-      noRoomActionRequired
-        ? successAction()
-        : removeTeacherFromRoom((teacher.Room as IRoom)?.id);
+      editTeacherAction(() => successAction());
     },
     successToast: noRoomActionRequired,
   });
@@ -122,16 +126,17 @@ const useGetEditTeacherComponentsProps = (
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    const data = sanitizeFormChanges(formData, objectToCompare);
+    const data = sanitizeFormChanges(
+      formData,
+      objectToCompare
+    ) as Partial<IPersonFormData>;
 
     if (!disableSubmit && (data || imageWasUploaded)) {
       setErrorMessage("");
       setKeepLoading(true);
 
-      if ((data as Partial<IPersonFormData>).roomId)
-        delete (data as Partial<IPersonFormData>).roomId;
-
-      editTeacher(data as Partial<IPersonFormData>, teacher.id);
+      if (data.roomId || data.roomId === "") delete data.roomId;
+      editTeacher(data, teacher.id);
     } else {
       setErrorMessage(noChangesError);
     }

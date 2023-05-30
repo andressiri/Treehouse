@@ -56,7 +56,7 @@ const PersonRoomFallback: FC<Props> = ({
 
   return (
     <Container>
-      <Title>{`At the moment ${personName} has no room`}</Title>
+      <Title>{`At the moment ${personName} has no room assigned`}</Title>
       <FormContainer
         component="form"
         onSubmit={(e: React.FormEvent<HTMLDivElement>) => handleSubmit(e)}

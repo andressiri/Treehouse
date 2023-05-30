@@ -88,6 +88,7 @@ const useGetEditRoomComponentsProps = (room: IRoom): FormsComponentsProps => {
     if (!disableSubmit && (data || imageWasUploaded)) {
       setErrorMessage("");
       setKeepLoading(true);
+
       editRoom(data as Partial<IRoomFormData>, room.id);
     } else {
       setErrorMessage(noChangesError);
