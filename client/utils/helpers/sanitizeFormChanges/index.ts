@@ -1,8 +1,11 @@
+import { IPersonFormData } from "../../../typings/persons";
+import { IRoomFormData } from "../../../typings/rooms";
+
 const sanitizeFormChanges = (
-  formData: object,
+  formData: IRoomFormData | IPersonFormData,
   objectToCompare: object,
   shouldBreak?: boolean
-): object | boolean => {
+): Partial<IRoomFormData> | Partial<IPersonFormData> | boolean => {
   const obj = { ...formData };
   let emptyObj = true;
 

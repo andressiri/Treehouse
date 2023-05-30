@@ -10,6 +10,8 @@ import {
 } from "../../../../utils/hooks";
 import { FormsComponentsProps } from "../../../../typings/forms";
 import { STUDENTS_ROUTE, STUDENT_ENTITY } from "../../../../config/constants";
+import { sanitizeRequestData } from "../../../helpers";
+import { IPersonFormData } from "../../../../typings/persons";
 
 const useGetCreateStudentComponentsProps = (): FormsComponentsProps => {
   const title = "Create a brand new student";
@@ -63,7 +65,9 @@ const useGetCreateStudentComponentsProps = (): FormsComponentsProps => {
     if (!disableSubmit) {
       setErrorMessage("");
       setKeepLoading(true);
-      createStudent(formData);
+
+      const data = sanitizeRequestData(formData);
+      createStudent(data as IPersonFormData);
     } else {
       setErrorMessage(informationMissingError);
     }

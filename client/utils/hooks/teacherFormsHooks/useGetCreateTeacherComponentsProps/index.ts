@@ -96,14 +96,13 @@ const useGetCreateTeacherComponentsProps = (): FormsComponentsProps => {
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    const data = { ...formData };
-    if ((data as Partial<IPersonFormData>).roomId)
-      delete (data as Partial<IPersonFormData>).roomId;
-
     if (!disableSubmit) {
       setErrorMessage("");
       setKeepLoading(true);
-      createTeacher(data);
+
+      const data: IPersonFormData = { ...formData };
+      if (data.roomId || data.roomId === "") delete data.roomId;
+      createTeacher(data as Omit<IPersonFormData, "roomId">);
     } else {
       setErrorMessage(informationMissingError);
     }

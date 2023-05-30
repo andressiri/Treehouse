@@ -90,12 +90,20 @@ const useGetEditStudentComponentsProps = (
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    const data = sanitizeFormChanges(formData, student);
+    const data = sanitizeFormChanges(
+      formData,
+      student
+    ) as Partial<IPersonFormData>;
 
     if (!disableSubmit && (data || imageWasUploaded)) {
       setErrorMessage("");
       setKeepLoading(true);
-      editStudent(data as Partial<IPersonFormData>, student.id);
+
+      if (!data.roomId) delete data.roomId;
+
+      !Object.keys(data).length
+        ? removeStudentFromRoom(student.id)
+        : editStudent(data, student.id);
     } else {
       setErrorMessage(noChangesError);
     }

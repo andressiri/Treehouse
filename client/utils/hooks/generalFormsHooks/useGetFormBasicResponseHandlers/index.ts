@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { Entities } from "../../../../typings/global";
 import { IRoom } from "../../../../typings/rooms";
 import { IStudent } from "../../../../typings/students";
-import { ITeacherWithRelations } from "../../../../typings/teachers";
+import { ITeacher, ITeacherWithRelations } from "../../../../typings/teachers";
 import {
   ROOMS_ROUTE,
   ROOMS_SINGULAR,
@@ -23,7 +23,7 @@ import {
 const useGetFormBasicResponseHandlers = (entity: Entities) => {
   const { room } = useContext(RoomsContext);
   const { student } = useContext(StudentsContext);
-  const { teacherWithRelations } = useContext(TeachersContext);
+  const { teacher, teacherWithRelations } = useContext(TeachersContext);
   const [errorMessage, setErrorMessage] = useState("");
   const [keepLoading, setKeepLoading] = useState(false);
   const { push } = useRouter();
@@ -34,7 +34,9 @@ const useGetFormBasicResponseHandlers = (entity: Entities) => {
       : entity === STUDENT_ENTITY
       ? `/${STUDENTS_ROUTE}/${STUDENTS_SINGULAR}/${(student as IStudent)?.id}`
       : `/${TEACHERS_ROUTE}/${TEACHERS_SINGULAR}/${
-          (teacherWithRelations as ITeacherWithRelations)?.id
+          (teacher as ITeacher)?.id
+            ? (teacher as ITeacher)?.id
+            : (teacherWithRelations as ITeacherWithRelations)?.id
         }`;
 
   const errorAction = (message: string) => {
