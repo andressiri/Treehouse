@@ -6,6 +6,7 @@ const UserModel = (sequelize: Sequelize) => {
     declare id: string;
     declare firstName: string;
     declare lastName: string;
+    declare picture: string;
     declare email: string;
     declare password: string;
     declare verified: boolean;
@@ -29,6 +30,7 @@ const UserModel = (sequelize: Sequelize) => {
       },
       firstName: DataTypes.STRING,
       lastName: DataTypes.STRING,
+      picture: DataTypes.STRING(1000),
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       verified: DataTypes.BOOLEAN,

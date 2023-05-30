@@ -22,6 +22,9 @@ const usersMigration = {
             type: DataTypes.STRING,
             allowNull: false,
           },
+          picture: {
+            type: DataTypes.STRING(1000),
+          },
           email: {
             type: DataTypes.STRING,
             allowNull: false,

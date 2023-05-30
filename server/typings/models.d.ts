@@ -2,6 +2,7 @@ export interface IUser {
   id: string;
   firstName: string;
   lastName: string;
+  picture: string;
   email: string;
   password: string;
   verified?: boolean;
