@@ -6,14 +6,7 @@ import { theme } from "../styles/theme";
 import createEmotionCache from "../utils/createEmotionCache";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  GeneralContextProvider,
-  RoomsContextProvider,
-  StudentsContextProvider,
-  TeachersContextProvider,
-  UsersContextProvider,
-} from "../contexts";
-import { HeadSetup } from "../components";
+import { ContextsProvider, HeadSetup } from "../components";
 import "../styles/globals.css";
 
 const clientSideEmotionCache = createEmotionCache();
@@ -28,27 +21,19 @@ const App: FC<IAppProps> = ({
   pageProps,
 }) => {
   return (
-    <GeneralContextProvider>
-      <UsersContextProvider>
-        <RoomsContextProvider>
-          <StudentsContextProvider>
-            <TeachersContextProvider>
-              <CacheProvider value={emotionCache}>
-                <HeadSetup />
-                <ThemeProvider theme={theme}>
-                  <Component {...pageProps} />
-                  <ToastContainer
-                    position="bottom-right"
-                    newestOnTop={true}
-                    theme="colored"
-                  />
-                </ThemeProvider>
-              </CacheProvider>
-            </TeachersContextProvider>
-          </StudentsContextProvider>
-        </RoomsContextProvider>
-      </UsersContextProvider>
-    </GeneralContextProvider>
+    <ContextsProvider>
+      <CacheProvider value={emotionCache}>
+        <HeadSetup />
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />
+          <ToastContainer
+            position="bottom-right"
+            newestOnTop={true}
+            theme="colored"
+          />
+        </ThemeProvider>
+      </CacheProvider>
+    </ContextsProvider>
   );
 };
 
