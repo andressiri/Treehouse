@@ -1,5 +1,6 @@
 export { default as useHandleResponseEffect } from "./useHandleResponseEffect";
 export { default as useServiceInstance } from "./useServiceInstance";
+export * from "./authHooks";
 export * from "./generalFormsHooks";
 export * from "./personFormsHooks";
 export * from "./roomFormsHooks";
