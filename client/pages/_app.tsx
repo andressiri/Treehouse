@@ -4,9 +4,7 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "../styles/theme";
 import createEmotionCache from "../utils/createEmotionCache";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { ContextsProvider, HeadSetup } from "../components";
+import { ContextsProvider, HeadSetup, Toaster } from "../components";
 import "../styles/globals.css";
 
 const clientSideEmotionCache = createEmotionCache();
@@ -26,11 +24,7 @@ const App: FC<IAppProps> = ({
         <HeadSetup />
         <ThemeProvider theme={theme}>
           <Component {...pageProps} />
-          <ToastContainer
-            position="bottom-right"
-            newestOnTop={true}
-            theme="colored"
-          />
+          <Toaster />
         </ThemeProvider>
       </CacheProvider>
     </ContextsProvider>

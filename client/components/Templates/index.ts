@@ -6,3 +6,4 @@ export { default as Layout } from "./Layout";
 export { default as NotFoundPage } from "./NotFoundPage";
 export { default as PersonPage } from "./PersonPage";
 export { default as RoomPage } from "./RoomPage";
+export { default as Toaster } from "./Toaster";
