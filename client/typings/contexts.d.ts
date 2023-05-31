@@ -1,3 +1,4 @@
+import { IUser } from "./users";
 import { IRoom, IRoomWithRelations } from "./rooms";
 import { IStudent, IStudentWithRelations } from "./students";
 import { ITeacher, ITeacherWithRelations } from "./teachers";
@@ -9,6 +10,20 @@ export interface IContextProviderProps {
 export interface IGeneralContext {
   viewportWidth: number;
   viewportHeight: number;
+}
+
+// Users
+export type Users = IUser[] | [];
+export type SetUsers = React.Dispatch<React.SetStateAction<IUser[] | []>>;
+
+export type User = IUser | object;
+export type SetUser = React.Dispatch<React.SetStateAction<IUser | object>>;
+
+export interface IUsersContext {
+  users: Users;
+  setUsers: SetUsers;
+  user: User;
+  setUser: SetUser;
 }
 
 // Rooms

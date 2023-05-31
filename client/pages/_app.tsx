@@ -11,6 +11,7 @@ import {
   RoomsContextProvider,
   StudentsContextProvider,
   TeachersContextProvider,
+  UsersContextProvider,
 } from "../contexts";
 import { HeadSetup } from "../components";
 import "../styles/globals.css";
@@ -28,23 +29,25 @@ const App: FC<IAppProps> = ({
 }) => {
   return (
     <GeneralContextProvider>
-      <RoomsContextProvider>
-        <StudentsContextProvider>
-          <TeachersContextProvider>
-            <CacheProvider value={emotionCache}>
-              <HeadSetup />
-              <ThemeProvider theme={theme}>
-                <Component {...pageProps} />
-                <ToastContainer
-                  position="bottom-right"
-                  newestOnTop={true}
-                  theme="colored"
-                />
-              </ThemeProvider>
-            </CacheProvider>
-          </TeachersContextProvider>
-        </StudentsContextProvider>
-      </RoomsContextProvider>
+      <UsersContextProvider>
+        <RoomsContextProvider>
+          <StudentsContextProvider>
+            <TeachersContextProvider>
+              <CacheProvider value={emotionCache}>
+                <HeadSetup />
+                <ThemeProvider theme={theme}>
+                  <Component {...pageProps} />
+                  <ToastContainer
+                    position="bottom-right"
+                    newestOnTop={true}
+                    theme="colored"
+                  />
+                </ThemeProvider>
+              </CacheProvider>
+            </TeachersContextProvider>
+          </StudentsContextProvider>
+        </RoomsContextProvider>
+      </UsersContextProvider>
     </GeneralContextProvider>
   );
 };
