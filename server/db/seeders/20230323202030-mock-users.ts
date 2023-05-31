@@ -1,6 +1,11 @@
 import { QueryInterface } from "sequelize";
 import { v4 as uuid } from "uuid";
 import bcrypt from "bcryptjs";
+import {
+  REGULAR_USER_ROLE,
+  ADMIN_ROLE,
+  SUPER_ADMIN_ROLE,
+} from "../../config/constants";
 
 const salt = bcrypt.genSaltSync();
 const hashedPassword = bcrypt.hashSync("123456", salt);
@@ -20,7 +25,7 @@ const usersSeed = {
           verified: true,
           createdAt: new Date(),
           updatedAt: new Date(),
-          roleId: 3,
+          roleId: SUPER_ADMIN_ROLE,
         },
         {
           id: uuid(),
@@ -32,7 +37,7 @@ const usersSeed = {
           verified: true,
           createdAt: new Date(),
           updatedAt: new Date(),
-          roleId: 2,
+          roleId: ADMIN_ROLE,
         },
         {
           id: uuid(),
@@ -44,7 +49,7 @@ const usersSeed = {
           verified: true,
           createdAt: new Date(),
           updatedAt: new Date(),
-          roleId: 1,
+          roleId: REGULAR_USER_ROLE,
         },
         {
           id: uuid(),
@@ -56,7 +61,7 @@ const usersSeed = {
           verified: true,
           createdAt: new Date(),
           updatedAt: new Date(),
-          roleId: 1,
+          roleId: REGULAR_USER_ROLE,
         },
         {
           id: uuid(),
@@ -68,7 +73,7 @@ const usersSeed = {
           verified: true,
           createdAt: new Date(),
           updatedAt: new Date(),
-          roleId: 1,
+          roleId: REGULAR_USER_ROLE,
         },
         {
           id: uuid(),
@@ -80,7 +85,7 @@ const usersSeed = {
           verified: null,
           createdAt: new Date(),
           updatedAt: new Date(),
-          roleId: 1,
+          roleId: REGULAR_USER_ROLE,
         },
       ],
       {}
