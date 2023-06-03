@@ -1,3 +1,4 @@
+import React from "react";
 import { AuthUser, IUsersContext } from "../../../typings/contexts";
 
 const setUsersContextInitialState = (): IUsersContext => {
@@ -18,14 +19,12 @@ const setUsersContextInitialState = (): IUsersContext => {
 
   if (storedUser && userRemembered) {
     authUser = JSON.parse(storedUser);
-    userRemembered = true;
   }
 
   return {
     authUser,
     setAuthUser: () => authUser,
-    remember: userRemembered,
-    setRemember: () => userRemembered,
+    remember: React.createRef<boolean | null>(),
     users: [],
     setUsers: () => [],
     user: {},

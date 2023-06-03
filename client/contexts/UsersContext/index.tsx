@@ -1,4 +1,4 @@
-import React, { createContext, FC, useState } from "react";
+import React, { createContext, FC, useRef, useState } from "react";
 import { setUsersContextInitialState } from "../../utils/helpers";
 import { useHandleAuthUserEffects } from "../../utils/hooks";
 import {
@@ -17,7 +17,7 @@ export const UsersContextProvider: FC<IContextProviderProps> = ({
 }) => {
   const initialState = setUsersContextInitialState();
   const [authUser, setAuthUser] = useState<User>(initialState.authUser);
-  const [remember, setRemember] = useState(initialState.remember);
+  const remember = useRef(Boolean(initialState.authUser));
   const [users, setUsers] = useState<Users>([]);
   const [user, setUser] = useState<User>({});
 
@@ -29,7 +29,6 @@ export const UsersContextProvider: FC<IContextProviderProps> = ({
         authUser,
         setAuthUser,
         remember,
-        setRemember,
         users,
         setUsers,
         user,

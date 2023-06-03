@@ -18,10 +18,10 @@ const useHandleAuthUserEffects = () => {
       window.addEventListener("beforeunload", (e) => {
         e.preventDefault();
 
-        clearUser();
+        if (!remember.current) clearUser();
       });
     }
-  }, [windowAvailable, clearUser]);
+  }, [remember, windowAvailable, clearUser]);
 
   useEffect(() => {
     addBeforeUnloadEvent();
@@ -39,7 +39,7 @@ const useHandleAuthUserEffects = () => {
         (authUser as IAuthUser)?.token
       }; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
 
-      if (remember) localStorage.setItem("rememberUser", "true");
+      if (remember.current) localStorage.setItem("rememberUser", "true");
 
       return;
     }

@@ -24,13 +24,12 @@ export type SetUsers = React.Dispatch<React.SetStateAction<IUser[] | []>>;
 export type User = IUser | object;
 export type SetUser = React.Dispatch<React.SetStateAction<IUser | object>>;
 
-export type SetRemember = React.Dispatch<React.SetStateAction<boolean>>;
+export type Remember = React.MutableRefObject<boolean | null>;
 
 export interface IUsersContext {
   authUser: AuthUser;
   setAuthUser: SetAuthUser;
-  remember: boolean;
-  setRemember: SetRemember;
+  remember: Remember;
   users: Users;
   setUsers: SetUsers;
   user: User;
