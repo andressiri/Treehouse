@@ -6,7 +6,7 @@ import { IRegisterFormData } from "../../../typings/users";
 import { USERS_ROUTE, REGISTER } from "../../../config/constants";
 
 const useRegisterUser = (responseOptions: IHandleResponseOptions) => {
-  const { setUser } = useContext(UsersContext);
+  const { setAuthUser } = useContext(UsersContext);
   const { executeRequest, isError, isSuccess, isLoading, message } =
     useServiceInstance(responseOptions);
 
@@ -16,11 +16,11 @@ const useRegisterUser = (responseOptions: IHandleResponseOptions) => {
         route: `/${USERS_ROUTE}/${REGISTER}`,
         data: formData,
         method: "POST",
-        setState: setUser,
+        setState: setAuthUser,
         type: "withImage",
       });
     },
-    [executeRequest, setUser]
+    [executeRequest, setAuthUser]
   );
 
   return { registerUser, isError, isSuccess, isLoading, message };
