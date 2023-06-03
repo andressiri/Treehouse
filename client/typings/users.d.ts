@@ -11,6 +11,10 @@ export interface IUser {
   updatedAt: Date;
 }
 
+export interface IAuthUser extends IUser {
+  token: string;
+}
+
 export interface IRegisterFormData {
   firstName: string;
   lastName: string;
