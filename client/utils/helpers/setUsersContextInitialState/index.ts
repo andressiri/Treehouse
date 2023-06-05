@@ -1,36 +1,41 @@
 import React from "react";
 import { AuthUser, IUsersContext } from "../../../typings/contexts";
 
-const setUsersContextInitialState = (): IUsersContext => {
-  let storedUser;
+interface ReturnObj {
+  usersContext: IUsersContext;
+  userRemembered: boolean;
+}
+
+const setUsersContextInitialState = (): ReturnObj => {
+  let localStorageUser;
   let userRemembered = false;
 
   if (typeof window !== "undefined") {
-    const localStorageUser = localStorage.getItem("authUser");
-    const sessionStorageUser = sessionStorage.getItem("authUser");
-    storedUser = localStorageUser || sessionStorageUser;
+    localStorageUser = localStorage.getItem("authUser");
 
     const localStorageRemember = localStorage.getItem("rememberUser");
-    const sessionStorageRemember = sessionStorage.getItem("rememberUser");
-    userRemembered = Boolean(localStorageRemember || sessionStorageRemember);
+    userRemembered = Boolean(localStorageRemember);
   }
 
   let authUser: AuthUser = {};
 
-  if (storedUser && userRemembered) {
-    authUser = JSON.parse(storedUser);
+  if (localStorageUser) {
+    authUser = JSON.parse(localStorageUser);
   }
 
   return {
-    authUser,
-    setAuthUser: () => authUser,
-    remember: React.createRef<boolean | null>(),
-    users: [],
-    setUsers: () => [],
-    user: {},
-    setUser: () => {
-      return {};
+    usersContext: {
+      authUser,
+      setAuthUser: () => authUser,
+      remember: React.createRef<boolean | null>(),
+      users: [],
+      setUsers: () => [],
+      user: {},
+      setUser: () => {
+        return {};
+      },
     },
+    userRemembered,
   };
 };
 

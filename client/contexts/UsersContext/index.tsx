@@ -4,24 +4,25 @@ import { useHandleAuthUserEffects } from "../../utils/hooks";
 import {
   IContextProviderProps,
   IUsersContext,
+  AuthUser,
   Users,
   User,
 } from "../../typings/contexts";
 
 export const UsersContext = createContext<IUsersContext>(
-  setUsersContextInitialState()
+  setUsersContextInitialState().usersContext
 );
 
 export const UsersContextProvider: FC<IContextProviderProps> = ({
   children,
 }) => {
-  const initialState = setUsersContextInitialState();
-  const [authUser, setAuthUser] = useState<User>(initialState.authUser);
-  const remember = useRef(Boolean(initialState.authUser));
+  const { usersContext, userRemembered } = setUsersContextInitialState();
+  const [authUser, setAuthUser] = useState<AuthUser>(usersContext.authUser);
+  const remember = useRef(userRemembered);
   const [users, setUsers] = useState<Users>([]);
   const [user, setUser] = useState<User>({});
 
-  useHandleAuthUserEffects();
+  useHandleAuthUserEffects(authUser, setAuthUser, remember);
 
   return (
     <UsersContext.Provider
