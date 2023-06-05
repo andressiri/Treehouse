@@ -41,6 +41,7 @@ const useGetImageUploadControllers = ({
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileReader = new FileReader();
+
     fileReader.onload = () => {
       if (fileReader.readyState === 2) {
         if (fileReader.result === null) return;

@@ -11,6 +11,7 @@ export { default as NavLogo } from "./NavLogo";
 export { default as PersonBasicInfo } from "./PersonBasicInfo";
 export { default as PersonRoom } from "./PersonRoom";
 export { default as PersonRoomFallback } from "./PersonRoomFallback";
+export { default as RememberMe } from "./RememberMe";
 export { default as RoomSelect } from "./RoomSelect";
 export { default as SidebarSocialMedia } from "./SidebarSocialMedia";
 export { default as StudentListItem } from "./StudentListItem";
