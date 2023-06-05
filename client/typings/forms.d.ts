@@ -1,7 +1,12 @@
 import { InputLabelProps, InputProps } from "@mui/material";
 import { IRoomFormData, IRoomFormVisited } from "./rooms";
 import { IPersonFormData, IPersonFormVisited } from "./persons";
-import { IRegisterFormData, IRegisterFormVisited } from "./users";
+import {
+  ILoginFormData,
+  ILoginFormVisited,
+  IRegisterFormData,
+  IRegisterFormVisited,
+} from "./users";
 
 export interface SelectOption {
   value?: string;
@@ -42,12 +47,14 @@ interface IFormFieldSpecifics extends Omit<SharedTextFieldProps, "onChange"> {
 export type formFieldsData =
   | IRoomFormData
   | IPersonFormData
-  | IRegisterFormData;
+  | IRegisterFormData
+  | ILoginFormData;
 
 export type formFieldsVisited =
   | IRoomFormVisited
   | IPersonFormVisited
-  | IRegisterFormVisited;
+  | IRegisterFormVisited
+  | ILoginFormVisited;
 
 export interface FormFieldProps extends SharedTextFieldProps {
   field: string;

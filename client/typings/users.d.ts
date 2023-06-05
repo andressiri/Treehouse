@@ -15,16 +15,22 @@ export interface IAuthUser extends IUser {
   token: string;
 }
 
-export interface IRegisterFormData {
-  firstName: string;
-  lastName: string;
+export interface ILoginFormData {
   email: string;
   password: string;
 }
 
-export interface IRegisterFormVisited {
-  firstName: boolean;
-  lastName: boolean;
+export interface ILoginFormVisited {
   email: boolean;
   password: boolean;
+}
+
+export interface IRegisterFormData extends ILoginFormData {
+  firstName: string;
+  lastName: string;
+}
+
+export interface IRegisterFormVisited extends ILoginFormVisited {
+  firstName: boolean;
+  lastName: boolean;
 }
